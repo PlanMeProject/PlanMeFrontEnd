@@ -23,6 +23,7 @@
 
 import React from "react";
 import {NavLink} from "react-router-dom";
+import { handleGoogleSignIn } from './auth.js';
 // Chakra imports
 import {
     Box,
@@ -98,7 +99,6 @@ function SignIn() {
                     {/*<Heading color={textColor} fontSize='36px' mb='10px'>*/}
                     {/*    Sign In*/}
                     {/*</Heading>*/}
-
                     <Text
                         mb='36px'
                         ms='4px'
@@ -130,7 +130,8 @@ function SignIn() {
                         fontWeight='500'
                         _hover={googleHover}
                         _active={googleActive}
-                        _focus={googleActive}>
+                        _focus={googleActive}
+                        onClick={handleGoogleSignIn}>
                         <Icon as={FcGoogle} w='20px' h='20px' me='10px'/>
                         Sign in with Google
                     </Button>
