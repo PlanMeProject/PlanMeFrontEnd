@@ -51,6 +51,9 @@ export function SidebarLinks(props) {
         route.layout === "/auth" ||
         route.layout === "/rtl"
       ) {
+        if (route.path === "/task-board/task/:id") {
+          return null;
+        }
         return (
           <NavLink key={index} to={route.layout + route.path}>
             {route.icon ? (
