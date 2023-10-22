@@ -38,18 +38,18 @@ export default function UserReports() {
                               padding='0px 11px 0px 11px'
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
-                              color='navy.700'>5</Text>
-
-                        <Text fontSize='2xl' fontWeight='bold' ml='10px'
-                              color={textColor}>Todo</Text>
+                              color='navy.700'>
+                            5
+                        </Text>
+                        <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
+                            Todo
+                        </Text>
                     </div>
-                    <Flex>
-                        <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd}
-                              color={textColor}/>
-                    </Flex>
+                    {/*<Flex>*/}
+                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
+                    {/*</Flex>*/}
                 </Flex>
-                <Flex alignContent='center' justifyContent='space-between'
-                      padding='0 15px 0 15px'>
+                <Flex alignContent='center' justifyContent='space-between' padding='0 15px 0 15px'>
                     <div style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -59,18 +59,18 @@ export default function UserReports() {
                               padding='0px 11px 0px 11px'
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
-                              color='navy.700'>6</Text>
-
-                        <Text fontSize='2xl' fontWeight='bold' ml='10px'
-                              color={textColor}>In progress</Text>
+                              color='navy.700'>
+                            6
+                        </Text>
+                        <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
+                            In progress
+                        </Text>
                     </div>
-                    <Flex>
-                        <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd}
-                              color={textColor}/>
-                    </Flex>
+                    {/*<Flex>*/}
+                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
+                    {/*</Flex>*/}
                 </Flex>
-                <Flex alignContent='center' justifyContent='space-between'
-                      padding='0 15px 0 15px'>
+                <Flex alignContent='center' justifyContent='space-between' padding='0 15px 0 15px'>
                     <div style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -80,15 +80,16 @@ export default function UserReports() {
                               padding='0px 11px 0px 11px'
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
-                              color='navy.700'>7</Text>
-
-                        <Text fontSize='2xl' fontWeight='bold' ml='10px'
-                              color={textColor}>Complete</Text>
+                              color='navy.700'>
+                            7
+                        </Text>
+                        <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
+                            Complete
+                        </Text>
                     </div>
-                    <Flex>
-                        <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd}
-                              color={textColor}/>
-                    </Flex>
+                    {/*<Flex>*/}
+                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
+                    {/*</Flex>*/}
                 </Flex>
 
             </SimpleGrid>
