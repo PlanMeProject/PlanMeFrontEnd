@@ -1,20 +1,13 @@
 // Chakra imports
 import {
-    // Avatar,
     Box,
     Flex,
-    // FormLabel,
     Icon,
-    // Select,
     SimpleGrid,
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
-// Assets
-// import Usa from "assets/img/dashboards/usa.png";
-// Custom components
-// import MiniCalendar from "components/calendar/MiniCalendar";
-// import MiniStatistics from "components/card/MiniStatistics";
+
 import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
@@ -22,16 +15,10 @@ import React from "react";
 import {
     MdAdd,
     MdAddTask,
-    // MdAttachMoney,
-    // MdBarChart,
-    // MdFileCopy,
 } from "react-icons/md";
 
 
 export default function UserReports() {
-    // Chakra Color Mode
-    // const brandColor = useColorModeValue("brand.500", "white");
-    // const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
     const textColor = useColorModeValue("navy.700", "gray.200");
     const todoCardColor = useColorModeValue("#FFE999", "#FFDE6A");
     const inProgressCardColor = useColorModeValue("#CDC5FF", "#8F7CFF");
