@@ -67,10 +67,19 @@ export default function Conversion(props) {
 
 
     // Delete function
-    const handleDelete = (subtask_id) => {
-        const updatedSubtasks = subtasks.filter(task => task.subtask_id !== subtask_id);
+    const handleDelete = (subtaskId) => {
+        const updatedSubtasks = subtasks.filter(task => task.id !== subtaskId);
         setSubtasks(updatedSubtasks);
     };
+
+    // Handle checkbox state change
+    const handleCheckboxChange = (subtaskId, newStatus) => {
+        const updatedSubtasks = subtasks.map(task =>
+            task.id === subtaskId ? { ...task, status: newStatus } : task
+        );
+        setSubtasks(updatedSubtasks);
+    };
+
 
     // Chakra Color Mode
     const textColor = useColorModeValue("secondaryGray.900", "white");
