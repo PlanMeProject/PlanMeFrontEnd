@@ -26,6 +26,7 @@ import {
     Flex,
     SimpleGrid,
     Text,
+    useColorModeValue,
 } from "@chakra-ui/react";
 
 import React from "react";
@@ -35,21 +36,61 @@ import Tasks from "views/admin/subtaskDashboard/components/Tasks";
 
 import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
+// import data
+import task from "../../admin/datas/task.json"
+
 export default function UserReports() {
+    const titleColor = useColorModeValue("gray.600", "orange.500");
+    const dueDateColor = useColorModeValue("gray.600", "red.500");
+    const taskSubjectColor = useColorModeValue("gray.600", "navy.200");
+
+
     return (
+
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
-            <Flex mb='20px' mt='20px'>
-                <Text fontSize='xl' fontWeight='bold'>title</Text>
-            </Flex>
-            <Flex mb='20px'>
-                <Text fontSize='xl' fontWeight='bold'>Description</Text>
-            </Flex>
-            <Flex mb='20px'>
-                <Text fontSize='xl' fontWeight='bold'>summarized_text</Text>
-            </Flex>
-            <Flex mb='20px'>
-                <Text fontSize='xl' fontWeight='bold'>Due Date</Text>
-            </Flex>
+            <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
+                <Flex mb='20px' mt='20px'>
+                    <Text color={titleColor} fontSize='xl' fontWeight='bold'>
+                        {task.title}
+                    </Text>
+                </Flex>
+                <Flex mb='20px'>
+                    <Text color={taskSubjectColor} fontSize='xl'
+                          fontWeight='bold'>
+                        Description: &nbsp;
+                    </Text>
+                    <Text fontSize='xl' fontWeight='bold'>
+                        {task.description}
+                    </Text>
+                </Flex>
+                <Flex mb='20px'>
+                    <Text color={taskSubjectColor} fontSize='xl'
+                          fontWeight='bold'>
+                        Summarize: &nbsp;
+                    </Text>
+                    <Text fontSize='xl' fontWeight='bold'>
+                        {task.summarized_text}
+                    </Text>
+                </Flex>
+                <Flex mb='20px'>
+                    <Text color={taskSubjectColor} fontSize='xl'
+                          fontWeight='bold'>
+                        Bullet: &nbsp;
+                    </Text>
+                    <Text fontSize='xl' fontWeight='bold'>
+                        {task.bullet_text}
+                    </Text>
+                </Flex>
+                <Flex mb='20px'>
+                    <Text color={taskSubjectColor} fontSize='xl'
+                          fontWeight='bold'>
+                        Due Date: &nbsp;
+                    </Text>
+                    <Text color={dueDateColor} fontSize='xl' fontWeight='bold'>
+                        {task.due_date}
+                    </Text>
+                </Flex>
+            </simpleGrid>
             <SimpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 <Tasks/>
                 <PieCard/>
