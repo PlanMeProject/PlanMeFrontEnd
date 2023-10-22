@@ -82,15 +82,6 @@ export default function UserReports() {
                 <Flex mb='20px'>
                     <Text color={taskSubjectColor} fontSize='xl'
                           fontWeight='bold'>
-                        Bullet: &nbsp;
-                    </Text>
-                    <Text fontSize='xl' fontWeight='bold'>
-                        {task.bullet_text}
-                    </Text>
-                </Flex>
-                <Flex mb='20px'>
-                    <Text color={taskSubjectColor} fontSize='xl'
-                          fontWeight='bold'>
                         Due Date: &nbsp;
                     </Text>
                     <Text color={dueDateColor} fontSize='xl' fontWeight='bold'>
