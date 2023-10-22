@@ -58,20 +58,6 @@ export default function Default(props) {
                             >{task.title}</Text>
                         </Box>
                     ))}
-                    {/*<Box*/}
-                    {/*    bg="white"*/}
-                    {/*    p={4}*/}
-                    {/*    borderRadius="20px"*/}
-                    {/*    boxShadow="md"*/}
-                    {/*    w="100%"*/}
-                    {/*    minH="100px"*/}
-                    {/*    mb="10px"*/}
-                    {/*    onClick={() => goToSubtask(5)}*/}
-                    {/*>*/}
-                    {/*    <Text*/}
-                    {/*        color='secondaryGray.900'*/}
-                    {/*    >This is a small card</Text>*/}
-                    {/*</Box>*/}
                 </div>
             </Flex>
         </Card>
