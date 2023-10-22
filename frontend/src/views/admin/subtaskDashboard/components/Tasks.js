@@ -32,9 +32,17 @@ import {MdDelete, MdAssignment, MdAdd} from "react-icons/md";
 import React from "react";
 
 // subtask imports
-import subtaskData from "../../datas/subtask.json";
+import mockData from "../../datas/mock.json";
+import {useParams} from "react-router-dom";
 
 export default function Conversion(props) {
+
+    const userID = 1; // Replace with user ID
+    const userData = mockData["users"].find(user => user.id === userID);
+    const { id } = useParams(); // Replace with task ID
+    const task = userData["tasks"].find(task => task.id === parseInt(id));
+    const subtaskData = task["subtasks"];
+
     const {...rest} = props;
     const [subtasks, setSubtasks] = useState(subtaskData);
 
@@ -50,11 +58,9 @@ export default function Conversion(props) {
             // You can set an error state here to show an error message if you want
             return;
         }
+        const newId = subtasks.length ? Math.max(subtasks.map(t => t.id)) + 1 : 1;
         // Add the new subtask
-        setSubtasks([...subtasks, {
-            ...newSubtask,
-            subtask_id: subtasks.length + 1
-        }]);
+        setSubtasks([...subtasks, { ...newSubtask, id: newId }]);
         setIsOpen(false);
         setNewSubtask({title: '', status: 'Incomplete'});  // Reset the form
     };
@@ -78,8 +84,7 @@ export default function Conversion(props) {
                     w='38px'
                     h='38px'
                     bg={boxBg}
-                    icon={<Icon as={MdAssignment} color={brandColor} w='24px'
-                                h='24px'/>}
+                    icon={<Icon as={MdAssignment} color={brandColor} w='24px' h='24px'/>}
                 />
                 <Text color={textColor} fontSize='lg' fontWeight='700'>
                     Subtasks
@@ -130,7 +135,7 @@ export default function Conversion(props) {
                                 })}
                             >
                                 <option value="Incomplete">Incomplete</option>
-                                <option value="Complete">Complete</option>
+                                <option value="Completed">Completed</option>
                             </Select>
                         </FormControl>
                     </ModalBody>
@@ -150,7 +155,9 @@ export default function Conversion(props) {
                 {subtasks.map((task, index) => (
                     <Flex key={index} mb='20px'>
                         <Checkbox me='16px' colorScheme='brandScheme'
-                                  isChecked={task.status === 'Complete'}/>
+                                  isChecked={task.status === 'Completed'}
+                                  onChange={(e) => handleCheckboxChange(task.id, e.target.checked ? 'Completed' : 'Incomplete')}
+                        />
                         <Text fontWeight='bold' color={textColor} fontSize='md'
                               textAlign='start'>
                             {task.title}
@@ -162,7 +169,7 @@ export default function Conversion(props) {
                             w='24px'
                             h='24px'
                             cursor='pointer'
-                            onClick={() => handleDelete(task.subtask_id)}
+                            onClick={() => handleDelete(task.id)}
                         />
                     </Flex>
                 ))}

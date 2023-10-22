@@ -37,16 +37,23 @@ import Tasks from "views/admin/subtaskDashboard/components/Tasks";
 import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
 // import data
-import task from "../../admin/datas/task.json"
+import mockData from "../../admin/datas/mock.json"
+import {useParams} from "react-router-dom";
+import {parse} from "stylis";
 
 export default function UserReports() {
+
+    const userID = 1; // Replace with user ID
+    const userData = mockData["users"].find(user => user.id === userID);
+    const { id } = useParams(); // Replace with task ID
+    console.log(id);
+    const task = userData["tasks"].find(task => task.id === parseInt(id));
+
     const titleColor = useColorModeValue("gray.600", "orange.500");
     const dueDateColor = useColorModeValue("gray.600", "red.500");
     const taskSubjectColor = useColorModeValue("gray.600", "navy.200");
 
-
     return (
-
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 <Flex mb='20px' mt='20px'>

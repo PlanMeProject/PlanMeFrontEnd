@@ -8,9 +8,15 @@ import Card from "components/card/Card.js";
 import { useHistory } from "react-router-dom";
 import React from "react";
 
+import mockData from "../../datas/mock.json";
+
 export default function Default(props) {
     const {cardColor} = props;
     const history = useHistory();
+
+    const userID = 1; // Replace with user ID
+    const userData = mockData["users"].find(user => user.id === userID);
+    const task = userData["tasks"];
 
     const goToSubtask = (id) => {
         history.push(`/admin/task-board/task/${id}`);
@@ -36,76 +42,36 @@ export default function Default(props) {
                     // backgroundColor: 'white',
                     overflowY: 'auto'
                 }}>
-                    <Box
-                        bg="white"
-                        p={4}
-                        borderRadius="20px"
-                        boxShadow="md"
-                        w="100%"
-                        minH="100px"
-                        mb="10px"
-                        onClick={() => goToSubtask(1)}
-                    >
-                        <Text
-                            color='secondaryGray.900'
-                        >This is a small card</Text>
-                    </Box>
-                    <Box
-                        bg="white"
-                        p={4}
-                        borderRadius="20px"
-                        boxShadow="md"
-                        w="100%"
-                        minH="100px"
-                        mb="10px"
-                        onClick={() => goToSubtask(2)}
-                    >
-                        <Text
-                            color='secondaryGray.900'
-                        >This is a small card</Text>
-                    </Box>
-                    <Box
-                        bg="white"
-                        p={4}
-                        borderRadius="20px"
-                        boxShadow="md"
-                        w="100%"
-                        minH="100px"
-                        mb="10px"
-                        onClick={() => goToSubtask(3)}
-                    >
-                        <Text
-                            color='secondaryGray.900'
-                        >This is a small card</Text>
-                    </Box>
-                    <Box
-                        bg="white"
-                        p={4}
-                        borderRadius="20px"
-                        boxShadow="md"
-                        w="100%"
-                        minH="100px"
-                        mb="10px"
-                        onClick={() => goToSubtask(4)}
-                    >
-                        <Text
-                            color='secondaryGray.900'
-                        >This is a small card</Text>
-                    </Box>
-                    <Box
-                        bg="white"
-                        p={4}
-                        borderRadius="20px"
-                        boxShadow="md"
-                        w="100%"
-                        minH="100px"
-                        mb="10px"
-                        onClick={() => goToSubtask(5)}
-                    >
-                        <Text
-                            color='secondaryGray.900'
-                        >This is a small card</Text>
-                    </Box>
+                    {task.map((task) => (
+                        <Box
+                            bg="white"
+                            p={4}
+                            borderRadius="20px"
+                            boxShadow="md"
+                            w="100%"
+                            minH="100px"
+                            mb="10px"
+                            onClick={() => goToSubtask(task.id)}
+                        >
+                            <Text
+                                color='secondaryGray.900'
+                            >{task.title}</Text>
+                        </Box>
+                    ))}
+                    {/*<Box*/}
+                    {/*    bg="white"*/}
+                    {/*    p={4}*/}
+                    {/*    borderRadius="20px"*/}
+                    {/*    boxShadow="md"*/}
+                    {/*    w="100%"*/}
+                    {/*    minH="100px"*/}
+                    {/*    mb="10px"*/}
+                    {/*    onClick={() => goToSubtask(5)}*/}
+                    {/*>*/}
+                    {/*    <Text*/}
+                    {/*        color='secondaryGray.900'*/}
+                    {/*    >This is a small card</Text>*/}
+                    {/*</Box>*/}
                 </div>
             </Flex>
         </Card>
