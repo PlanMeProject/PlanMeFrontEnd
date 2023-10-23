@@ -51,15 +51,15 @@ export default function UserReports() {
 
     const [showSummary, setShowSummary] = useState(false); // State variable
 
-    const titleColor = useColorModeValue("gray.600", "orange.500");
-    const dueDateColor = useColorModeValue("gray.600", "red.500");
-    const taskSubjectColor = useColorModeValue("gray.600", "navy.200");
+    const titleColor = useColorModeValue("brand.800", "orange.500");
+    const dueDateColor = useColorModeValue("red.600", "red.500");
+    const taskSubjectColor = useColorModeValue("brand.600", "navy.200");
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 <Flex mb='20px' mt='20px'>
-                    <Text color={titleColor} fontSize='xl' fontWeight='bold'>
+                    <Text color={titleColor} fontSize='x-large' fontWeight='bold'>
                         {task.title}
                     </Text>
                 </Flex>
