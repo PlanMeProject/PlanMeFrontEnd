@@ -26,6 +26,7 @@ import {
     Flex,
     SimpleGrid,
     Text,
+    Button,
     useColorModeValue,
 } from "@chakra-ui/react";
 
@@ -39,15 +40,17 @@ import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 // import data
 import mockData from "../../admin/datas/mock.json"
 import {useParams} from "react-router-dom";
-import {parse} from "stylis";
+import {useState} from "react";
 
 export default function UserReports() {
 
     const userID = 1; // Replace with user ID
     const userData = mockData["users"].find(user => user.id === userID);
-    const { id } = useParams(); // Replace with task ID
+    const {id} = useParams(); // Replace with task ID
     console.log(id);
     const task = userData["tasks"].find(task => task.id === parseInt(id));
+
+    const [showSummary, setShowSummary] = useState(false); // State variable
 
     const titleColor = useColorModeValue("gray.600", "orange.500");
     const dueDateColor = useColorModeValue("gray.600", "red.500");
@@ -73,21 +76,30 @@ export default function UserReports() {
                 <Flex mb='20px'>
                     <Text color={taskSubjectColor} fontSize='xl'
                           fontWeight='bold'>
-                        Summarize: &nbsp;
-                    </Text>
-                    <Text fontSize='xl' fontWeight='bold'>
-                        {task.summarized_text}
-                    </Text>
-                </Flex>
-                <Flex mb='20px'>
-                    <Text color={taskSubjectColor} fontSize='xl'
-                          fontWeight='bold'>
                         Due Date: &nbsp;
                     </Text>
                     <Text color={dueDateColor} fontSize='xl' fontWeight='bold'>
                         {task.due_date}
                     </Text>
                 </Flex>
+                {/* Button to toggle summarized_text visibility */}
+                <Flex mb='20px'>
+                    <Button onClick={() => setShowSummary(!showSummary)}>
+                        Summarize task
+                    </Button>
+                </Flex>
+                {/* Conditionally render summarized_text */}
+                {showSummary && (
+                    <Flex mb='20px'>
+                        <Text color={taskSubjectColor} fontSize='xl'
+                              fontWeight='bold'>
+                            Summarize: &nbsp;
+                        </Text>
+                        <Text fontSize='xl' fontWeight='bold'>
+                            {task.summarized_text}
+                        </Text>
+                    </Flex>
+                )}
             </simpleGrid>
             <SimpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 <Tasks/>
