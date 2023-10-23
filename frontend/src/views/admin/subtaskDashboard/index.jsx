@@ -47,7 +47,6 @@ export default function UserReports() {
     const userID = 1; // Replace with user ID
     const userData = mockData["users"].find(user => user.id === userID);
     const {id} = useParams(); // Replace with task ID
-    console.log(id);
     const task = userData["tasks"].find(task => task.id === parseInt(id));
 
     const [showSummary, setShowSummary] = useState(false); // State variable
@@ -83,11 +82,6 @@ export default function UserReports() {
                     </Text>
                 </Flex>
                 {/* Button to toggle summarized_text visibility */}
-                <Flex mb='20px'>
-                    <Button onClick={() => setShowSummary(!showSummary)}>
-                        Summarize task
-                    </Button>
-                </Flex>
                 {/* Conditionally render summarized_text */}
                 {showSummary && (
                     <Flex mb='20px'>
@@ -100,6 +94,11 @@ export default function UserReports() {
                         </Text>
                     </Flex>
                 )}
+                <Flex mb='20px'>
+                    <Button onClick={() => setShowSummary(!showSummary)}>
+                        Summarize task
+                    </Button>
+                </Flex>
             </simpleGrid>
             <SimpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 <Tasks/>
