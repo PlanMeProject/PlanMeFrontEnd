@@ -46,6 +46,8 @@ export default function Conversion(props) {
     const {...rest} = props;
     const [subtasks, setSubtasks] = useState(subtaskData);
 
+    const [showSubtasks, setShowSubtasks] = useState(false);  // State variable for subtask visibility
+
     const [isOpen, setIsOpen] = useState(false);
     const [newSubtask, setNewSubtask] = useState({
         title: '',
@@ -98,6 +100,11 @@ export default function Conversion(props) {
                 <Text color={textColor} fontSize='lg' fontWeight='700'>
                     Subtasks
                 </Text>
+                {/* Button to toggle subtask visibility */}
+                <Flex display='inline-flex' ml='auto' alignItems='center'>
+                <Button onClick={() => setShowSubtasks(!showSubtasks)}>
+                    Generate
+                </Button>
                 <Icon
                     ms='auto'
                     mr='10px'
@@ -108,6 +115,8 @@ export default function Conversion(props) {
                     cursor='pointer'
                     onClick={() => setIsOpen(true)}
                 />
+                </Flex>
+
             </Flex>
             {/* Add this Modal JSX */}
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
@@ -160,7 +169,9 @@ export default function Conversion(props) {
                 </ModalContent>
             </Modal>
 
-            <Box px='11px'>
+            {/* Conditionally render subtasks */}
+            {showSubtasks && (
+                <Box px='11px'>
                 {subtasks.map((task, index) => (
                     <Flex key={index} mb='20px'>
                         <Checkbox me='16px' colorScheme='brandScheme'
@@ -182,7 +193,8 @@ export default function Conversion(props) {
                         />
                     </Flex>
                 ))}
-            </Box>
+                </Box>
+            )}
         </Card>
     );
 }
