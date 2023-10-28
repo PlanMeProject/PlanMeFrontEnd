@@ -46,7 +46,7 @@ export default function Conversion(props) {
 
     const [subtasks, setSubtasks] = useState([]);
     const [showSubtasks, setShowSubtasks] = useState(false);  // State variable for subtask visibility
-    const [isDataLoaded, setDataLoaded] = useState(false); // State variable to track if data is loaded
+    // const [isDataLoaded, setDataLoaded] = useState(false); // State variable to track if data is loaded
 
     const [isOpen, setIsOpen] = useState(false);
     const [newSubtask, setNewSubtask] = useState({
@@ -58,16 +58,8 @@ export default function Conversion(props) {
         // Simulate data retrieval here. Replace with actual data fetching logic
         const subtaskData = task["subtasks"];
         setSubtasks(subtaskData);
-        setDataLoaded(true);  // Set the data as loaded
+        // setDataLoaded(true);  // Set the data as loaded
         setShowSubtasks(true);  // Show the subtasks
-    };
-
-    const toggleSubtasks = () => {
-        if (!isDataLoaded) {
-            loadData();
-        } else {
-            setShowSubtasks(!showSubtasks);
-        }
     };
 
     // Modal functions for opening and closing the modal
@@ -119,7 +111,7 @@ export default function Conversion(props) {
                 </Text>
                 {/* Button to toggle subtask visibility */}
                 <Flex display='inline-flex' ml='auto' alignItems='center'>
-                    <Button onClick={toggleSubtasks}>
+                    <Button mr='10px' onClick={loadData}>
                         Generate
                     </Button>
                     <Icon
