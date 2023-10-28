@@ -68,7 +68,8 @@ export default function Conversion(props) {
             // You can set an error state here to show an error message if you want
             return;
         }
-        const newId = subtasks.length ? Math.max(subtasks.map(t => t.id)) + 1 : 1;
+        const maxId = Math.max(...subtasks.map(task => task.id));
+        const newId = subtasks.length ? maxId + 1 : 1;
         // Add the new subtask
         setSubtasks([...subtasks, {...newSubtask, id: newId}]);
         setIsOpen(false);
