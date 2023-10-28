@@ -51,6 +51,12 @@ export default function UserReports() {
 
     const [showSummary, setShowSummary] = useState(false); // State variable
 
+    const loadData = () => {
+        // Simulate data retrieval here. Replace with actual data fetching logic
+        // Set state variable to true to show summarized_text
+        setShowSummary(true);
+    };
+
     const titleColor = useColorModeValue("brand.800", "orange.500");
     const dueDateColor = useColorModeValue("red.600", "red.500");
     const taskSubjectColor = useColorModeValue("brand.600", "navy.200");
@@ -95,7 +101,7 @@ export default function UserReports() {
                     </Flex>
                 )}
                 <Flex mb='20px'>
-                    <Button onClick={() => setShowSummary(!showSummary)}>
+                    <Button onClick={loadData}>
                         Summarize task
                     </Button>
                 </Flex>
