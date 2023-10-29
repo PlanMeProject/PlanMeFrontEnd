@@ -23,7 +23,6 @@ import {
 
 // Custom components
 import Card from "components/card/Card.js";
-// import Menu from "components/menu/MainMenu";
 import IconBox from "components/icons/IconBox";
 
 import {useState} from "react";
@@ -45,7 +44,7 @@ export default function Conversion(props) {
     const {...rest} = props;
 
     const [subtasks, setSubtasks] = useState([]);
-    const [showSubtasks, setShowSubtasks] = useState(false);  // State variable for subtask visibility
+    // const [showSubtasks, setShowSubtasks] = useState(false);
     // const [isDataLoaded, setDataLoaded] = useState(false); // State variable to track if data is loaded
 
     const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +58,6 @@ export default function Conversion(props) {
         const subtaskData = task["subtasks"];
         setSubtasks(subtaskData);
         // setDataLoaded(true);  // Set the data as loaded
-        setShowSubtasks(true);  // Show the subtasks
     };
 
     // Modal functions for opening and closing the modal
@@ -68,8 +66,7 @@ export default function Conversion(props) {
             // You can set an error state here to show an error message if you want
             return;
         }
-        const maxId = Math.max(...subtasks.map(task => task.id));
-        const newId = subtasks.length ? maxId + 1 : 1;
+        const newId = subtasks.length===0 ? 1: Math.max(...subtasks.map(task => task.id))+1;
         // Add the new subtask
         setSubtasks([...subtasks, {...newSubtask, id: newId}]);
         setIsOpen(false);
@@ -180,7 +177,7 @@ export default function Conversion(props) {
             </Modal>
 
             {/* Conditionally render subtasks */}
-            {showSubtasks && (
+            {
                 <Box px='11px'>
                     {subtasks.map((task, index) => (
                         <Flex key={index} mb='20px'>
@@ -205,7 +202,7 @@ export default function Conversion(props) {
                         </Flex>
                     ))}
                 </Box>
-            )}
+            }
         </Card>
     );
 }
