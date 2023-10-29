@@ -87,8 +87,7 @@ export default function UserReports() {
                         {task.due_date}
                     </Text>
                 </Flex>
-                {/* Button to toggle summarized_text visibility */}
-                {/* Conditionally render summarized_text */}
+
                 {showSummary && (
                     <Flex mb='20px'>
                         <Text color={taskSubjectColor} fontSize='xl'
