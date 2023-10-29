@@ -105,10 +105,7 @@ export default function UserReports() {
                     </Button>
                 </Flex>
             </simpleGrid>
-            <SimpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
-                <Tasks/>
-                <PieCard/>
-            </SimpleGrid>
+            <Tasks/>
             <FixedPlugin/>
         </Box>
     );
