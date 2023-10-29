@@ -1,5 +1,5 @@
 
-export const pieChartData = [75, 25];
+// export const pieChartData = [20, 80];
 
 
 export const pieChartOptions = {
