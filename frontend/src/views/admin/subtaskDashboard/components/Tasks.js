@@ -6,6 +6,7 @@ import {
     Icon,
     useColorModeValue,
     Checkbox, FormHelperText, Select,
+    SimpleGrid
 } from "@chakra-ui/react";
 import {
     Button,
@@ -23,9 +24,10 @@ import {
 
 // Custom components
 import Card from "components/card/Card.js";
+import PieCard from "./PieCard.js";
 import IconBox from "components/icons/IconBox";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 // Assets
 import {MdDelete, MdAssignment, MdAdd} from "react-icons/md";
 import React from "react";
