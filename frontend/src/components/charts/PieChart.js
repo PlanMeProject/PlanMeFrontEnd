@@ -18,17 +18,26 @@ class PieChart extends React.Component {
         });
     }
 
-  render() {
-    return (
-      <ReactApexChart
-        options={this.state.chartOptions}
-        series={this.state.chartData}
-        type='pie'
-        width='100%'
-        height='55%'
-      />
-    );
-  }
+    componentDidUpdate(prevProps) {
+        if (this.props.chartData !== prevProps.chartData || this.props.chartOptions !== prevProps.chartOptions) {
+            this.setState({
+                chartData: this.props.chartData,
+                chartOptions: this.props.chartOptions,
+            });
+        }
+    }
+
+    render() {
+        return (
+            <ReactApexChart
+                options={this.state.chartOptions}
+                series={this.state.chartData}
+                type='pie'
+                width='100%'
+                height='55%'
+            />
+        );
+    }
 }
 
 export default PieChart;
