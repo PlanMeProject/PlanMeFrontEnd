@@ -32,7 +32,7 @@ import {
 
 import React from "react";
 
-import PieCard from "views/admin/default/components/PieCard";
+import PieCard from "views/admin/subtaskDashboard/components/PieCard";
 import Tasks from "views/admin/subtaskDashboard/components/Tasks";
 
 import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
