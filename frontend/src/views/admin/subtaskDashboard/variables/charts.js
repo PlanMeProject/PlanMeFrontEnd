@@ -4,7 +4,7 @@
 
 export const pieChartOptions = {
     labels: ["Complete", "In Progress"],
-    colors: ["#4318FF", "#6AD2FF"],
+    colors: ["#4318FF", "#bbdaee"],
     chart: {
         width: "50px",
     },
