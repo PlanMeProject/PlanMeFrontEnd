@@ -62,6 +62,19 @@ export default function Conversion(props) {
         // setDataLoaded(true);  // Set the data as loaded
     };
 
+    const [taskData, setTaskData] = useState([0, 0]); // [Complete, In Progress]
+    useEffect(() => {
+        const totalSubtasks = subtasks.length;
+        const completedSubtasks = subtasks.filter(task => task.status === 'Completed').length;
+
+        if (totalSubtasks > 0) {
+            const completedPercentage = (completedSubtasks / totalSubtasks) * 100;
+            const inProgressPercentage = 100 - completedPercentage;
+
+            setTaskData([Math.round(completedPercentage), Math.round(inProgressPercentage)]);
+        }
+    }, [subtasks]);
+
     // Modal functions for opening and closing the modal
     const handleSubmit = () => {
         if (newSubtask.title === "") {
