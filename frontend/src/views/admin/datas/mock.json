@@ -1,0 +1,192 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "john_doe",
+            "email": "john.doe@example.com",
+            "token": "abc123",
+            "tasks": [
+                {
+                    "id": 1,
+                    "title": "Buy groceries",
+                    "description": "Buy milk, eggs, and bread",
+                    "summarized_text": "Shopping list",
+                    "due_date": "2023-11-01",
+                    "status": "Todo",
+                    "subtasks": [
+                        {
+                            "id": 1,
+                            "title": "Buy milk",
+                            "status": "Pending"
+                        },
+                        {
+                            "id": 2,
+                            "title": "Buy eggs",
+                            "status": "Completed"
+                        }
+                    ],
+                    "data_visualization": [
+                        {
+                            "type": "Progress",
+                            "data": {
+                                "completed": 1,
+                                "total": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "title": "Hw ISP",
+                    "description": "Make a website for ISP",
+                    "summarized_text": "Make the website",
+                    "due_date": "2023-11-01",
+                    "status": "In Progress",
+                    "subtasks": [
+                        {
+                            "id": 1,
+                            "title": "Design the website",
+                            "status": "Completed"
+                        },
+                        {
+                            "id": 2,
+                            "title": "Code the website",
+                            "status": "Completed"
+                        },
+                        {
+                            "id": 3,
+                            "title": "Test the website",
+                            "status": "Pending"
+                        }
+                    ],
+                    "data_visualization": [
+                        {
+                            "type": "Progress",
+                            "data": {
+                                "completed": 1,
+                                "total": 2
+                            }
+                        }
+                    ]
+                }
+            ],
+            "dashboard": {
+                "widgets": [
+                    {
+                        "type": "Task Summary",
+                        "data": {
+                            "total_tasks": 1,
+                            "completed_tasks": 0
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "username": "jane_doe",
+            "email": "jane.doe@example.com",
+            "token": "xyz789",
+            "tasks": [],
+            "dashboard": {
+                "widgets": []
+            }
+        },
+        {
+            "id": 3,
+            "username": "alice",
+            "email": "alice@example.com",
+            "token": "alice123",
+            "tasks": [
+                {
+                    "id": 2,
+                    "title": "Go to the gym",
+                    "description": "Complete a 30-minute workout",
+                    "summarized_text": "Workout plan",
+                    "due_date": "2023-11-02",
+                    "status": "Completed",
+                    "subtasks": [
+                        {
+                            "id": 3,
+                            "title": "Cardio",
+                            "status": "Completed"
+                        },
+                        {
+                            "id": 4,
+                            "title": "Weights",
+                            "status": "Completed"
+                        }
+                    ],
+                    "data_visualization": [
+                        {
+                            "type": "Progress",
+                            "data": {
+                                "completed": 2,
+                                "total": 2
+                            }
+                        }
+                    ]
+                }
+            ],
+            "dashboard": {
+                "widgets": [
+                    {
+                        "type": "Task Summary",
+                        "data": {
+                            "total_tasks": 1,
+                            "completed_tasks": 1
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "username": "bob",
+            "email": "bob@example.com",
+            "token": "bob123",
+            "tasks": [
+                {
+                    "id": 3,
+                    "title": "Read a book",
+                    "description": "Read 2 chapters of a book",
+                    "summarized_text": "Reading list",
+                    "due_date": "2023-11-03",
+                    "status": "Pending",
+                    "subtasks": [
+                        {
+                            "id": 5,
+                            "title": "Read Chapter 1",
+                            "status": "Pending"
+                        },
+                        {
+                            "id": 6,
+                            "title": "Read Chapter 2",
+                            "status": "Pending"
+                        }
+                    ],
+                    "data_visualization": [
+                        {
+                            "type": "Progress",
+                            "data": {
+                                "completed": 0,
+                                "total": 2
+                            }
+                        }
+                    ]
+                }
+            ],
+            "dashboard": {
+                "widgets": [
+                    {
+                        "type": "Task Summary",
+                        "data": {
+                            "total_tasks": 1,
+                            "completed_tasks": 0
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
