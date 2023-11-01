@@ -30,24 +30,41 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 
-import React from "react";
-
-import PieCard from "views/admin/subtaskDashboard/components/PieCard";
+import React, {useEffect} from "react";
 import Tasks from "views/admin/subtaskDashboard/components/Tasks";
 
 import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
 // import data
-import mockData from "../../admin/datas/mock.json"
-import {useParams} from "react-router-dom";
+
 import {useState} from "react";
+import {useParams} from "react-router-dom";
 
 export default function UserReports() {
 
-    const userID = 1; // Replace with user ID
-    const userData = mockData["users"].find(user => user.id === userID);
-    const {id} = useParams(); // Replace with task ID
-    const task = userData["tasks"].find(task => task.id === parseInt(id));
+    const [task, setTask] = useState([]);
+    const {id} = useParams();
+
+    useEffect(() => {
+        // Your API endpoint
+        fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
+            .then((response) => response.json())
+            .then((data) => {
+                const taskData = data["data"];
+                if (taskData) {
+                    const foundTask = taskData.find(task => task.id === id);
+                    if (foundTask) {
+                        setTask(foundTask);
+                    }
+                    else {
+                        console.log("Task not found");
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching data: ", error);
+            });
+    }, []);
 
     const [showSummary, setShowSummary] = useState(false); // State variable
 
