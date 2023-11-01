@@ -123,6 +123,7 @@ export default function UserReports() {
                     }
                     name='New Tasks'
                     value='Todo'
+                    task={task.filter(task => task.attributes.status === 'Todo')}
                 />
                 <TodoCard
                     cardColor={inProgressCardColor}
@@ -137,6 +138,7 @@ export default function UserReports() {
                     }
                     name='New Tasks'
                     value='In Progress'
+                    task={task.filter(task => task.attributes.status === 'In Progress')}
                 />
                 <TodoCard
                     cardColor={doneCardColor}
@@ -151,6 +153,7 @@ export default function UserReports() {
                     }
                     name='New Tasks'
                     value='Completed'
+                    task={task.filter(task => task.attributes.status === 'Completed')}
                 />
             </SimpleGrid>
             <FixedPlugin/>
