@@ -11,12 +11,9 @@ import React from "react";
 import mockData from "../../datas/mock.json";
 
 export default function Default(props) {
-    const {cardColor} = props;
+    const { cardColor } = props;
+    const { task } = props;
     const history = useHistory();
-
-    const userID = 1; // Replace with user ID
-    const userData = mockData["users"].find(user => user.id === userID);
-    const task = userData["tasks"];
 
     const goToSubtask = (id) => {
         history.push(`/admin/task-board/task/${id}`);
