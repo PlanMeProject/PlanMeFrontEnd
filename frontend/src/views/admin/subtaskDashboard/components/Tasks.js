@@ -74,7 +74,7 @@ export default function Conversion(props) {
     const [taskData, setTaskData] = useState([0, 0]); // [Complete, In Progress]
     useEffect(() => {
         const totalSubtasks = subtasks.length;
-        const completedSubtasks = subtasks.filter(task => task.status === 'Completed').length;
+        const completedSubtasks = subtasks.filter(task => task.attributes.status === 'Complete').length;
 
         if (totalSubtasks > 0) {
             const completedPercentage = (completedSubtasks / totalSubtasks) * 100;
@@ -100,8 +100,20 @@ export default function Conversion(props) {
 
     // Delete function
     const handleDelete = (subtaskId) => {
-        const updatedSubtasks = subtasks.filter(task => task.id !== subtaskId);
-        setSubtasks(updatedSubtasks);
+        // Perform the DELETE request
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Remove the subtask from the local state if the DELETE was successful
+                    const updatedSubtasks = subtasks.filter(task => task.id !== subtaskId);
+                    setSubtasks(updatedSubtasks);
+                } else {
+                    console.error('Failed to delete the subtask');
+                }
+            })
+            .catch(error => console.error('Error:', error));
     };
 
     // Handle checkbox state change
