@@ -69,9 +69,6 @@ export default function UserReports() {
                             Todo
                         </Text>
                     </div>
-                    {/*<Flex>*/}
-                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
-                    {/*</Flex>*/}
                 </Flex>
                 <Flex alignContent='center' justifyContent='space-between' padding='0 15px 0 15px'>
                     <div style={{
@@ -90,9 +87,6 @@ export default function UserReports() {
                             In progress
                         </Text>
                     </div>
-                    {/*<Flex>*/}
-                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
-                    {/*</Flex>*/}
                 </Flex>
                 <Flex alignContent='center' justifyContent='space-between' padding='0 15px 0 15px'>
                     <div style={{
@@ -111,13 +105,8 @@ export default function UserReports() {
                             Complete
                         </Text>
                     </div>
-                    {/*<Flex>*/}
-                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
-                    {/*</Flex>*/}
                 </Flex>
-
             </SimpleGrid>
-
             <SimpleGrid columns={{base: 1, md: 2, lg: 3, '2xl': 6}}
                         gap='20px'
                         mb='20px'>
