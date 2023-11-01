@@ -83,7 +83,7 @@ export default function UserReports() {
             <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 <Flex mb='20px' mt='20px'>
                     <Text color={titleColor} fontSize='x-large' fontWeight='bold'>
-                        {task.title}
+                        {task.attributes ? task.attributes.title : "Loading..."}
                     </Text>
                 </Flex>
                 <Flex mb='20px'>
@@ -92,7 +92,7 @@ export default function UserReports() {
                         Description: &nbsp;
                     </Text>
                     <Text fontSize='xl' fontWeight='bold'>
-                        {task.description}
+                        {task.attributes ? task.attributes.description : "Loading..."}
                     </Text>
                 </Flex>
                 <Flex mb='20px'>
@@ -101,7 +101,7 @@ export default function UserReports() {
                         Due Date: &nbsp;
                     </Text>
                     <Text color={dueDateColor} fontSize='xl' fontWeight='bold'>
-                        {task.due_date}
+                        {task.attributes ? task.attributes.due_date : "Loading..."}
                     </Text>
                 </Flex>
 
