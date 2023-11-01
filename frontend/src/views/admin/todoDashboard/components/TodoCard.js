@@ -55,7 +55,10 @@ export default function Default(props) {
                         >
                             <Text
                                 color='secondaryGray.900'
-                            >{task.title}</Text>
+                            >{task.attributes.title}</Text>
+                            <Text
+                                color='red.400'
+                            >{task.attributes.due_date}</Text>
                         </Box>
                     ))}
                 </div>
