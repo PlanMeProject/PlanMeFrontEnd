@@ -1,14 +1,7 @@
-import {
-    Flex,
-    Text,
-    Box,
-} from "@chakra-ui/react";
-
+import React from "react";
+import { Flex, Text, Box } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import { useHistory } from "react-router-dom";
-import React from "react";
-
-import mockData from "../../datas/mock.json";
 
 export default function Default(props) {
     const { cardColor } = props;
