@@ -11,9 +11,8 @@ import {
 import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
-    MdAdd,
     MdAddTask,
 } from "react-icons/md";
 
@@ -23,6 +22,31 @@ export default function UserReports() {
     const todoCardColor = useColorModeValue("#FFE999", "#FFDE6A");
     const inProgressCardColor = useColorModeValue("#CDC5FF", "#8F7CFF");
     const doneCardColor = useColorModeValue("#9EEECC", "#51EFAD");
+
+    const [task, setTask] = useState([]);
+    const [numTodo, setNumTodo] = useState(0);
+    const [numInProgress, setNumInProgress] = useState(0);
+    const [numCompleted, setNumCompleted] = useState(0);
+
+    useEffect(() => {
+        // Your API endpoint
+        fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
+            .then((response) => response.json())
+            .then((data) => {
+                const taskData = data["data"];
+                if (taskData) {
+                    setTask(taskData);
+                    console.log(taskData[1].attributes.status);
+                    setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
+                    setNumInProgress(taskData.filter(task => task.attributes.status === 'In Progress').length);
+                    setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed').length);
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching data: ", error);
+            });
+    }, []);
+
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <SimpleGrid columns={{base: 1, md: 2, lg: 3, '2xl': 6}} gap='20px'
