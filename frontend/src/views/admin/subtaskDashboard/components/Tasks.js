@@ -32,18 +32,10 @@ import {useEffect, useState} from "react";
 import {MdDelete, MdAssignment, MdAdd} from "react-icons/md";
 import React from "react";
 
-// subtask imports
-import mockData from "../../datas/mock.json";
-import {useParams} from "react-router-dom";
-
 export default function Conversion(props) {
 
-    const userID = 1; // Replace with user ID
-    const userData = mockData["users"].find(user => user.id === userID);
-    const {id} = useParams();
-    const task = userData["tasks"].find(task => task.id === parseInt(id));
-
     const {...rest} = props;
+    const {taskId} = props;
 
     const [subtasks, setSubtasks] = useState([]);
     // const [showSubtasks, setShowSubtasks] = useState(false);
@@ -55,12 +47,29 @@ export default function Conversion(props) {
         status: 'Incomplete'
     });
 
-    const loadData = () => {
-        // Simulate data retrieval here. Replace with actual data fetching logic
-        const subtaskData = task["subtasks"];
-        setSubtasks(subtaskData);
-        // setDataLoaded(true);  // Set the data as loaded
-    };
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks`)
+            .then((response) => response.json())
+            .then((data) => {
+                const subtaskData = data['data'];
+                if (subtaskData) {
+                    setSubtasks(subtaskData);
+                    console.log(subtasks[0]);
+                } else {
+                    console.log("No subtask data");
+                }
+            })
+            .catch((error) => {
+                    console.error("Error fetching data: ", error);
+                }
+            );
+    }, []);
+
+    const [showSubtasks, setShowSubtasks] = useState(false);
+    const handleShowSubtasks = () => {
+        setShowSubtasks(true);
+    }
+
 
     const [taskData, setTaskData] = useState([0, 0]); // [Complete, In Progress]
     useEffect(() => {
