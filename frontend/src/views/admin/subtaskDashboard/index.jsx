@@ -122,7 +122,7 @@ export default function UserReports() {
                     </Button>
                 </Flex>
             </simpleGrid>
-            <Tasks/>
+            <Tasks taskId={id}/>
             <FixedPlugin/>
         </Box>
     );
