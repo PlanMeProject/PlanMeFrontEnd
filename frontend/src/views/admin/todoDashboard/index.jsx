@@ -63,7 +63,7 @@ export default function UserReports() {
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
-                            5
+                            {numTodo}
                         </Text>
                         <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
                             Todo
@@ -81,7 +81,7 @@ export default function UserReports() {
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
-                            6
+                            {numInProgress}
                         </Text>
                         <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
                             In progress
@@ -99,7 +99,7 @@ export default function UserReports() {
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
-                            7
+                            {numCompleted}
                         </Text>
                         <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
                             Complete
