@@ -38,7 +38,7 @@ export default function UserReports() {
                     setTask(taskData);
                     console.log(taskData[1].attributes.status);
                     setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
-                    setNumInProgress(taskData.filter(task => task.attributes.status === 'In Progress').length);
+                    setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
                     setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed').length);
                 }
             })
@@ -138,7 +138,7 @@ export default function UserReports() {
                     }
                     name='New Tasks'
                     value='In Progress'
-                    task={task.filter(task => task.attributes.status === 'In Progress')}
+                    task={task.filter(task => task.attributes.status === 'In progress')}
                 />
                 <TodoCard
                     cardColor={doneCardColor}
