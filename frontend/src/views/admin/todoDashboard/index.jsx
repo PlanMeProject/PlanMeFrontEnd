@@ -36,10 +36,9 @@ export default function UserReports() {
                 const taskData = data["data"];
                 if (taskData) {
                     setTask(taskData);
-                    console.log(taskData[1].attributes.status);
                     setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
                     setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
-                    setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed').length);
+                    setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
                 }
             })
             .catch((error) => {
@@ -153,7 +152,7 @@ export default function UserReports() {
                     }
                     name='New Tasks'
                     value='Completed'
-                    task={task.filter(task => task.attributes.status === 'Completed')}
+                    task={task.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete')}
                 />
             </SimpleGrid>
             <FixedPlugin/>
