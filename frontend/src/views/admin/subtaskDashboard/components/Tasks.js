@@ -54,7 +54,6 @@ export default function Conversion(props) {
                 const subtaskData = data['data'];
                 if (subtaskData) {
                     setSubtasks(subtaskData);
-                    console.log(subtasks[0]);
                 } else {
                     console.log("No subtask data");
                 }
@@ -116,12 +115,49 @@ export default function Conversion(props) {
             .catch(error => console.error('Error:', error));
     };
 
-    // Handle checkbox state change
-    const handleCheckboxChange = (subtaskId, newStatus) => {
-        const updatedSubtasks = subtasks.map(task =>
-            task.id === subtaskId ? {...task, status: newStatus} : task
-        );
-        setSubtasks(updatedSubtasks);
+    const handleCheckboxChange = (subtaskId, isChecked) => {
+        const newStatus = isChecked ? 'Complete' : 'Todo';
+        const updatedSubtask = subtasks.find(task => task.id === subtaskId);
+
+        if (updatedSubtask) {
+            const requestBody = {
+                data: {
+                    type: "SubTaskViewSet", // Adjust if needed to match the type your API expects
+                    id: updatedSubtask.id, // Ensure this is the correct ID for the subtask
+                    attributes: {
+                        // ...updatedSubtask.attributes,
+                        status: newStatus,
+                    }
+                }
+            };
+
+            fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/vnd.api+json',
+                    // Include other headers like authorization if needed
+                },
+                body: JSON.stringify(requestBody),
+            })
+                .then(response => response.json()) // Convert the response to JSON
+                .then(data => {
+                    if (data && !data.errors) { // Assuming 'errors' would be part of an unsuccessful response
+                        // Update the subtask's status in the local state if the PUT was successful
+                        setSubtasks(subtasks.map(task =>
+                            task.id === subtaskId ? {...task,
+                                attributes: {
+                                    ...task.attributes,
+                                    status: newStatus
+                                }
+                            } : task
+                        ));
+                    } else {
+                        // Handle any errors returned by the server
+                        console.error('Failed to update the subtask', data.errors);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
     };
 
 
@@ -148,7 +184,7 @@ export default function Conversion(props) {
                     </Text>
                     {/* Button to toggle subtask visibility */}
                     <Flex display='inline-flex' ml='auto' alignItems='center'>
-                        <Button mr='10px' onClick={loadData}>
+                        <Button mr='10px' onClick={handleShowSubtasks}>
                             Generate
                         </Button>
                         <Icon
@@ -217,33 +253,33 @@ export default function Conversion(props) {
                     </ModalContent>
                 </Modal>
 
-                {/* Conditionally render subtasks */}
-                {
-                    <Box px='11px'>
-                        {subtasks.map((task, index) => (
-                            <Flex key={index} mb='20px'>
-                                <Checkbox me='16px' colorScheme='brandScheme'
-                                          isChecked={task.status === 'Completed'}
-                                          onChange={(e) => handleCheckboxChange(task.id, e.target.checked ? 'Completed' : 'Incomplete')}
-                                />
-                                <Text fontWeight='bold' color={textColor}
-                                      fontSize='md'
-                                      textAlign='start'>
-                                    {task.title}
-                                </Text>
-                                <Icon
-                                    ms='auto'
-                                    as={MdDelete}
-                                    color='secondaryGray.600'
-                                    w='24px'
-                                    h='24px'
-                                    cursor='pointer'
-                                    onClick={() => handleDelete(task.id)}
-                                />
-                            </Flex>
-                        ))}
-                    </Box>
-                }
+                <Box px='11px'>
+                    {subtasks.map((task, index) => (
+                        <Flex key={index} mb='20px'>
+                            <Checkbox me='16px' colorScheme='brandScheme'
+                                      isChecked={task.attributes.status === 'Complete'}
+                                      onChange={(e) => handleCheckboxChange(task.id, e.target.checked)}
+                            />
+                            <Text fontWeight='bold' color={textColor}
+                                  fontSize='md'
+                                  textAlign='start'
+                                  onClick={() => handleCheckboxChange(task.id, !(task.attributes.status === 'Complete'))}
+                                  _hover={{cursor: 'pointer'}}
+                            >
+                                {task.attributes.title}
+                            </Text>
+                            <Icon
+                                ms='auto'
+                                as={MdDelete}
+                                color='secondaryGray.600'
+                                w='24px'
+                                h='24px'
+                                cursor='pointer'
+                                onClick={() => handleDelete(task.id)}
+                            />
+                        </Flex>
+                    ))}
+                </Box>
             </Card>
             <PieCard taskData={taskData}/>
         </SimpleGrid>
