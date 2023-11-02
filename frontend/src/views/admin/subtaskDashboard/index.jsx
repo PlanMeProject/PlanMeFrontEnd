@@ -24,8 +24,8 @@
 import {
     Box,
     Flex,
-    SimpleGrid,
     Text,
+    Input,
     Button,
     useColorModeValue,
 } from "@chakra-ui/react";
