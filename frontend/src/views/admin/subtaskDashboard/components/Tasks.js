@@ -54,6 +54,7 @@ export default function Conversion(props) {
                 const subtaskData = data['data'];
                 if (subtaskData) {
                     setSubtasks(subtaskData);
+                    console.log("Subtask data loaded", subtaskData);
                 } else {
                     console.log("No subtask data");
                 }
@@ -85,16 +86,43 @@ export default function Conversion(props) {
 
     // Modal functions for opening and closing the modal
     const handleSubmit = () => {
-        if (newSubtask.title === "") {
-            // You can set an error state here to show an error message if you want
-            return;
+    if (newSubtask.title === "") {
+        return;
+    }
+
+    const requestBody = {
+        data: {
+            type: "SubTaskViewSet", // Use the correct type for a subtask, if it's different
+            attributes: {
+                ...newSubtask
+            }
         }
-        const newId = subtasks.length === 0 ? 1 : Math.max(...subtasks.map(task => task.id)) + 1;
-        // Add the new subtask
-        setSubtasks([...subtasks, {...newSubtask, id: newId}]);
-        setIsOpen(false);
-        setNewSubtask({title: '', status: 'Incomplete'});  // Reset the form
     };
+
+    fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/vnd.api+json',
+            // Include other headers like authorization if needed
+        },
+        body: JSON.stringify(requestBody),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && !data.errors) {
+            // Assuming the server responds with the newly created subtask,
+            // which includes the new ID assigned by the server
+            const newSubtask = data.data ? data.data : data;
+            setSubtasks([...subtasks, newSubtask]);
+            setIsOpen(false);
+            setNewSubtask({title: '', status: 'Todo'}); // Reset the form
+        } else {
+            // Handle any errors returned by the server
+            console.error('Failed to create the subtask', data.errors);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+};
 
 
     // Delete function
@@ -234,9 +262,9 @@ export default function Conversion(props) {
                                         status: e.target.value
                                     })}
                                 >
-                                    <option value="Incomplete">Incomplete
+                                    <option value="Todo">Todo
                                     </option>
-                                    <option value="Completed">Completed
+                                    <option value="Complete">Completed
                                     </option>
                                 </Select>
                             </FormControl>
@@ -257,7 +285,7 @@ export default function Conversion(props) {
                     {subtasks.map((task, index) => (
                         <Flex key={index} mb='20px'>
                             <Checkbox me='16px' colorScheme='brandScheme'
-                                      isChecked={task.attributes.status === 'Complete'}
+                                      isChecked={task.attributes && task.attributes.status === 'Complete'}
                                       onChange={(e) => handleCheckboxChange(task.id, e.target.checked)}
                             />
                             <Text fontWeight='bold' color={textColor}
