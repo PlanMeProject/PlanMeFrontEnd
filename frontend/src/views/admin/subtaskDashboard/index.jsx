@@ -66,6 +66,60 @@ export default function UserReports() {
             });
     }, []);
 
+    // State to manage whether the description is being edited
+    const [isEditing, setIsEditing] = useState(false);
+
+    // State to manage the input value for the description
+    const [description, setDescription] = useState("");
+
+    // Handle the start of editing
+    const handleEdit = () => {
+        setDescription(task.attributes.description); // Set the current description into the state
+        setIsEditing(true); // Switch to editing mode
+    };
+
+    // Handle the change of the input
+    const handleDescriptionChange = (e) => {
+        setDescription(e.target.value); // Update the state with the input value
+    };
+
+    // Handle the save action
+    const handleSave = () => {
+        const requestBody = {
+            data: {
+                ...task,
+                attributes: {...task.attributes, description}
+            }
+        }
+        // Here you would typically send the update to your backend with a fetch PUT request
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${task.id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+                // Include other headers like authorization if needed
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.data) {
+                    setTask(data.data);
+                } else {
+                    console.log("No data found");
+                }
+                 // Update the task with the returned updated task
+                setIsEditing(false); // Exit editing mode
+            })
+            .catch(error => {
+                console.error('Failed to save the description', error);
+            });
+    };
+
     const [showSummary, setShowSummary] = useState(false); // State variable
 
     const loadData = () => {
@@ -86,16 +140,39 @@ export default function UserReports() {
                         {task.attributes ? task.attributes.title : "Loading..."}
                     </Text>
                 </Flex>
-                <Flex mb='20px'>
+                <Flex mb='10px'>
                     <Text color={taskSubjectColor} fontSize='xl'
                           fontWeight='bold'>
                         Description: &nbsp;
                     </Text>
-                    <Text fontSize='xl' fontWeight='bold'>
-                        {task.attributes ? task.attributes.description : "Loading..."}
-                    </Text>
+                    {isEditing ? (
+                        <Input
+                            value={description}
+                            textColor={taskSubjectColor}
+                            onChange={handleDescriptionChange}
+                            size="sm"
+                        />
+                    ) : (
+                        <Text fontSize='xl' fontWeight='bold'>
+                            {task.attributes ? task.attributes.description : "Loading..."}
+                        </Text>
+                    )}
                 </Flex>
                 <Flex mb='20px'>
+                    {isEditing ? (
+                        <Flex display='inline-flex'>
+                            <Button
+                                onClick={handleSave}
+                                mr='10px'
+                            >Save</Button>
+                            <Button
+                                onClick={() => setIsEditing(false)}>Cancel</Button>
+                        </Flex>
+                    ) : (
+                        <Button onClick={handleEdit}>Edit Description</Button>
+                    )}
+                </Flex>
+                <Flex mb='10px'>
                     <Text color={taskSubjectColor} fontSize='xl'
                           fontWeight='bold'>
                         Due Date: &nbsp;
