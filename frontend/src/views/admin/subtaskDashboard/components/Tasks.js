@@ -38,8 +38,6 @@ export default function Conversion(props) {
     const {taskId} = props;
 
     const [subtasks, setSubtasks] = useState([]);
-    // const [showSubtasks, setShowSubtasks] = useState(false);
-    // const [isDataLoaded, setDataLoaded] = useState(false); // State variable to track if data is loaded
 
     const [isOpen, setIsOpen] = useState(false);
     const [newSubtask, setNewSubtask] = useState({
