@@ -170,7 +170,8 @@ export default function Conversion(props) {
                     if (data && !data.errors) { // Assuming 'errors' would be part of an unsuccessful response
                         // Update the subtask's status in the local state if the PUT was successful
                         setSubtasks(subtasks.map(task =>
-                            task.id === subtaskId ? {...task,
+                            task.id === subtaskId ? {
+                                ...task,
                                 attributes: {
                                     ...task.attributes,
                                     status: newStatus
