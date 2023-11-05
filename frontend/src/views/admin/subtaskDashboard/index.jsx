@@ -91,16 +91,18 @@ export default function UserReports() {
     const handleSave = () => {
         const requestBody = {
             data: {
-                ...task,
-                attributes: {...task.attributes, description}
+                type: "TaskViewSet",
+                id: id,
+                attributes: {
+                    ...task.attributes,
+                    description
+                }
             }
         }
-        // Here you would typically send the update to your backend with a fetch PUT request
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${task.id}/`, {
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/vnd.api+json',
-                // Include other headers like authorization if needed
+                'Content-Type': 'application/vnd.api+json'
             },
             body: JSON.stringify(requestBody),
         })
@@ -116,8 +118,7 @@ export default function UserReports() {
                 } else {
                     console.log("No data found");
                 }
-                 // Update the task with the returned updated task
-                setIsEditing(false); // Exit editing mode
+                setIsEditing(false);
             })
             .catch(error => {
                 console.error('Failed to save the description', error);
