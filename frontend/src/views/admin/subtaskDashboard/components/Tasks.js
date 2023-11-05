@@ -40,6 +40,7 @@ export default function Conversion(props) {
     const {task_description} = props;
 
     const [subtasks, setSubtasks] = useState([]);
+    const [isGet, setIsGet] = useState(true);
 
     const [isOpen, setIsOpen] = useState(false);
     const [newSubtask, setNewSubtask] = useState({
@@ -65,10 +66,57 @@ export default function Conversion(props) {
             );
     }, []);
 
-    const [showSubtasks, setShowSubtasks] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleShowSubtasks = () => {
-        setShowSubtasks(true);
-    }
+        setIsLoading(true);
+        const requestBody = {
+            data: {
+                type: "TTSViewSet",
+                attributes: {
+                    "text": task_description,
+                    "task_id": taskId
+                }
+            }
+        };
+
+        fetch(`http://127.0.0.1:8000/api/tts/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    console.log(data.data);
+                    setSubtasks(data.data);
+                } else {
+                    console.error('Failed to create the subtask', data.errors);
+                }
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                setIsLoading(false); // Set loading to false when the fetch is complete
+            });
+    };
+
+    const LoadingModal = () => (
+        <Modal isOpen={isLoading} isCentered onClose={() => {
+        }} closeOnOverlayClick={false}>
+            <ModalOverlay/>
+            <ModalContent>
+                <Flex justifyContent="center" alignItems="center" p={6}
+                      flexDirection="column">
+                    <Text mb={4}>Loading</Text>
+                    <Progress isIndeterminate width="100%"/>
+                    <Text mb={4} mt={4}>random text</Text>
+                </Flex>
+            </ModalContent>
+        </Modal>
+    );
 
 
     const [taskData, setTaskData] = useState([0, 0]); // [Complete, In Progress]
