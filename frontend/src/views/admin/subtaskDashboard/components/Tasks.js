@@ -37,6 +37,7 @@ export default function Conversion(props) {
 
     const {...rest} = props;
     const {taskId} = props;
+    const {task_description} = props;
 
     const [subtasks, setSubtasks] = useState([]);
 
