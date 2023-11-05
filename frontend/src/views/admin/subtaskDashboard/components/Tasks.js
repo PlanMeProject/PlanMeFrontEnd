@@ -19,7 +19,8 @@ import {
     ModalCloseButton,
     Input,
     FormControl,
-    FormLabel
+    FormLabel,
+    Progress
 } from "@chakra-ui/react";
 
 // Custom components
