@@ -40,7 +40,6 @@ export default function Conversion(props) {
     const {task_description} = props;
 
     const [subtasks, setSubtasks] = useState([]);
-    const [isGet, setIsGet] = useState(true);
 
     const [isOpen, setIsOpen] = useState(false);
     const [newSubtask, setNewSubtask] = useState({
