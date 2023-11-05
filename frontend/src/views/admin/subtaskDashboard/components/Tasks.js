@@ -60,9 +60,8 @@ export default function Conversion(props) {
                 }
             })
             .catch((error) => {
-                    console.error("Error fetching data: ", error);
-                }
-            );
+                console.error("Error fetching data: ", error);
+            });
     }, []);
 
 
@@ -133,43 +132,42 @@ export default function Conversion(props) {
 
     // Modal functions for opening and closing the modal
     const handleSubmit = () => {
-    if (newSubtask.title === "") {
-        return;
-    }
+        if (newSubtask.title === "") {
+            return;
+        }
 
-    const requestBody = {
-        data: {
-            type: "SubTaskViewSet", // Use the correct type for a subtask, if it's different
-            attributes: {
-                ...newSubtask
+        const requestBody = {
+            data: {
+                type: "SubTaskViewSet",
+                attributes: {
+                    ...newSubtask
+                }
             }
-        }
-    };
+        };
 
-    fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/vnd.api+json',
-            // Include other headers like authorization if needed
-        },
-        body: JSON.stringify(requestBody),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data && !data.errors) {
-            // Assuming the server responds with the newly created subtask,
-            // which includes the new ID assigned by the server
-            const newSubtask = data.data ? data.data : data;
-            setSubtasks([...subtasks, newSubtask]);
-            setIsOpen(false);
-            setNewSubtask({title: '', status: 'Todo'}); // Reset the form
-        } else {
-            // Handle any errors returned by the server
-            console.error('Failed to create the subtask', data.errors);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-};
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data && !data.errors) {
+                    // Assuming the server responds with the newly created subtask,
+                    // which includes the new ID assigned by the server
+                    const newSubtask = data.data ? data.data : data;
+                    setSubtasks([...subtasks, newSubtask]);
+                    setIsOpen(false);
+                    setNewSubtask({title: '', status: 'Todo'}); // Reset the form
+                } else {
+                    // Handle any errors returned by the server
+                    console.error('Failed to create the subtask', data.errors);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    };
 
 
     // Delete function
