@@ -161,6 +161,21 @@ export default function UserReports() {
             .finally(() => setIsLoading(false));
     };
 
+    const LoadingModal = () => (
+        <Modal isOpen={isLoading} isCentered onClose={() => {
+        }} closeOnOverlayClick={false}>
+            <ModalOverlay/>
+            <ModalContent>
+                <Flex justifyContent="center" alignItems="center" p={6}
+                      flexDirection="column">
+                    <Text mb={4}>Loading</Text>
+                    <Progress isIndeterminate width="100%"/>
+                    <Text mt={4}>Please wait...</Text>
+                </Flex>
+            </ModalContent>
+        </Modal>
+    );
+
     const titleColor = useColorModeValue("brand.800", "orange.500");
     const dueDateColor = useColorModeValue("red.600", "red.500");
     const taskSubjectColor = useColorModeValue("brand.600", "navy.200");
