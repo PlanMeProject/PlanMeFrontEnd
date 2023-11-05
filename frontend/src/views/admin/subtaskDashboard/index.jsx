@@ -183,12 +183,13 @@ export default function UserReports() {
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
+                {isLoading && <LoadingModal/>}
                 <Flex mb='20px' mt='20px'>
                     <Text color={titleColor} fontSize='x-large' fontWeight='bold'>
                         {task.attributes ? task.attributes.title : "Loading..."}
                     </Text>
                 </Flex>
-                <Flex mb='10px'>
+                <Flex mb='10px' flexDirection='column'>
                     <Text color={taskSubjectColor} fontSize='xl'
                           fontWeight='bold'>
                         Description: &nbsp;
@@ -231,13 +232,13 @@ export default function UserReports() {
                 </Flex>
 
                 {showSummary && (
-                    <Flex mb='20px'>
+                    <Flex mb='20px' flexDirection='column'>
                         <Text color={taskSubjectColor} fontSize='xl'
                               fontWeight='bold'>
                             Summarize: &nbsp;
                         </Text>
                         <Text fontSize='xl' fontWeight='bold'>
-                            {task.summarized_text}
+                            {task.attributes.summarized_text}
                         </Text>
                     </Flex>
                 )}
@@ -247,7 +248,8 @@ export default function UserReports() {
                     </Button>
                 </Flex>
             </simpleGrid>
-            <Tasks taskId={id}/>
+            <Tasks taskId={id}
+                   task_description={task.attributes ? task.attributes.description : "Loading..."}/>
             <FixedPlugin/>
         </Box>
     );
