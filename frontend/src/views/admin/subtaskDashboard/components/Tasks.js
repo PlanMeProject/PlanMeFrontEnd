@@ -170,7 +170,7 @@ export default function Conversion(props) {
     };
 
 
-    // Delete function
+// Delete function
     const handleDelete = (subtaskId) => {
         // Perform the DELETE request
         fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
