@@ -241,6 +241,7 @@ export default function Conversion(props) {
     const brandColor = useColorModeValue("brand.500", "orange.500");
     return (
         <SimpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
+            {isLoading && <LoadingModal/>}
             <Card p='20px' align='center' direction='column'
                   w='100%' {...rest}>
                 <Flex alignItems='center' w='100%' mb='30px'>
