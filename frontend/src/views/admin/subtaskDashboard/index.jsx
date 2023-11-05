@@ -87,7 +87,8 @@ export default function UserReports() {
         setDescription(e.target.value); // Update the state with the input value
     };
 
-    // Handle the save action
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleSave = () => {
         const requestBody = {
             data: {
