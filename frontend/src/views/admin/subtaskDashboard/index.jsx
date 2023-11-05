@@ -59,8 +59,7 @@ export default function UserReports() {
                     const foundTask = taskData.find(task => task.id === id);
                     if (foundTask) {
                         setTask(foundTask);
-                    }
-                    else {
+                    } else {
                         console.log("Task not found");
                     }
                 }
