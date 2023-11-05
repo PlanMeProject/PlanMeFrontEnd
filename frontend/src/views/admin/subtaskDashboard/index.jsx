@@ -126,11 +126,39 @@ export default function UserReports() {
     };
 
     const [showSummary, setShowSummary] = useState(false); // State variable
+    const task_description = task.attributes ? task.attributes.description : "Loading...";
 
     const loadData = () => {
-        // Simulate data retrieval here. Replace with actual data fetching logic
-        // Set state variable to true to show summarized_text
-        setShowSummary(true);
+        setIsLoading(true);
+        const requestBody = {
+            data: {
+                type: "SummarizeViewSet",
+                id: id,
+                attributes: {
+                    "text": task_description,
+                    "task_id": id
+                }
+            }
+        };
+
+        fetch(`http://127.0.0.1:8000/api/summarize/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    setTask(data.data);
+                    setShowSummary(true);
+                } else {
+                    console.error('Failed to create the subtask', data.errors);
+                }
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => setIsLoading(false));
     };
 
     const titleColor = useColorModeValue("brand.800", "orange.500");
