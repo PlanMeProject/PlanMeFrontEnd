@@ -1,22 +1,12 @@
-import {
-    Flex,
-    Text,
-    Box,
-} from "@chakra-ui/react";
-
+import React from "react";
+import { Flex, Text, Box } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import { useHistory } from "react-router-dom";
-import React from "react";
-
-import mockData from "../../datas/mock.json";
 
 export default function Default(props) {
-    const {cardColor} = props;
+    const { cardColor } = props;
+    const { task } = props;
     const history = useHistory();
-
-    const userID = 1; // Replace with user ID
-    const userData = mockData["users"].find(user => user.id === userID);
-    const task = userData["tasks"];
 
     const goToSubtask = (id) => {
         history.push(`/admin/task-board/task/${id}`);
@@ -55,7 +45,10 @@ export default function Default(props) {
                         >
                             <Text
                                 color='secondaryGray.900'
-                            >{task.title}</Text>
+                            >{task.attributes.title}</Text>
+                            <Text
+                                color='red.400'
+                            >{task.attributes.due_date}</Text>
                         </Box>
                     ))}
                 </div>

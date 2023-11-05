@@ -11,9 +11,8 @@ import {
 import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
-    MdAdd,
     MdAddTask,
 } from "react-icons/md";
 
@@ -23,6 +22,30 @@ export default function UserReports() {
     const todoCardColor = useColorModeValue("#FFE999", "#FFDE6A");
     const inProgressCardColor = useColorModeValue("#CDC5FF", "#8F7CFF");
     const doneCardColor = useColorModeValue("#9EEECC", "#51EFAD");
+
+    const [task, setTask] = useState([]);
+    const [numTodo, setNumTodo] = useState(0);
+    const [numInProgress, setNumInProgress] = useState(0);
+    const [numCompleted, setNumCompleted] = useState(0);
+
+    useEffect(() => {
+        // Your API endpoint
+        fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
+            .then((response) => response.json())
+            .then((data) => {
+                const taskData = data["data"];
+                if (taskData) {
+                    setTask(taskData);
+                    setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
+                    setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
+                    setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching data: ", error);
+            });
+    }, []);
+
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <SimpleGrid columns={{base: 1, md: 2, lg: 3, '2xl': 6}} gap='20px'
@@ -39,15 +62,12 @@ export default function UserReports() {
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
-                            5
+                            {numTodo}
                         </Text>
                         <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
                             Todo
                         </Text>
                     </div>
-                    {/*<Flex>*/}
-                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
-                    {/*</Flex>*/}
                 </Flex>
                 <Flex alignContent='center' justifyContent='space-between' padding='0 15px 0 15px'>
                     <div style={{
@@ -60,15 +80,12 @@ export default function UserReports() {
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
-                            6
+                            {numInProgress}
                         </Text>
                         <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
                             In progress
                         </Text>
                     </div>
-                    {/*<Flex>*/}
-                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
-                    {/*</Flex>*/}
                 </Flex>
                 <Flex alignContent='center' justifyContent='space-between' padding='0 15px 0 15px'>
                     <div style={{
@@ -81,19 +98,14 @@ export default function UserReports() {
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
-                            7
+                            {numCompleted}
                         </Text>
                         <Text fontSize='2xl' fontWeight='bold' ml='10px' color={textColor}>
                             Complete
                         </Text>
                     </div>
-                    {/*<Flex>*/}
-                    {/*    <Icon mt='4px' ml='5px' w='28px' h='28px' as={MdAdd} color={textColor}/>*/}
-                    {/*</Flex>*/}
                 </Flex>
-
             </SimpleGrid>
-
             <SimpleGrid columns={{base: 1, md: 2, lg: 3, '2xl': 6}}
                         gap='20px'
                         mb='20px'>
@@ -110,6 +122,7 @@ export default function UserReports() {
                     }
                     name='New Tasks'
                     value='Todo'
+                    task={task.filter(task => task.attributes.status === 'Todo')}
                 />
                 <TodoCard
                     cardColor={inProgressCardColor}
@@ -124,6 +137,7 @@ export default function UserReports() {
                     }
                     name='New Tasks'
                     value='In Progress'
+                    task={task.filter(task => task.attributes.status === 'In progress')}
                 />
                 <TodoCard
                     cardColor={doneCardColor}
@@ -138,6 +152,7 @@ export default function UserReports() {
                     }
                     name='New Tasks'
                     value='Completed'
+                    task={task.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete')}
                 />
             </SimpleGrid>
             <FixedPlugin/>

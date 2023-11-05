@@ -19,7 +19,8 @@ import {
     ModalCloseButton,
     Input,
     FormControl,
-    FormLabel
+    FormLabel,
+    Progress
 } from "@chakra-ui/react";
 
 // Custom components
@@ -32,22 +33,13 @@ import {useEffect, useState} from "react";
 import {MdDelete, MdAssignment, MdAdd} from "react-icons/md";
 import React from "react";
 
-// subtask imports
-import mockData from "../../datas/mock.json";
-import {useParams} from "react-router-dom";
-
 export default function Conversion(props) {
 
-    const userID = 1; // Replace with user ID
-    const userData = mockData["users"].find(user => user.id === userID);
-    const {id} = useParams();
-    const task = userData["tasks"].find(task => task.id === parseInt(id));
-
     const {...rest} = props;
+    const {taskId} = props;
+    const {task_description} = props;
 
     const [subtasks, setSubtasks] = useState([]);
-    // const [showSubtasks, setShowSubtasks] = useState(false);
-    // const [isDataLoaded, setDataLoaded] = useState(false); // State variable to track if data is loaded
 
     const [isOpen, setIsOpen] = useState(false);
     const [newSubtask, setNewSubtask] = useState({
@@ -55,17 +47,80 @@ export default function Conversion(props) {
         status: 'Incomplete'
     });
 
-    const loadData = () => {
-        // Simulate data retrieval here. Replace with actual data fetching logic
-        const subtaskData = task["subtasks"];
-        setSubtasks(subtaskData);
-        // setDataLoaded(true);  // Set the data as loaded
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks`)
+            .then((response) => response.json())
+            .then((data) => {
+                const subtaskData = data['data'];
+                if (subtaskData) {
+                    setSubtasks(subtaskData);
+                    console.log("Subtask data loaded", subtaskData);
+                } else {
+                    console.log("No subtask data");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching data: ", error);
+            });
+    }, []);
+
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleShowSubtasks = () => {
+        setIsLoading(true);
+        const requestBody = {
+            data: {
+                type: "TTSViewSet",
+                attributes: {
+                    "text": task_description,
+                    "task_id": taskId
+                }
+            }
+        };
+
+        fetch(`http://127.0.0.1:8000/api/tts/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    console.log(data.data);
+                    setSubtasks(data.data);
+                } else {
+                    console.error('Failed to create the subtask', data.errors);
+                }
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                setIsLoading(false); // Set loading to false when the fetch is complete
+            });
     };
+
+    const LoadingModal = () => (
+        <Modal isOpen={isLoading} isCentered onClose={() => {
+        }} closeOnOverlayClick={false}>
+            <ModalOverlay/>
+            <ModalContent>
+                <Flex justifyContent="center" alignItems="center" p={6}
+                      flexDirection="column">
+                    <Text mb={4}>Loading</Text>
+                    <Progress isIndeterminate width="100%"/>
+                    <Text mb={4} mt={4}>random text</Text>
+                </Flex>
+            </ModalContent>
+        </Modal>
+    );
+
 
     const [taskData, setTaskData] = useState([0, 0]); // [Complete, In Progress]
     useEffect(() => {
         const totalSubtasks = subtasks.length;
-        const completedSubtasks = subtasks.filter(task => task.status === 'Completed').length;
+        const completedSubtasks = subtasks.filter(task => task.attributes.status === 'Complete').length;
 
         if (totalSubtasks > 0) {
             const completedPercentage = (completedSubtasks / totalSubtasks) * 100;
@@ -78,29 +133,105 @@ export default function Conversion(props) {
     // Modal functions for opening and closing the modal
     const handleSubmit = () => {
         if (newSubtask.title === "") {
-            // You can set an error state here to show an error message if you want
             return;
         }
-        const newId = subtasks.length === 0 ? 1 : Math.max(...subtasks.map(task => task.id)) + 1;
-        // Add the new subtask
-        setSubtasks([...subtasks, {...newSubtask, id: newId}]);
-        setIsOpen(false);
-        setNewSubtask({title: '', status: 'Incomplete'});  // Reset the form
+
+        const requestBody = {
+            data: {
+                type: "SubTaskViewSet",
+                attributes: {
+                    ...newSubtask
+                }
+            }
+        };
+
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data && !data.errors) {
+                    // Assuming the server responds with the newly created subtask,
+                    // which includes the new ID assigned by the server
+                    const newSubtask = data.data ? data.data : data;
+                    setSubtasks([...subtasks, newSubtask]);
+                    setIsOpen(false);
+                    setNewSubtask({title: '', status: 'Todo'}); // Reset the form
+                } else {
+                    // Handle any errors returned by the server
+                    console.error('Failed to create the subtask', data.errors);
+                }
+            })
+            .catch(error => console.error('Error:', error));
     };
 
 
-    // Delete function
+// Delete function
     const handleDelete = (subtaskId) => {
-        const updatedSubtasks = subtasks.filter(task => task.id !== subtaskId);
-        setSubtasks(updatedSubtasks);
+        // Perform the DELETE request
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Remove the subtask from the local state if the DELETE was successful
+                    const updatedSubtasks = subtasks.filter(task => task.id !== subtaskId);
+                    setSubtasks(updatedSubtasks);
+                } else {
+                    console.error('Failed to delete the subtask');
+                }
+            })
+            .catch(error => console.error('Error:', error));
     };
 
-    // Handle checkbox state change
-    const handleCheckboxChange = (subtaskId, newStatus) => {
-        const updatedSubtasks = subtasks.map(task =>
-            task.id === subtaskId ? {...task, status: newStatus} : task
-        );
-        setSubtasks(updatedSubtasks);
+    const handleCheckboxChange = (subtaskId, isChecked) => {
+        const newStatus = isChecked ? 'Complete' : 'Todo';
+        const updatedSubtask = subtasks.find(task => task.id === subtaskId);
+
+        if (updatedSubtask) {
+            const requestBody = {
+                data: {
+                    type: "SubTaskViewSet", // Adjust if needed to match the type your API expects
+                    id: updatedSubtask.id, // Ensure this is the correct ID for the subtask
+                    attributes: {
+                        // ...updatedSubtask.attributes,
+                        status: newStatus,
+                    }
+                }
+            };
+
+            fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/vnd.api+json',
+                    // Include other headers like authorization if needed
+                },
+                body: JSON.stringify(requestBody),
+            })
+                .then(response => response.json()) // Convert the response to JSON
+                .then(data => {
+                    if (data && !data.errors) { // Assuming 'errors' would be part of an unsuccessful response
+                        // Update the subtask's status in the local state if the PUT was successful
+                        setSubtasks(subtasks.map(task =>
+                            task.id === subtaskId ? {
+                                ...task,
+                                attributes: {
+                                    ...task.attributes,
+                                    status: newStatus
+                                }
+                            } : task
+                        ));
+                    } else {
+                        // Handle any errors returned by the server
+                        console.error('Failed to update the subtask', data.errors);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
     };
 
 
@@ -110,6 +241,7 @@ export default function Conversion(props) {
     const brandColor = useColorModeValue("brand.500", "orange.500");
     return (
         <SimpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
+            {isLoading && <LoadingModal/>}
             <Card p='20px' align='center' direction='column'
                   w='100%' {...rest}>
                 <Flex alignItems='center' w='100%' mb='30px'>
@@ -127,7 +259,7 @@ export default function Conversion(props) {
                     </Text>
                     {/* Button to toggle subtask visibility */}
                     <Flex display='inline-flex' ml='auto' alignItems='center'>
-                        <Button mr='10px' onClick={loadData}>
+                        <Button mr='10px' onClick={handleShowSubtasks}>
                             Generate
                         </Button>
                         <Icon
@@ -177,9 +309,9 @@ export default function Conversion(props) {
                                         status: e.target.value
                                     })}
                                 >
-                                    <option value="Incomplete">Incomplete
+                                    <option value="Todo">Todo
                                     </option>
-                                    <option value="Completed">Completed
+                                    <option value="Complete">Completed
                                     </option>
                                 </Select>
                             </FormControl>
@@ -196,33 +328,33 @@ export default function Conversion(props) {
                     </ModalContent>
                 </Modal>
 
-                {/* Conditionally render subtasks */}
-                {
-                    <Box px='11px'>
-                        {subtasks.map((task, index) => (
-                            <Flex key={index} mb='20px'>
-                                <Checkbox me='16px' colorScheme='brandScheme'
-                                          isChecked={task.status === 'Completed'}
-                                          onChange={(e) => handleCheckboxChange(task.id, e.target.checked ? 'Completed' : 'Incomplete')}
-                                />
-                                <Text fontWeight='bold' color={textColor}
-                                      fontSize='md'
-                                      textAlign='start'>
-                                    {task.title}
-                                </Text>
-                                <Icon
-                                    ms='auto'
-                                    as={MdDelete}
-                                    color='secondaryGray.600'
-                                    w='24px'
-                                    h='24px'
-                                    cursor='pointer'
-                                    onClick={() => handleDelete(task.id)}
-                                />
-                            </Flex>
-                        ))}
-                    </Box>
-                }
+                <Box px='11px'>
+                    {subtasks.map((task, index) => (
+                        <Flex key={index} mb='20px'>
+                            <Checkbox me='16px' colorScheme='brandScheme'
+                                      isChecked={task.attributes && task.attributes.status === 'Complete'}
+                                      onChange={(e) => handleCheckboxChange(task.id, e.target.checked)}
+                            />
+                            <Text fontWeight='bold' color={textColor}
+                                  fontSize='md'
+                                  textAlign='start'
+                                  onClick={() => handleCheckboxChange(task.id, !(task.attributes.status === 'Complete'))}
+                                  _hover={{cursor: 'pointer'}}
+                            >
+                                {task.attributes.title}
+                            </Text>
+                            <Icon
+                                ms='auto'
+                                as={MdDelete}
+                                color='secondaryGray.600'
+                                w='24px'
+                                h='24px'
+                                cursor='pointer'
+                                onClick={() => handleDelete(task.id)}
+                            />
+                        </Flex>
+                    ))}
+                </Box>
             </Card>
             <PieCard taskData={taskData}/>
         </SimpleGrid>
