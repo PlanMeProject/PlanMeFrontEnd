@@ -93,6 +93,9 @@ export default function UserReports() {
             setIsEditing(false);
             return;
         }
+        if (description.trim() === "") {
+            setDescription("No description");
+        }
         const requestBody = {
             data: {
                 type: "TaskViewSet",
