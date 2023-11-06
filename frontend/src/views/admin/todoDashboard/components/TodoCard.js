@@ -24,16 +24,21 @@ export default function Default(props) {
                 justify={{base: "start", xl: "start"}}
                 paddingTop='0px'
             >
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                    height: '100%',
-                    // backgroundColor: 'white',
-                    overflowY: 'auto'
-                }}>
+                <div
+                    onDragOver={onDragOver}
+                    onDrop={onDrop}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '100%',
+                        height: '100%',
+                        overflowY: 'auto'
+                    }}>
                     {task.map((task) => (
                         <Box
+                            key={task.id}
+                            draggable
+                            onDragStart={(e) => onDragStart(e, task)}
                             bg="white"
                             p={4}
                             borderRadius="20px"
@@ -41,11 +46,18 @@ export default function Default(props) {
                             w="100%"
                             minH="100px"
                             mb="10px"
+                            _hover={{cursor: 'grab'}}
                             onClick={() => goToSubtask(task.id)}
                         >
-                            <Text
-                                color='secondaryGray.900'
-                            >{task.attributes.title}</Text>
+                            <Flex display='inline-flex'>
+                                <Text
+                                    color='secondaryGray.900'
+                                >{task.attributes.title}</Text>
+                                <Text
+                                    color='secondaryGray.800'
+                                    mr='auto'
+                                >del</Text>
+                            </Flex>
                             <Text
                                 color='red.400'
                             >{task.attributes.due_date}</Text>
