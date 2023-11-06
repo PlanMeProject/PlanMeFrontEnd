@@ -1,11 +1,11 @@
 import React from "react";
-import { Flex, Text, Box } from "@chakra-ui/react";
+import {Flex, Text, Box} from "@chakra-ui/react";
 import Card from "components/card/Card.js";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 export default function Default(props) {
-    const { cardColor } = props;
-    const { task } = props;
+    const {cardColor, onDragStart, onDragOver, onDrop} = props;
+    const {task} = props;
     const history = useHistory();
 
     const goToSubtask = (id) => {
