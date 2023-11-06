@@ -89,6 +89,10 @@ export default function UserReports() {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSave = () => {
+        if (description === task.attributes.description) {
+            setIsEditing(false);
+            return;
+        }
         const requestBody = {
             data: {
                 type: "TaskViewSet",
