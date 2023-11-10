@@ -68,6 +68,7 @@ export default function UserReports() {
                     const foundTask = taskData.find(task => task.id === id);
                     if (foundTask) {
                         setTask(foundTask);
+                        setDescription(foundTask.attributes.description);
                     } else {
                         console.log("Task not found");
                     }
@@ -79,13 +80,13 @@ export default function UserReports() {
     }, []);
     // Handle the start of editing
     const handleEdit = () => {
-        setDescription(task.attributes.description); // Set the current description into the state
-        setIsEditing(true); // Switch to editing mode
+        if (task.attributes) {
+            setIsEditing(true); // Switch to editing mode
+        }
     };
-
     // Handle the change of the input
-    const handleDescriptionChange = (e) => {
-        setDescription(e.target.value); // Update the state with the input value
+     const handleDescriptionChange = (content, delta, source, editor) => {
+        setDescription(editor.getHTML()); // ReactQuill provides the HTML content through the editor instance
     };
 
     const handleSave = () => {
