@@ -27,8 +27,32 @@ export default function UserReports() {
     const [numTodo, setNumTodo] = useState(0);
     const [numInProgress, setNumInProgress] = useState(0);
     const [numCompleted, setNumCompleted] = useState(0);
-
     const [draggedTask, setDraggedTask] = useState(null);
+
+    const handleDeleteTask = (taskId) => {
+        // Perform the DELETE request
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    setTask(currentTasks => {
+                        const updatedTasks = currentTasks.filter(t => t.id !== taskId);
+
+                        // Immediately update the counters based on the updated tasks array
+                        setNumTodo(updatedTasks.filter(task => task.attributes.status === 'Todo').length);
+                        setNumInProgress(updatedTasks.filter(task => task.attributes.status === 'In progress').length);
+                        setNumCompleted(updatedTasks.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
+
+                        return updatedTasks;
+                    });
+                } else {
+                    console.error('Failed to delete the task');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    };
+
 
     // Example of onDragStart function in UserReports component
     const handleDragStart = (event, task) => {
