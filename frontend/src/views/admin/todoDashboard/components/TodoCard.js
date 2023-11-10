@@ -23,6 +23,12 @@ export default function Default(props) {
     const {task} = props;
     const history = useHistory();
 
+    // State for the AlertDialog
+    const delButtonColor = useColorModeValue('secondaryGray', 'secondaryGray.900')
+    const [toDeleteTaskId, setToDeleteTaskId] = useState(null);
+    const {isOpen, onOpen, onClose} = useDisclosure();
+    const cancelRef = useRef();
+
     const goToSubtask = (id) => {
         history.push(`/admin/task-board/task/${id}`);
     }
