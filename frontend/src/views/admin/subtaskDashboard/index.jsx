@@ -30,7 +30,6 @@ import {
     Modal,
     ModalOverlay,
     ModalContent,
-    Textarea,
     useColorModeValue
 } from "@chakra-ui/react";
 
@@ -53,6 +52,8 @@ export default function UserReports() {
     const [task, setTask] = useState([]);
     const {id} = useParams();
     const [isEditing, setIsEditing] = useState(false);
+    const [isEditingTaskTitle, setIsEditingTaskTitle] = useState(false);
+    const [taskTitle, setTaskTitle] = useState("");
     const [description, setDescription] = useState("");
     const [showSummary, setShowSummary] = useState(false); // State variable
     const task_description = task.attributes ? task.attributes.description : "Loading...";
@@ -78,6 +79,63 @@ export default function UserReports() {
                 console.error("Error fetching data: ", error);
             });
     }, []);
+
+    const handleEditTitle = () => {
+        if (task.attributes) {
+            setTaskTitle(task.attributes.title); // Initialize the input with the current title
+            setIsEditingTaskTitle(true); // Switch to editing mode
+        }
+    };
+
+    // Handle the change of the title input
+    const handleTitleChange = (event) => {
+        setTaskTitle(event.target.value); // Update the title input state
+    };
+
+    // Handle the save of the edited title
+    const handleSaveTitle = () => {
+        if (taskTitle.trim() === "") {
+            setTaskTitle("Untitled Task");
+        }
+        // Construct the request body with the updated title
+        const requestBody = {
+            data: {
+                type: "TaskViewSet",
+                id: id,
+                attributes: {
+                    ...task.attributes,
+                    title: taskTitle.trim()
+                }
+            }
+        }
+
+        // Perform the API call to update the task title on the server
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/vnd.api+json'
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.data) {
+                    setTask(data.data);
+                } else {
+                    console.log("No data found");
+                }
+                setIsEditingTaskTitle(false);
+            })
+            .catch(error => {
+                console.error('Failed to save the task title', error);
+            });
+    };
+
     // Handle the start of editing
     const handleEdit = () => {
         if (task.attributes) {
@@ -85,7 +143,7 @@ export default function UserReports() {
         }
     };
     // Handle the change of the input
-     const handleDescriptionChange = (content, delta, source, editor) => {
+    const handleDescriptionChange = (content, delta, source, editor) => {
         setDescription(editor.getHTML()); // ReactQuill provides the HTML content through the editor instance
     };
 
@@ -193,10 +251,36 @@ export default function UserReports() {
             <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 {isLoading && <LoadingModal/>}
                 <Flex mb='20px' mt='20px'>
-                    <Text color={titleColor} fontSize='x-large'
-                          fontWeight='bold'>
-                        {task.attributes ? task.attributes.title : "Loading..."}
-                    </Text>
+                    {isEditingTaskTitle ? (
+                        <input
+                            type="text"
+                            value={taskTitle}
+                            onChange={handleTitleChange}
+                            style={{
+                                fontSize: 'x-large',
+                                fontWeight: 'bold',
+                                color: titleColor
+                            }}
+                        />
+                    ) : (
+                        <Text color={titleColor} fontSize='x-large'
+                              fontWeight='bold'>
+                            {task.attributes ? task.attributes.title : "Loading..."}
+                        </Text>
+                    )}
+                </Flex>
+                <Flex mb='20px'>
+                    {isEditingTaskTitle ? (
+                        <Flex display='inline-flex'>
+                            <Button onClick={handleSaveTitle}
+                                    mr='10px'>Save</Button>
+                            <Button
+                                onClick={() => setIsEditingTaskTitle(false)}>Cancel</Button>
+                        </Flex>
+                    ) : (
+                        <Button onClick={handleEditTitle}>Edit Task
+                            Title</Button>
+                    )}
                 </Flex>
                 <Flex mb='10px' flexDirection='column'>
                     <Text color={taskSubjectColor} fontSize='xl'
@@ -210,7 +294,8 @@ export default function UserReports() {
                             onChange={handleDescriptionChange}
                         />
                     ) : (
-                        <div dangerouslySetInnerHTML={{ __html: he.decode(task.attributes ? task.attributes.description : "Loading...") }}></div>
+                        <div
+                            dangerouslySetInnerHTML={{__html: he.decode(task.attributes ? task.attributes.description : "Loading...")}}></div>
                     )}
                 </Flex>
                 <Flex mb='20px'>
