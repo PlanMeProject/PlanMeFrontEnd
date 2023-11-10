@@ -52,6 +52,11 @@ export default function UserReports() {
 
     const [task, setTask] = useState([]);
     const {id} = useParams();
+    const [isEditing, setIsEditing] = useState(false);
+    const [description, setDescription] = useState("");
+    const [showSummary, setShowSummary] = useState(false); // State variable
+    const task_description = task.attributes ? task.attributes.description : "Loading...";
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         // Your API endpoint
