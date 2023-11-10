@@ -33,6 +33,18 @@ export default function Default(props) {
         history.push(`/admin/task-board/task/${id}`);
     }
 
+    const openDeleteConfirmation = (taskId, event) => {
+        event.stopPropagation();
+        setToDeleteTaskId(taskId);
+        onOpen();
+    };
+
+    const confirmDelete = () => {
+        onDelete(toDeleteTaskId);
+        onClose();
+    };
+
+
     return (
         <Card py='30px' bg={cardColor}>
             <Flex
