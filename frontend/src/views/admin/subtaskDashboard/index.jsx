@@ -90,11 +90,12 @@ export default function UserReports() {
     };
 
     const handleSave = () => {
-        if (description === task.attributes.description) {
+        const encodedDescription = he.encode(description);
+        if (encodedDescription === task.attributes.description) {
             setIsEditing(false);
             return;
         }
-        if (description.trim() === "") {
+        if (encodedDescription.trim() === "") {
             setDescription("No description");
         }
         const requestBody = {
@@ -103,7 +104,7 @@ export default function UserReports() {
                 id: id,
                 attributes: {
                     ...task.attributes,
-                    description
+                    description: encodedDescription
                 }
             }
         }
