@@ -19,7 +19,7 @@ import {useState, useRef} from "react";
 
 
 export default function Default(props) {
-    const {cardColor, onDragStart, onDragOver, onDrop} = props;
+    const {cardColor, onDragStart, onDragOver, onDrop, onDelete} = props;
     const {task} = props;
     const history = useHistory();
 
