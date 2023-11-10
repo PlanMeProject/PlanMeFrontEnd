@@ -193,7 +193,8 @@ export default function UserReports() {
             <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 {isLoading && <LoadingModal/>}
                 <Flex mb='20px' mt='20px'>
-                    <Text color={titleColor} fontSize='x-large' fontWeight='bold'>
+                    <Text color={titleColor} fontSize='x-large'
+                          fontWeight='bold'>
                         {task.attributes ? task.attributes.title : "Loading..."}
                     </Text>
                 </Flex>
@@ -203,16 +204,13 @@ export default function UserReports() {
                         Description: &nbsp;
                     </Text>
                     {isEditing ? (
-                        <Input
+                        <ReactQuill
+                            theme="snow"
                             value={description}
-                            textColor={taskSubjectColor}
                             onChange={handleDescriptionChange}
-                            size="sm"
                         />
                     ) : (
-                        <Text fontSize='xl' fontWeight='bold'>
-                            {task.attributes ? task.attributes.description : "Loading..."}
-                        </Text>
+                        <div dangerouslySetInnerHTML={{ __html: he.decode(task.attributes ? task.attributes.description : "Loading...") }}></div>
                     )}
                 </Flex>
                 <Flex mb='20px'>
