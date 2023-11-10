@@ -73,6 +73,7 @@ export default function Default(props) {
                             draggable
                             onDragStart={(e) => onDragStart(e, task)}
                             bg="white"
+                            position="relative"
                             p={4}
                             borderRadius="20px"
                             boxShadow="md"
@@ -101,6 +102,7 @@ export default function Default(props) {
                             <Text
                                 color='red.400'
                             >{task.attributes.due_date}</Text>
+
                         </Box>
                     ))}
                 </div>
