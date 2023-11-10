@@ -1,7 +1,22 @@
 import React from "react";
-import {Flex, Text, Box} from "@chakra-ui/react";
+import {
+    Flex,
+    Text,
+    Box,
+    IconButton,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody,
+    AlertDialogFooter, Button, useColorModeValue
+} from "@chakra-ui/react";
+import {DeleteIcon} from '@chakra-ui/icons';
 import Card from "components/card/Card.js";
 import {useHistory} from "react-router-dom";
+import {useDisclosure} from "@chakra-ui/react";
+import {useState, useRef} from "react";
+
 
 export default function Default(props) {
     const {cardColor, onDragStart, onDragOver, onDrop} = props;
