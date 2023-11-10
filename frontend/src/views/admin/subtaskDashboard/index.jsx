@@ -77,13 +77,6 @@ export default function UserReports() {
                 console.error("Error fetching data: ", error);
             });
     }, []);
-
-    // State to manage whether the description is being edited
-    const [isEditing, setIsEditing] = useState(false);
-
-    // State to manage the input value for the description
-    const [description, setDescription] = useState("");
-
     // Handle the start of editing
     const handleEdit = () => {
         setDescription(task.attributes.description); // Set the current description into the state
@@ -94,8 +87,6 @@ export default function UserReports() {
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value); // Update the state with the input value
     };
-
-    const [isLoading, setIsLoading] = useState(false);
 
     const handleSave = () => {
         if (description === task.attributes.description) {
@@ -115,6 +106,7 @@ export default function UserReports() {
                 }
             }
         }
+
         fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
             method: 'PUT',
             headers: {
@@ -141,8 +133,6 @@ export default function UserReports() {
             });
     };
 
-    const [showSummary, setShowSummary] = useState(false); // State variable
-    const task_description = task.attributes ? task.attributes.description : "Loading...";
 
     const loadData = () => {
         setIsLoading(true);
