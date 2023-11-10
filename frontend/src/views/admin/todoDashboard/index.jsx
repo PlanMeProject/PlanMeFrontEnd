@@ -154,7 +154,7 @@ export default function UserReports() {
                     }}>
                         <Text fontSize='2xl' fontWeight='bold'
                               backgroundColor='white'
-                              padding={numTodo===1? '0px 14px 0px 14px': '0px 11px 0px 11px'}
+                              padding={numTodo === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
@@ -174,7 +174,7 @@ export default function UserReports() {
                     }}>
                         <Text fontSize='2xl' fontWeight='bold'
                               backgroundColor='white'
-                              padding={numInProgress===1? '0px 14px 0px 14px': '0px 11px 0px 11px'}
+                              padding={numInProgress === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
@@ -194,7 +194,7 @@ export default function UserReports() {
                     }}>
                         <Text fontSize='2xl' fontWeight='bold'
                               backgroundColor='white'
-                              padding={numCompleted===1? '0px 14px 0px 14px': '0px 11px 0px 11px'}
+                              padding={numCompleted === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
                               borderRadius='50px'
                               boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
                               color='navy.700'>
@@ -215,6 +215,7 @@ export default function UserReports() {
                     style={{minHeight: '1px'}} // This is to ensure the drop zone is always available
                 >
                     <TodoCard
+                        onDelete={handleDeleteTask}
                         onDragStart={handleDragStart}
                         cardColor={todoCardColor}
                         startContent={
@@ -237,6 +238,7 @@ export default function UserReports() {
                     style={{minHeight: '1px'}} // This is to ensure the drop zone is always available
                 >
                     <TodoCard
+                        onDelete={handleDeleteTask}
                         onDragStart={handleDragStart}
                         cardColor={inProgressCardColor}
                         startContent={
@@ -259,6 +261,7 @@ export default function UserReports() {
                     style={{minHeight: '1px'}} // This is to ensure the drop zone is always available
                 >
                     <TodoCard
+                        onDelete={handleDeleteTask}
                         onDragStart={handleDragStart}
                         cardColor={doneCardColor}
                         startContent={
