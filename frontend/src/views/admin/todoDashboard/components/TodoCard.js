@@ -86,10 +86,17 @@ export default function Default(props) {
                                 <Text
                                     color='secondaryGray.900'
                                 >{task.attributes.title}</Text>
-                                <Text
-                                    color='secondaryGray.800'
-                                    mr='auto'
-                                >del</Text>
+                                <IconButton
+                                    aria-label="Delete"
+                                    color={delButtonColor}
+                                    icon={<DeleteIcon/>}
+                                    size='sm'
+                                    position="absolute"
+                                    right="3"
+                                    top="3"
+                                    zIndex="1"
+                                    onClick={(e) => openDeleteConfirmation(task.id, e)}
+                                />
                             </Flex>
                             <Text
                                 color='red.400'
