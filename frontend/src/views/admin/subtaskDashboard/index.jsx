@@ -25,14 +25,18 @@ import {
     Box,
     Flex,
     Text,
-    Input,
     Button,
     Progress,
     Modal,
     ModalOverlay,
     ModalContent,
+    Textarea,
     useColorModeValue
 } from "@chakra-ui/react";
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // import styles
+import he from 'he';
 
 import React, {useEffect} from "react";
 import Tasks from "views/admin/subtaskDashboard/components/Tasks";
