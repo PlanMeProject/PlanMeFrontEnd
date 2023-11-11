@@ -237,138 +237,144 @@ export default function UserReports() {
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <SimpleGrid columns={{base: 1, md: 2, lg: 3, '2xl': 6}} gap='20px'
                         mb='20px'>
-                <Flex alignContent='center' justifyContent='space-between'
-                      padding='0 15px 0 15px'>
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                    }}>
-                        <Text fontSize='2xl' fontWeight='bold'
-                              backgroundColor='white'
-                              padding={numTodo === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
-                              borderRadius='50px'
-                              boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
-                              color='navy.700'>
-                            {numTodo}
-                        </Text>
-                        <Text fontSize='2xl' fontWeight='bold' ml='10px'
-                              color={textColor}>
-                            Todo
-                        </Text>
-                    </div>
-                </Flex>
-                <Flex alignContent='center' justifyContent='space-between'
-                      padding='0 15px 0 15px'>
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                    }}>
-                        <Text fontSize='2xl' fontWeight='bold'
-                              backgroundColor='white'
-                              padding={numInProgress === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
-                              borderRadius='50px'
-                              boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
-                              color='navy.700'>
-                            {numInProgress}
-                        </Text>
-                        <Text fontSize='2xl' fontWeight='bold' ml='10px'
-                              color={textColor}>
-                            In progress
-                        </Text>
-                    </div>
-                </Flex>
-                <Flex alignContent='center' justifyContent='space-between'
-                      padding='0 15px 0 15px'>
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                    }}>
-                        <Text fontSize='2xl' fontWeight='bold'
-                              backgroundColor='white'
-                              padding={numCompleted === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
-                              borderRadius='50px'
-                              boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
-                              color='navy.700'>
-                            {numCompleted}
-                        </Text>
-                        <Text fontSize='2xl' fontWeight='bold' ml='10px'
-                              color={textColor}>
-                            Complete
-                        </Text>
-                    </div>
-                </Flex>
-            </SimpleGrid>
-            <SimpleGrid columns={{base: 1, md: 2, lg: 3, '2xl': 6}} gap='20px'
-                        mb='20px'>
-                <div
-                    onDragOver={handleDragOver}
-                    onDrop={(event) => handleDrop('Todo', event)}
-                    style={{minHeight: '1px'}} // This is to ensure the drop zone is always available
-                >
-                    <TodoCard
-                        onDelete={handleDeleteTask}
-                        onDragStart={handleDragStart}
-                        cardColor={todoCardColor}
-                        startContent={
-                            <IconBox
-                                w='56px'
-                                h='56px'
-                                bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
-                                icon={<Icon w='28px' h='28px' as={MdAddTask}
-                                            color='white'/>}
+                {/* Group for 'Todo' */}
+                <Box>
+                    <Flex alignContent='center' justifyContent='space-between'
+                          padding='0 15px 0 15px' mb='15px'>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            width: '100%'
+                        }}>
+                            <Text fontSize='2xl' fontWeight='bold'
+                                  backgroundColor='white'
+                                  padding={numTodo === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
+                                  borderRadius='50px'
+                                  boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
+                                  color='navy.700'>
+                                {numTodo}
+                            </Text>
+                            <Text fontSize='2xl' fontWeight='bold' ml='10px'
+                                  color={textColor}>
+                                Todo
+                            </Text>
+                            <IconButton aria-label="Add Task" color={iconColor}
+                                        icon={<AddIcon/>} size='sm' ml='auto'
+                                        onClick={handleAddTaskClick}
                             />
-                        }
-                        name='New Tasks'
-                        value='Todo'
-                        task={task.filter(task => task.attributes.status === 'Todo')}
-                    />
-                </div>
-                <div
-                    onDragOver={handleDragOver}
-                    onDrop={(event) => handleDrop('In progress', event)}
-                    style={{minHeight: '1px'}} // This is to ensure the drop zone is always available
-                >
-                    <TodoCard
-                        onDelete={handleDeleteTask}
-                        onDragStart={handleDragStart}
-                        cardColor={inProgressCardColor}
-                        startContent={
-                            <IconBox
-                                w='56px'
-                                h='56px'
-                                bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
-                                icon={<Icon w='28px' h='28px' as={MdAddTask}
-                                            color='white'/>}
+                        </div>
+                    </Flex>
+                    <div onDragOver={handleDragOver}
+                         onDrop={(event) => handleDrop('Todo', event)}
+                         style={{minHeight: '1px'}}>
+                        <TodoCard
+                            onDelete={handleDeleteTask}
+                            onDragStart={handleDragStart}
+                            cardColor={todoCardColor}
+                            name='New Tasks'
+                            value='Todo'
+                            task={task.filter(task => task.attributes.status === 'Todo')}
+                        />
+                    </div>
+                </Box>
+
+                {/* Group for 'In Progress' */}
+                <Box>
+                    <Flex alignContent='center' justifyContent='space-between'
+                          padding='0 15px 0 15px' mb='15px'>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            width: '100%'
+                        }}>
+                            <Text fontSize='2xl' fontWeight='bold'
+                                  backgroundColor='white'
+                                  padding={numInProgress === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
+                                  borderRadius='50px'
+                                  boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
+                                  color='navy.700'>
+                                {numInProgress}
+                            </Text>
+                            <Text fontSize='2xl' fontWeight='bold' ml='10px'
+                                  color={textColor}>
+                                In Progress
+                            </Text>
+                            <IconButton aria-label="Add Task" color={iconColor}
+                                        icon={<AddIcon/>} size='sm' ml='auto'
+                                        onClick={handleAddTaskClick}
                             />
-                        }
-                        name='New Tasks'
-                        value='In Progress'
-                        task={task.filter(task => task.attributes.status === 'In progress')}
-                    />
-                </div>
-                <div
-                    onDragOver={handleDragOver}
-                    onDrop={(event) => handleDrop('Completed', event)}
-                    style={{minHeight: '1px'}} // This is to ensure the drop zone is always available
-                >
-                    <TodoCard
-                        onDelete={handleDeleteTask}
-                        onDragStart={handleDragStart}
-                        cardColor={doneCardColor}
-                        startContent={
-                            <IconBox
-                                w='56px'
-                                h='56px'
-                                bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
-                                icon={<Icon w='28px' h='28px' as={MdAddTask}
-                                            color='white'/>}
+                        </div>
+                    </Flex>
+                    <div onDragOver={handleDragOver}
+                         onDrop={(event) => handleDrop('In progress', event)}
+                         style={{minHeight: '1px'}}>
+                        <TodoCard
+                            onDelete={handleDeleteTask}
+                            onDragStart={handleDragStart}
+                            cardColor={inProgressCardColor}
+                            startContent={
+                                <IconBox w='56px' h='56px'
+                                         bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
+                                         icon={<Icon w='28px' h='28px'
+                                                     as={MdAddTask}
+                                                     color='white'/>}
+                                />
+                            }
+                            name='New Tasks'
+                            value='In Progress'
+                            task={task.filter(task => task.attributes.status === 'In progress')}
+                        />
+                    </div>
+                </Box>
+
+                {/* Group for 'Completed' */}
+                <Box>
+                    <Flex alignContent='center' justifyContent='space-between'
+                          padding='0 15px 0 15px' mb='15px'>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            width: '100%'
+                        }}>
+                            <Text fontSize='2xl' fontWeight='bold'
+                                  backgroundColor='white'
+                                  padding={numCompleted === 1 ? '0px 14px 0px 14px' : '0px 11px 0px 11px'}
+                                  borderRadius='50px'
+                                  boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
+                                  color='navy.700'>
+                                {numCompleted}
+                            </Text>
+                            <Text fontSize='2xl' fontWeight='bold' ml='10px'
+                                  color={textColor}>
+                                Completed
+                            </Text>
+                            <IconButton aria-label="Add Task" color={iconColor}
+                                        icon={<AddIcon/>} size='sm' ml='auto'
+                                        onClick={handleAddTaskClick}
                             />
-                        }
-                        name='New Tasks'
-                        value='Completed'
-                        task={task.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete')}
-                    />
-                </div>
+                        </div>
+                    </Flex>
+                    <div onDragOver={handleDragOver}
+                         onDrop={(event) => handleDrop('Completed', event)}
+                         style={{minHeight: '1px'}}>
+                        <TodoCard
+                            onDelete={handleDeleteTask}
+                            onDragStart={handleDragStart}
+                            cardColor={doneCardColor}
+                            startContent={
+                                <IconBox w='56px' h='56px'
+                                         bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
+                                         icon={<Icon w='28px' h='28px'
+                                                     as={MdAddTask}
+                                                     color='white'/>}
+                                />
+                            }
+                            name='New Tasks'
+                            value='Completed'
+                            task={task.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete')}
+                        />
+                    </div>
+                </Box>
             </SimpleGrid>
             <FixedPlugin/>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
