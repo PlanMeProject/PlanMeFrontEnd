@@ -51,6 +51,75 @@ export default function UserReports() {
     const [numCompleted, setNumCompleted] = useState(0);
     const [draggedTask, setDraggedTask] = useState(null);
 
+    const [taskTitle, setTaskTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [dueDate, setDueDate] = useState("");
+    const [status, setStatus] = useState("");
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+
+    const handleAddTaskClick = () => {
+        // Open the modal
+        openModal();
+    };
+
+    const addTask = (userId, newTaskDetails) => {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify({
+                data: {
+                    type: "TaskViewSet",
+                    attributes: newTaskDetails
+                }
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    // Log more detailed information for debugging
+                    return response.text().then(text => {
+                        throw new Error(text)
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Task added:', data);
+                setTask(currentTasks => [...currentTasks, data.data]);
+            })
+            .catch(error => {
+                console.error('Error adding task:', error);
+            });
+    };
+
+
+    // Example function to handle form submission
+    const handleFormSubmit = () => {
+        const userId = 'f6084d8f-3a96-4288-b18f-fc174ce13b01'; // Replace with actual user ID
+        const newTaskDetails = {
+            title: taskTitle,
+            description: description,
+            summarized_text: "summaries text",
+            due_date: dueDate,
+            status: status,
+        };
+        addTask(userId, newTaskDetails);
+        closeModal(); // Close the modal after submitting
+    };
+
+    const closeModal = () => {
+        setTaskTitle("");
+        setDescription("");
+        setDueDate("");
+        setStatus("");
+        setIsModalOpen(false);
+    };
+
+
     const handleDeleteTask = (taskId) => {
         // Perform the DELETE request
         fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}`, {
