@@ -391,8 +391,12 @@ export default function UserReports() {
                                 color={textColor}
                                 placeholder="Task Title"
                                 value={taskTitle}
+                                isInvalid={taskTitle === ""}
                                 onChange={(e) => setTaskTitle(e.target.value)}
                             />
+                            {taskTitle === "" &&
+                                <FormHelperText color="red.500">Title is
+                                    required</FormHelperText>}
                         </FormControl>
 
                         <FormControl mt={4}>
@@ -401,8 +405,12 @@ export default function UserReports() {
                                 color={textColor}
                                 placeholder="Description"
                                 value={description}
+                                isInvalid={description === ""}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
+                            {description === "" &&
+                                <FormHelperText color="red.500">Description is
+                                    required</FormHelperText>}
                         </FormControl>
 
                         <FormControl mt={4}>
@@ -411,8 +419,12 @@ export default function UserReports() {
                                 color={textColor}
                                 type="date"
                                 value={dueDate}
+                                isInvalid={dueDate === ""}
                                 onChange={(e) => setDueDate(e.target.value)}
                             />
+                            {dueDate === "" &&
+                                <FormHelperText color="red.500">Due date is
+                                    required</FormHelperText>}
                         </FormControl>
 
                         <FormControl mt={4}>
@@ -420,6 +432,7 @@ export default function UserReports() {
                             <Select
                                 placeholder="Select status"
                                 value={status}
+                                isInvalid={status === ""}
                                 onChange={(e) => setStatus(e.target.value)}
                             >
                                 <option value="Todo">Todo</option>
@@ -429,7 +442,6 @@ export default function UserReports() {
                             </Select>
                         </FormControl>
                     </ModalBody>
-
 
                     <ModalFooter>
                         <Button colorScheme="blue" mr={3}
