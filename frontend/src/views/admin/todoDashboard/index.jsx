@@ -2,6 +2,7 @@
 import {
     Box,
     Flex,
+    FormHelperText,
     Icon,
     IconButton,
     SimpleGrid,
@@ -61,7 +62,6 @@ export default function UserReports() {
     const openModal = () => setIsModalOpen(true);
 
     const handleAddTaskClick = () => {
-        // Open the modal
         openModal();
     };
 
