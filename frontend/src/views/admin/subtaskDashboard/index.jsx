@@ -30,7 +30,8 @@ import {
     Modal,
     ModalOverlay,
     ModalContent,
-    useColorModeValue
+    useColorModeValue,
+    useColorMode
 } from "@chakra-ui/react";
 
 import ReactQuill from 'react-quill';
@@ -53,6 +54,7 @@ export default function UserReports() {
     const {id} = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingTaskTitle, setIsEditingTaskTitle] = useState(false);
+    const [isEdittingTaskDueDate, setIsEditingTaskDueDate] = useState(false);
     const [taskTitle, setTaskTitle] = useState("");
     const [description, setDescription] = useState("");
     const [showSummary, setShowSummary] = useState(false); // State variable
@@ -60,7 +62,6 @@ export default function UserReports() {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        // Your API endpoint
         fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
             .then((response) => response.json())
             .then((data) => {
@@ -243,8 +244,10 @@ export default function UserReports() {
     );
 
     const titleColor = useColorModeValue("brand.800", "orange.500");
+    const editTitleColor = useColorModeValue("red", "pink");
     const dueDateColor = useColorModeValue("red.600", "red.500");
     const taskSubjectColor = useColorModeValue("brand.600", "navy.200");
+    const { colorMode } = useColorMode();
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
@@ -256,10 +259,13 @@ export default function UserReports() {
                             type="text"
                             value={taskTitle}
                             onChange={handleTitleChange}
+                            color={editTitleColor}
                             style={{
                                 fontSize: 'x-large',
                                 fontWeight: 'bold',
-                                color: titleColor
+                                color: colorMode === "light" ? "blue" : "lightyellow",
+                                backgroundColor: 'transparent',
+                                border: 'solid 1px',
                             }}
                         />
                     ) : (
@@ -278,8 +284,7 @@ export default function UserReports() {
                                 onClick={() => setIsEditingTaskTitle(false)}>Cancel</Button>
                         </Flex>
                     ) : (
-                        <Button onClick={handleEditTitle}>Edit Task
-                            Title</Button>
+                        <Button onClick={handleEditTitle}>Edit Task Title</Button>
                     )}
                 </Flex>
                 <Flex mb='10px' flexDirection='column'>
