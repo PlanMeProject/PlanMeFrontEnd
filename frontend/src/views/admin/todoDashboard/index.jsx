@@ -88,8 +88,11 @@ export default function UserReports() {
                 return response.json();
             })
             .then(data => {
-                console.log('Task added:', data);
-                setTask(currentTasks => [...currentTasks, data.data]);
+                const updatedTasks = [...task, data.data];
+                setTask(updatedTasks);
+                setNumTodo(updatedTasks.filter(task => task.attributes.status === 'Todo').length);
+                setNumInProgress(updatedTasks.filter(task => task.attributes.status === 'In progress').length);
+                setNumCompleted(updatedTasks.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
             })
             .catch(error => {
                 console.error('Error adding task:', error);
