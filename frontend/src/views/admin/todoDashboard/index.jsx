@@ -102,6 +102,9 @@ export default function UserReports() {
 
     // Example function to handle form submission
     const handleFormSubmit = () => {
+        if (!taskTitle.trim() || !description.trim() || !dueDate.trim() || !status.trim()) {
+            return;
+        }
         const userId = 'f6084d8f-3a96-4288-b18f-fc174ce13b01'; // Replace with actual user ID
         const newTaskDetails = {
             title: taskTitle,
