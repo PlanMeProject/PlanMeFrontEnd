@@ -118,10 +118,6 @@ export default function UserReports() {
     };
 
     const closeModal = () => {
-        setTaskTitle("");
-        setDescription("");
-        setDueDate("");
-        setStatus("");
         setIsModalOpen(false);
     };
 
