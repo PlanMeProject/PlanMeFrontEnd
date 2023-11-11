@@ -43,6 +43,7 @@ export default function UserReports() {
     const todoCardColor = useColorModeValue("#FFE999", "#FFDE6A");
     const inProgressCardColor = useColorModeValue("#CDC5FF", "#8F7CFF");
     const doneCardColor = useColorModeValue("#9EEECC", "#51EFAD");
+    const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200')
 
     const [task, setTask] = useState([]);
     const [numTodo, setNumTodo] = useState(0);
