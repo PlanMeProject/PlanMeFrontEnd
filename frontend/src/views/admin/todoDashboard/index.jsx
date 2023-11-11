@@ -371,6 +371,68 @@ export default function UserReports() {
                 </div>
             </SimpleGrid>
             <FixedPlugin/>
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>Add New Task</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody pb={6}>
+                        <FormControl>
+                            <FormLabel>Task Title</FormLabel>
+                            <Input
+                                color={textColor}
+                                placeholder="Task Title"
+                                value={taskTitle}
+                                onChange={(e) => setTaskTitle(e.target.value)}
+                            />
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>Description</FormLabel>
+                            <Textarea
+                                color={textColor}
+                                placeholder="Description"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>Due Date</FormLabel>
+                            <Input
+                                color={textColor}
+                                type="date"
+                                value={dueDate}
+                                onChange={(e) => setDueDate(e.target.value)}
+                            />
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>Status</FormLabel>
+                            <Select
+                                placeholder="Select status"
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                            >
+                                <option value="Todo">Todo</option>
+                                <option value="In progress">In progress
+                                </option>
+                                <option value="Completed">Completed</option>
+                            </Select>
+                        </FormControl>
+                    </ModalBody>
+
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3}
+                                onClick={handleFormSubmit}>
+                            Add Task
+                        </Button>
+                        <Button variant="ghost"
+                                onClick={closeModal}>Cancel</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Box>
     );
 }
