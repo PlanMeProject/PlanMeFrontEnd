@@ -3,18 +3,39 @@ import {
     Box,
     Flex,
     Icon,
+    IconButton,
     SimpleGrid,
     Text,
     useColorModeValue,
+} from "@chakra-ui/react";
+
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    Button,
+    // other imports...
+} from "@chakra-ui/react";
+
+import {
+    Input,
+    Textarea,
+    Select,
+    FormControl,
+    FormLabel,
+    DatePicker,
 } from "@chakra-ui/react";
 
 import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 import React, {useEffect, useState} from "react";
-import {
-    MdAddTask,
-} from "react-icons/md";
+import {MdAddTask} from "react-icons/md";
+import {AddIcon} from "@chakra-ui/icons";
 
 
 export default function UserReports() {
