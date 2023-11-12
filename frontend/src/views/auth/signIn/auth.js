@@ -1,31 +1,13 @@
-import {initializeApp} from "firebase/app";
-import {getAuth, GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
+const GOOGLE_CLIENT_ID = "15670792015-r9fpt3f3me7174a10sqvduham7bkoofk.apps.googleusercontent.com";
+const REDIRECT_URI = "http://localhost";
+const SCOPES = [
+    "https://www.googleapis.com/auth/classroom.courses.readonly",
+    "https://www.googleapis.com/auth/classroom.rosters.readonly",
+    "https://www.googleapis.com/auth/classroom.course-work.readonly",
+    "https://www.googleapis.com/auth/classroom.student-submissions.me.readonly"
+];
 
-const firebaseConfig = {
-    apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_APP_ID,
-    measurementId: process.env.REACT_APP_MEASUREMENT_ID
-};
-
-const app = initializeApp(firebaseConfig);
-
-export const handleGoogleSignIn = async (history) => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-
-    try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        localStorage.setItem('name', user.displayName);
-        console.log('Signed in user:', user.displayName);
-        // redirect to taskboard
-        history.push('/admin/taskboard');
-        return user;
-    } catch (error) {
-        console.error('Error signing in with Google:', error);
-    }
+export const handleGoogleSignIn = () => {
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent(SCOPES.join(' '))}&access_type=offline&prompt=consent`;
+    window.location.href = authUrl;
 };
