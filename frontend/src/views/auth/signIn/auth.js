@@ -2,7 +2,6 @@ const GOOGLE_CLIENT_ID = "15670792015-r9fpt3f3me7174a10sqvduham7bkoofk.apps.goog
 const REDIRECT_URI = "http://localhost";
 const SCOPES = [
     "https://www.googleapis.com/auth/classroom.courses.readonly",
-    "https://www.googleapis.com/auth/classroom.rosters.readonly",
     "https://www.googleapis.com/auth/classroom.course-work.readonly",
     "https://www.googleapis.com/auth/classroom.student-submissions.me.readonly",
     "https://www.googleapis.com/auth/userinfo.email",
