@@ -45,8 +45,9 @@ import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
 // import data
 
-import {useState} from "react";
+import {useState, useRef} from "react";
 import {useParams} from "react-router-dom";
+import {MdDateRange} from "react-icons/md";
 
 export default function UserReports() {
 
@@ -54,12 +55,13 @@ export default function UserReports() {
     const {id} = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingTaskTitle, setIsEditingTaskTitle] = useState(false);
-    const [isEdittingTaskDueDate, setIsEditingTaskDueDate] = useState(false);
     const [taskTitle, setTaskTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [showSummary, setShowSummary] = useState(false); // State variable
+    const [showSummary, setShowSummary] = useState(false);
     const task_description = task.attributes ? task.attributes.description : "Loading...";
     const [isLoading, setIsLoading] = useState(false);
+    const [dueDate, setDueDate] = useState(task.attributes ? task.attributes.due_date : new Date());
+    const [isEditingDueDate, setIsEditingDueDate] = useState(false);
 
     useEffect(() => {
         fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
@@ -228,6 +230,52 @@ export default function UserReports() {
             .finally(() => setIsLoading(false));
     };
 
+    const handleEditDueDate = () => {
+        setIsEditingDueDate(true);
+    };
+
+    const handleDueDateChange = (event) => {
+        setDueDate(event.target.value);
+    };
+
+    const handleSaveDueDate = () => {
+        // Construct the request body
+        const requestBody = {
+            data: {
+                type: "TaskViewSet",
+                id: id,
+                attributes: {
+                    ...task.attributes,
+                    due_date: dueDate
+                }
+            }
+        };
+
+        // API call to update due date
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/vnd.api+json'
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.data) {
+                    setTask(data.data);
+                    setIsEditingDueDate(false);
+                }
+            })
+            .catch(error => {
+                console.error('Failed to save the due date', error);
+            });
+    };
+
     const LoadingModal = () => (
         <Modal isOpen={isLoading} isCentered onClose={() => {
         }} closeOnOverlayClick={false}>
@@ -243,11 +291,21 @@ export default function UserReports() {
         </Modal>
     );
 
+    // ... existing states and functions ...
+    const dateInputRef = useRef(null);
+
+    // Function to trigger the date picker
+    const handleIconClick = () => {
+        if (dateInputRef.current) {
+            dateInputRef.current.click();
+        }
+    };
+
     const titleColor = useColorModeValue("brand.800", "orange.500");
     const editTitleColor = useColorModeValue("red", "pink");
     const dueDateColor = useColorModeValue("red.600", "red.500");
     const taskSubjectColor = useColorModeValue("brand.600", "navy.200");
-    const { colorMode } = useColorMode();
+    const {colorMode} = useColorMode();
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
@@ -322,9 +380,31 @@ export default function UserReports() {
                           fontWeight='bold'>
                         Due Date: &nbsp;
                     </Text>
-                    <Text color={dueDateColor} fontSize='xl' fontWeight='bold'>
-                        {task.attributes ? task.attributes.due_date : "Loading..."}
-                    </Text>
+                    {isEditingDueDate ? (
+                            <input
+                                ref={dateInputRef}
+                                type="date"
+                                value={dueDate}
+                                onChange={handleDueDateChange}
+                                style={{
+                                    border: 'solid 1px',
+                                }}
+                            />
+                    ) : (
+                        <Text color={dueDateColor} fontSize='xl'
+                              fontWeight='bold'>
+                            {task.attributes ? task.attributes.due_date : "Loading..."}
+                        </Text>
+                    )}
+                </Flex>
+                <Flex mb='20px'>
+                    {isEditingDueDate ? (
+                        <Button onClick={handleSaveDueDate}>Save Due
+                            Date</Button>
+                    ) : (
+                        <Button onClick={handleEditDueDate}>Edit Due
+                            Date</Button>
+                    )}
                 </Flex>
 
                 {showSummary && (
@@ -339,7 +419,8 @@ export default function UserReports() {
                     </Flex>
                 )}
                 <Flex mb='20px'>
-                    <Button onClick={loadData}>
+                    <Button onClick={loadData}
+                            backgroundColor={useColorModeValue('navy.50', 'navy.600')}>
                         Summarize task
                     </Button>
                 </Flex>
