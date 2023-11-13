@@ -270,6 +270,36 @@ export default function UserReports() {
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
+            <Button mb='10px' backgroundColor={selectSubBtColor} onClick={openSubjectModal}>Select Subjects</Button>
+            <Modal isOpen={isSubjectModalOpen}
+                   onClose={() => setIsSubjectModalOpen(false)}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>Select Subjects</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody>
+                        <VStack align="stretch" spacing={3}>
+                            {availableSubjects.map((subject, index) => (
+                                <Checkbox
+                                    key={index}
+                                    isChecked={tempSelectedSubjects.includes(subject)}
+                                    onChange={() => handleSubjectChange(subject)}
+                                >
+                                    {subject}
+                                </Checkbox>
+                            ))}
+                        </VStack>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3}
+                                onClick={saveSelectedSubjects}>
+                            Save Selection
+                        </Button>
+                        <Button variant="ghost"
+                                onClick={() => setIsSubjectModalOpen(false)}>Cancel</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
             <SimpleGrid columns={{base: 1, md: 2, lg: 3, '2xl': 6}} gap='20px'
                         mb='20px'>
                 {/* Group for 'Todo' */}
