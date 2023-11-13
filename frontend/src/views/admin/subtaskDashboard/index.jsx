@@ -25,14 +25,18 @@ import {
     Box,
     Flex,
     Text,
-    Input,
     Button,
     Progress,
     Modal,
     ModalOverlay,
     ModalContent,
-    useColorModeValue
+    useColorModeValue,
+    useColorMode
 } from "@chakra-ui/react";
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // import styles
+import he from 'he';
 
 import React, {useEffect} from "react";
 import Tasks from "views/admin/subtaskDashboard/components/Tasks";
@@ -41,16 +45,25 @@ import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
 // import data
 
-import {useState} from "react";
+import {useState, useRef} from "react";
 import {useParams} from "react-router-dom";
+import {MdDateRange} from "react-icons/md";
 
 export default function UserReports() {
 
     const [task, setTask] = useState([]);
     const {id} = useParams();
+    const [isEditing, setIsEditing] = useState(false);
+    const [isEditingTaskTitle, setIsEditingTaskTitle] = useState(false);
+    const [taskTitle, setTaskTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [showSummary, setShowSummary] = useState(false);
+    const task_description = task.attributes ? task.attributes.description : "Loading...";
+    const [isLoading, setIsLoading] = useState(false);
+    const [dueDate, setDueDate] = useState(task.attributes ? task.attributes.due_date : new Date());
+    const [isEditingDueDate, setIsEditingDueDate] = useState(false);
 
     useEffect(() => {
-        // Your API endpoint
         fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
             .then((response) => response.json())
             .then((data) => {
@@ -59,6 +72,7 @@ export default function UserReports() {
                     const foundTask = taskData.find(task => task.id === id);
                     if (foundTask) {
                         setTask(foundTask);
+                        setDescription(foundTask.attributes.description);
                     } else {
                         console.log("Task not found");
                     }
@@ -69,31 +83,80 @@ export default function UserReports() {
             });
     }, []);
 
-    // State to manage whether the description is being edited
-    const [isEditing, setIsEditing] = useState(false);
+    const handleEditTitle = () => {
+        if (task.attributes) {
+            setTaskTitle(task.attributes.title); // Initialize the input with the current title
+            setIsEditingTaskTitle(true); // Switch to editing mode
+        }
+    };
 
-    // State to manage the input value for the description
-    const [description, setDescription] = useState("");
+    // Handle the change of the title input
+    const handleTitleChange = (event) => {
+        setTaskTitle(event.target.value); // Update the title input state
+    };
+
+    // Handle the save of the edited title
+    const handleSaveTitle = () => {
+        if (taskTitle.trim() === "") {
+            setTaskTitle("Untitled Task");
+        }
+        // Construct the request body with the updated title
+        const requestBody = {
+            data: {
+                type: "TaskViewSet",
+                id: id,
+                attributes: {
+                    ...task.attributes,
+                    title: taskTitle.trim()
+                }
+            }
+        }
+
+        // Perform the API call to update the task title on the server
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/vnd.api+json'
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.data) {
+                    setTask(data.data);
+                } else {
+                    console.log("No data found");
+                }
+                setIsEditingTaskTitle(false);
+            })
+            .catch(error => {
+                console.error('Failed to save the task title', error);
+            });
+    };
 
     // Handle the start of editing
     const handleEdit = () => {
-        setDescription(task.attributes.description); // Set the current description into the state
-        setIsEditing(true); // Switch to editing mode
+        if (task.attributes) {
+            setIsEditing(true); // Switch to editing mode
+        }
     };
-
     // Handle the change of the input
-    const handleDescriptionChange = (e) => {
-        setDescription(e.target.value); // Update the state with the input value
+    const handleDescriptionChange = (content, delta, source, editor) => {
+        setDescription(editor.getHTML()); // ReactQuill provides the HTML content through the editor instance
     };
-
-    const [isLoading, setIsLoading] = useState(false);
 
     const handleSave = () => {
-        if (description === task.attributes.description) {
+        const encodedDescription = he.encode(description);
+        if (encodedDescription === task.attributes.description) {
             setIsEditing(false);
             return;
         }
-        if (description.trim() === "") {
+        if (encodedDescription.trim() === "") {
             setDescription("No description");
         }
         const requestBody = {
@@ -102,10 +165,11 @@ export default function UserReports() {
                 id: id,
                 attributes: {
                     ...task.attributes,
-                    description
+                    description: encodedDescription
                 }
             }
         }
+
         fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
             method: 'PUT',
             headers: {
@@ -132,8 +196,6 @@ export default function UserReports() {
             });
     };
 
-    const [showSummary, setShowSummary] = useState(false); // State variable
-    const task_description = task.attributes ? task.attributes.description : "Loading...";
 
     const loadData = () => {
         setIsLoading(true);
@@ -168,6 +230,52 @@ export default function UserReports() {
             .finally(() => setIsLoading(false));
     };
 
+    const handleEditDueDate = () => {
+        setIsEditingDueDate(true);
+    };
+
+    const handleDueDateChange = (event) => {
+        setDueDate(event.target.value);
+    };
+
+    const handleSaveDueDate = () => {
+        // Construct the request body
+        const requestBody = {
+            data: {
+                type: "TaskViewSet",
+                id: id,
+                attributes: {
+                    ...task.attributes,
+                    due_date: dueDate
+                }
+            }
+        };
+
+        // API call to update due date
+        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/vnd.api+json'
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.data) {
+                    setTask(data.data);
+                    setIsEditingDueDate(false);
+                }
+            })
+            .catch(error => {
+                console.error('Failed to save the due date', error);
+            });
+    };
+
     const LoadingModal = () => (
         <Modal isOpen={isLoading} isCentered onClose={() => {
         }} closeOnOverlayClick={false}>
@@ -183,18 +291,59 @@ export default function UserReports() {
         </Modal>
     );
 
+    // ... existing states and functions ...
+    const dateInputRef = useRef(null);
+
+    // Function to trigger the date picker
+    const handleIconClick = () => {
+        if (dateInputRef.current) {
+            dateInputRef.current.click();
+        }
+    };
+
     const titleColor = useColorModeValue("brand.800", "orange.500");
+    const editTitleColor = useColorModeValue("red", "pink");
     const dueDateColor = useColorModeValue("red.600", "red.500");
     const taskSubjectColor = useColorModeValue("brand.600", "navy.200");
+    const {colorMode} = useColorMode();
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
                 {isLoading && <LoadingModal/>}
                 <Flex mb='20px' mt='20px'>
-                    <Text color={titleColor} fontSize='x-large' fontWeight='bold'>
-                        {task.attributes ? task.attributes.title : "Loading..."}
-                    </Text>
+                    {isEditingTaskTitle ? (
+                        <input
+                            type="text"
+                            value={taskTitle}
+                            onChange={handleTitleChange}
+                            color={editTitleColor}
+                            style={{
+                                fontSize: 'x-large',
+                                fontWeight: 'bold',
+                                color: colorMode === "light" ? "blue" : "lightyellow",
+                                backgroundColor: 'transparent',
+                                border: 'solid 1px',
+                            }}
+                        />
+                    ) : (
+                        <Text color={titleColor} fontSize='x-large'
+                              fontWeight='bold'>
+                            {task.attributes ? task.attributes.title : "Loading..."}
+                        </Text>
+                    )}
+                </Flex>
+                <Flex mb='20px'>
+                    {isEditingTaskTitle ? (
+                        <Flex display='inline-flex'>
+                            <Button onClick={handleSaveTitle}
+                                    mr='10px'>Save</Button>
+                            <Button
+                                onClick={() => setIsEditingTaskTitle(false)}>Cancel</Button>
+                        </Flex>
+                    ) : (
+                        <Button onClick={handleEditTitle}>Edit Task Title</Button>
+                    )}
                 </Flex>
                 <Flex mb='10px' flexDirection='column'>
                     <Text color={taskSubjectColor} fontSize='xl'
@@ -202,16 +351,14 @@ export default function UserReports() {
                         Description: &nbsp;
                     </Text>
                     {isEditing ? (
-                        <Input
+                        <ReactQuill
+                            theme="snow"
                             value={description}
-                            textColor={taskSubjectColor}
                             onChange={handleDescriptionChange}
-                            size="sm"
                         />
                     ) : (
-                        <Text fontSize='xl' fontWeight='bold'>
-                            {task.attributes ? task.attributes.description : "Loading..."}
-                        </Text>
+                        <div
+                            dangerouslySetInnerHTML={{__html: he.decode(task.attributes ? task.attributes.description : "Loading...")}}></div>
                     )}
                 </Flex>
                 <Flex mb='20px'>
@@ -233,9 +380,31 @@ export default function UserReports() {
                           fontWeight='bold'>
                         Due Date: &nbsp;
                     </Text>
-                    <Text color={dueDateColor} fontSize='xl' fontWeight='bold'>
-                        {task.attributes ? task.attributes.due_date : "Loading..."}
-                    </Text>
+                    {isEditingDueDate ? (
+                            <input
+                                ref={dateInputRef}
+                                type="date"
+                                value={dueDate}
+                                onChange={handleDueDateChange}
+                                style={{
+                                    border: 'solid 1px',
+                                }}
+                            />
+                    ) : (
+                        <Text color={dueDateColor} fontSize='xl'
+                              fontWeight='bold'>
+                            {task.attributes ? task.attributes.due_date : "Loading..."}
+                        </Text>
+                    )}
+                </Flex>
+                <Flex mb='20px'>
+                    {isEditingDueDate ? (
+                        <Button onClick={handleSaveDueDate}>Save Due
+                            Date</Button>
+                    ) : (
+                        <Button onClick={handleEditDueDate}>Edit Due
+                            Date</Button>
+                    )}
                 </Flex>
 
                 {showSummary && (
@@ -250,7 +419,8 @@ export default function UserReports() {
                     </Flex>
                 )}
                 <Flex mb='20px'>
-                    <Button onClick={loadData}>
+                    <Button onClick={loadData}
+                            backgroundColor={useColorModeValue('navy.50', 'navy.600')}>
                         Summarize task
                     </Button>
                 </Flex>
