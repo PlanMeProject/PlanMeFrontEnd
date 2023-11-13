@@ -1,5 +1,5 @@
 const GOOGLE_CLIENT_ID = "15670792015-r9fpt3f3me7174a10sqvduham7bkoofk.apps.googleusercontent.com";
-const REDIRECT_URI = "http://localhost";
+const REDIRECT_URI = "http://localhost:3000/redirect";
 const SCOPES = [
     "https://www.googleapis.com/auth/classroom.courses.readonly",
     "https://www.googleapis.com/auth/classroom.course-work.readonly",
