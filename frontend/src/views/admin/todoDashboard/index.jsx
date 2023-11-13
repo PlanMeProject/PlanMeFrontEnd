@@ -270,12 +270,12 @@ export default function UserReports() {
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
-            <Button mb='10px' backgroundColor={selectSubBtColor} onClick={openSubjectModal}>Select Subjects</Button>
+            <Button mb='10px' backgroundColor={selectSubBtColor} onClick={openSubjectModal}>Select Courses</Button>
             <Modal isOpen={isSubjectModalOpen}
                    onClose={() => setIsSubjectModalOpen(false)}>
                 <ModalOverlay/>
                 <ModalContent>
-                    <ModalHeader>Select Subjects</ModalHeader>
+                    <ModalHeader>Select Courses</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody>
                         <VStack align="stretch" spacing={3}>
