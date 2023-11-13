@@ -1,13 +1,13 @@
 // Chakra imports
 import {
-    Box,
+    Box, Checkbox,
     Flex,
     FormHelperText,
     Icon,
     IconButton,
     SimpleGrid,
     Text,
-    useColorModeValue,
+    useColorModeValue, VStack,
 } from "@chakra-ui/react";
 
 import {
@@ -35,6 +35,7 @@ import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 import React, {useEffect, useState} from "react";
+import {useParams} from 'react-router-dom';
 import {MdAddTask} from "react-icons/md";
 import {AddIcon} from "@chakra-ui/icons";
 
