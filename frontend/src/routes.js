@@ -21,6 +21,7 @@ import SubTask from "views/admin/subtaskDashboard";
 
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
+import GoogleAuthRedirect from "views/auth/signIn";
 
 const routes = [
     {
@@ -37,6 +38,7 @@ const routes = [
         icon: <Icon as={MdCheckCircle} width='20px' height='20px' color='inherit'/>,
         component: TodoDashboard,
     },
+
     {
         name: "Main Dashboard",
         layout: "/admin",
@@ -60,12 +62,18 @@ const routes = [
         component: Profile,
     },
     {
+        name: "Google Auth Redirect",
+        layout: "/redirect",
+        path: ":code",
+    },
+    {
         name: "Sign In",
         layout: "/auth",
         path: "/sign-in",
         icon: <Icon as={MdLock} width='20px' height='20px' color='inherit'/>,
         component: SignInCentered,
-    }
+    },
+
 ];
 
 export default routes;

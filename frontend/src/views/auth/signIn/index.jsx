@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useHistory } from "react-router-dom";
-import { handleGoogleSignIn } from './auth.js';
+import { handleGoogleSignIn } from './auth';
 import {
     Box,
     Button,
