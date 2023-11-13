@@ -45,7 +45,39 @@ export default function UserReports() {
     const todoCardColor = useColorModeValue("#FFE999", "#FFDE6A");
     const inProgressCardColor = useColorModeValue("#CDC5FF", "#8F7CFF");
     const doneCardColor = useColorModeValue("#9EEECC", "#51EFAD");
-    const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200')
+    const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200');
+    const selectSubBtColor = useColorModeValue('#ff9393', 'red.500');
+
+    const {subjects} = useParams();
+    const decodedSubjects = decodeURIComponent(subjects).split(',');
+    const [selectedSubjects, setSelectedSubjects] = useState([]);
+    const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
+    const [availableSubjects, setAvailableSubjects] = useState(decodedSubjects);
+    const [tempSelectedSubjects, setTempSelectedSubjects] = useState([]);
+
+    const openSubjectModal = () => {
+        setTempSelectedSubjects(selectedSubjects); // Initialize temporary selections
+        setIsSubjectModalOpen(true);
+    };
+
+    const handleSubjectChange = (subject) => {
+        setTempSelectedSubjects(prev => {
+            if (prev.includes(subject)) {
+                return prev.filter(s => s !== subject);
+            } else {
+                return [...prev, subject];
+            }
+        });
+    };
+
+    const saveSelectedSubjects = () => {
+        setSelectedSubjects(tempSelectedSubjects);
+        setIsSubjectModalOpen(false);
+    };
+
+    useEffect(() => {
+        console.log('Selected subjects:', selectedSubjects);
+    }, [selectedSubjects]);
 
     const [task, setTask] = useState([]);
     const [numTodo, setNumTodo] = useState(0);
