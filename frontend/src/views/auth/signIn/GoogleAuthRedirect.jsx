@@ -44,9 +44,7 @@ const GoogleAuthHandler = () => {
     }, [searchUrl]);
 
     return (
-        <div>
-            <h1>Google Auth Handler</h1>
-        </div>
+        <div></div>
     );
 }
 
