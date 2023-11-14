@@ -14,6 +14,34 @@ const GoogleAuthHandler = () => {
         }
     }, [token, history]);
 
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/api/authorize/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify({
+                data: {
+                    type: "AuthorizationViewSet",
+                    attributes: {
+                        full_url: searchUrl.toString()
+                    },
+                }
+            }),
+        }).then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            }
+            return response.json();
+        }).then(data => {
+            setToken(data.data.token);
+            setUserId(data.data.user_id);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }, [searchUrl]);
 
     return (
         <div>
