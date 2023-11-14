@@ -17,10 +17,10 @@ ReactDOM.render(
 				<BrowserRouter>
 					<Switch>
 						<Route path={`/auth`} component={AuthLayout} />
-						<Route path={`/redirect`} component={GoogleAuthRedirect}/>
+						<Route path={`/google-auth`} component={GoogleAuthRedirect}/>
 						<Route path={`/admin`} component={AdminLayout} />
 						<Route path={`/rtl`} component={RtlLayout} />
-						<Redirect from='/' to='/auth' />
+						<Redirect from='/' to='/auth'/>
 					</Switch>
 				</BrowserRouter>
 			</ThemeEditorProvider>
