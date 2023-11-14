@@ -48,11 +48,10 @@ export default function UserReports() {
     const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200');
     const selectSubBtColor = useColorModeValue('#ff9393', 'red.500');
 
-    const {subjects} = useParams();
-    const decodedSubjects = decodeURIComponent(subjects).split(',');
+    const { token, user_id: userId } = useParams();
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
-    const [availableSubjects, setAvailableSubjects] = useState(decodedSubjects);
+    const [availableSubjects, setAvailableSubjects] = useState([]);
     const [tempSelectedSubjects, setTempSelectedSubjects] = useState([]);
 
     const openSubjectModal = () => {
