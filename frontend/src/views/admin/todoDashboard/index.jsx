@@ -107,10 +107,6 @@ export default function UserReports() {
         setIsSubjectModalOpen(false);
     };
 
-    useEffect(() => {
-        console.log('Selected subjects:', selectedSubjects);
-    }, [selectedSubjects]);
-
     const [task, setTask] = useState([]);
     const [numTodo, setNumTodo] = useState(0);
     const [numInProgress, setNumInProgress] = useState(0);
