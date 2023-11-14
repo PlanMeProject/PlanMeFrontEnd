@@ -54,6 +54,39 @@ export default function UserReports() {
     const [availableSubjects, setAvailableSubjects] = useState([]);
     const [tempSelectedSubjects, setTempSelectedSubjects] = useState([]);
 
+    useEffect(() => {
+        console.log(token);
+    }, [selectedSubjects]);
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/api/courses/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify({
+                data: {
+                    type: "CoursesViewSet",
+                    attributes: {
+                        access_token: token
+                    }
+                }
+            }),
+        }).then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            }
+            return response.json();
+        }).then(data => {
+            console.log('Success:', data.data.map(s => s.title));
+            setAvailableSubjects(data.data.map(s => s.title.name));
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }, [token]);
+
     const openSubjectModal = () => {
         setTempSelectedSubjects(selectedSubjects); // Initialize temporary selections
         setIsSubjectModalOpen(true);
