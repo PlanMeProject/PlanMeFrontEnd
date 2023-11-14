@@ -9,10 +9,10 @@ const GoogleAuthHandler = () => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log('Received code:', code);
-        // Redirect with subject as a URL parameter
-        history.push(`/admin/task-board/${encodeURIComponent(subjects)}`);
-    }, [code, subjects, history]);
+        if (token) {
+            history.push(`/admin/task-board/${token}/${userId}`);
+        }
+    }, [token, history]);
 
 
     return (
