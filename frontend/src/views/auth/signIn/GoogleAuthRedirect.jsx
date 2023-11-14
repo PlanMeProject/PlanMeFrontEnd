@@ -3,10 +3,10 @@ import {useHistory, useLocation} from 'react-router-dom';
 
 const GoogleAuthHandler = () => {
     const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const code = searchParams.get('code');
+    const searchUrl = location.search;
+    const [token, setToken] = useState(null);
+    const [userId, setUserId] = useState(null);
     const history = useHistory();
-    const subjects = ['Math', 'Science', 'English', 'History', 'Art', 'Music', 'PE', 'Computer Science', 'Other'];
 
     useEffect(() => {
         console.log('Received code:', code);
