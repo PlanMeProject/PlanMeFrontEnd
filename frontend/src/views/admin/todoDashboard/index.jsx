@@ -56,6 +56,7 @@ export default function UserReports() {
 
     useEffect(() => {
         console.log(token);
+        console.log(selectedSubjects);
     }, [selectedSubjects]);
 
     useEffect(() => {
@@ -80,7 +81,7 @@ export default function UserReports() {
             }
             return response.json();
         }).then(data => {
-            console.log('Success:', data.data.map(s => s.title));
+            console.log('Success:', data.data.map(s => s.title.name));
             setAvailableSubjects(data.data.map(s => s.title.name));
         }).catch(error => {
             console.error('Error:', error);
@@ -286,6 +287,7 @@ export default function UserReports() {
                 const taskData = data["data"];
                 if (taskData) {
                     setTask(taskData);
+                    // setTask(taskData.filter(task => task.attributes.subject in selectedSubjects));
                     setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
                     setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
                     setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
