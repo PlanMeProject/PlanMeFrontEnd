@@ -9,25 +9,33 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 const localizer = momentLocalizer(moment);
 
 const events = [
-  // Your event data here
+  {
+    title: 'Event 1',
+    start: new Date(2023, 10, 1, 10, 0),
+    end: new Date(2023, 10, 1, 12, 0),
+  },
+  {
+    title: 'Homework',
+    start: new Date(2023, 10, 1, 10, 0),
+    end: new Date(2023, 10, 5), // Specify only the end time
+  },
 ];
 
 const CustomEvent = ({ event }) => (
   <div
     style={{
-      backgroundColor: '#6678b4',
-      color: '#ffffff',
-      padding: '8px',
+      backgroundColor: useColorModeValue('#0b1437', '#ffffff'),
+      color: useColorModeValue('#ffffff', '#0b1437'),
       borderRadius: '5px',
       boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-      cursor: 'pointer',
-      transition: 'background 0.3s ease, color 0.3s ease',
+      border: "none", // Remove the border property
     }}
   >
-    {event.title}
+    <strong>
+        {event.title}
+    </strong>
   </div>
 );
-
 const CustomToolbar = (toolbar) => {
   const buttonStyle = {
     ...toolbarButtonStyle,
@@ -40,7 +48,6 @@ const CustomToolbar = (toolbar) => {
         color: '#0b1437',
         padding: '10px',
         borderRadius: '4px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -127,10 +134,10 @@ const UserReports = () => {
             borderRadius="4px"
             _focus={{ boxShadow: '0 0 0 1px #6678b4' }}
           >
-            <option value="month" style={{ backgroundColor: '#1a202c', color: '#ffffff' }}>
+            <option value="month" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
               Month
             </option>
-            <option value="week" style={{ backgroundColor: '#1a202c', color: '#ffffff' }}>
+            <option value="week" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
               Week
             </option>
           </Select>
