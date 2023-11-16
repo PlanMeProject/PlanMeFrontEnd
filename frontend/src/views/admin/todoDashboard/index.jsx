@@ -108,6 +108,9 @@ export default function UserReports() {
 
     const saveSelectedSubjects = () => {
         setSelectedSubjects(tempSelectedSubjects);
+        const selectedCourses = allCourses.filter(c => tempSelectedSubjects.includes(c.title.name));
+        setSelectedCourses(selectedCourses);
+        getAssignments(selectedCourses);
         setIsSubjectModalOpen(false);
     };
 
