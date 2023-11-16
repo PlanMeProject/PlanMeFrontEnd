@@ -114,6 +114,54 @@ export default function UserReports() {
         setIsSubjectModalOpen(false);
     };
 
+    const getAssignments = (selectedCourses) => {
+
+        const body = filterSelection === "notCheck" ? {
+            data: {
+                type: "AssignmentsViewSet",
+                attributes: {
+                    user_id: userId,
+                    access_token: token,
+                    all_courses: {
+                        data: selectedCourses
+                    }
+                }
+            }
+        } : {
+            data: {
+                type: "AssignmentsViewSet",
+                attributes: {
+                    user_id: userId,
+                    check_status: "check",
+                    access_token: token,
+                    all_courses: {
+                        data: selectedCourses
+                    }
+                }
+            }
+        }
+        fetch(`http://127.0.0.1:8000/api/assignments/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(body),
+        }).then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            }
+            return response.json();
+        }).then(data => {
+            console.log('Success jaaa:', data);
+            setAssignments(data.data);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    };
+
+
     const [task, setTask] = useState([]);
     const [numTodo, setNumTodo] = useState(0);
     const [numInProgress, setNumInProgress] = useState(0);
