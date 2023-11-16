@@ -102,6 +102,10 @@ export default function UserReports() {
         });
     };
 
+    useEffect(() => {
+        setTask(assignments);
+    }, [assignments]);
+
     const saveSelectedSubjects = () => {
         setSelectedSubjects(tempSelectedSubjects);
         setIsSubjectModalOpen(false);
