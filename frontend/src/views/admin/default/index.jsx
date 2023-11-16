@@ -1,5 +1,3 @@
-
-
 import React, { useState} from "react";
 import { Box, Flex, Select , useColorModeValue} from "@chakra-ui/react";
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
@@ -11,31 +9,50 @@ const localizer = momentLocalizer(moment);
 const events = [
   {
     title: 'Event 1',
-    start: new Date(2023, 10, 1, 10, 0),
+    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
     end: new Date(2023, 10, 1, 12, 0),
   },
-  {
-    title: 'Homework',
-    start: new Date(2023, 10, 1, 10, 0),
-    end: new Date(2023, 10, 5), // Specify only the end time
+    {
+    title: 'Event 1',
+    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
+    end: new Date(2023, 10, 1, 12, 0),
+  },
+    {
+    title: 'Event 1',
+    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
+    end: new Date(2023, 10, 1, 12, 0),
+  },
+    {
+    title: 'Event 1',
+    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
+    end: new Date(2023, 10, 1, 12, 0),
+  },
+    {
+    title: 'Event 1',
+    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
+    end: new Date(2023, 10, 1, 12, 0),
   },
 ];
 
 const CustomEvent = ({ event }) => (
   <div
     style={{
-      backgroundColor: useColorModeValue('#0b1437', '#ffffff'),
-      color: useColorModeValue('#ffffff', '#0b1437'),
+      backgroundColor: useColorModeValue('#0b1437' ,'#ffffff'),
+      color: useColorModeValue( '#ffffff','#0b1437'),
+      padding: '8px',
       borderRadius: '5px',
       boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-      border: "none", // Remove the border property
+      cursor: 'pointer',
+      transition: 'background 0.3s ease, color 0.3s ease',
     }}
   >
     <strong>
-        {event.title}
+      {event.title}
     </strong>
+
   </div>
 );
+
 const CustomToolbar = (toolbar) => {
   const buttonStyle = {
     ...toolbarButtonStyle,
@@ -48,6 +65,7 @@ const CustomToolbar = (toolbar) => {
         color: '#0b1437',
         padding: '10px',
         borderRadius: '4px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -148,7 +166,7 @@ const UserReports = () => {
           startAccessor="start"
           endAccessor="end"
           style={{
-            height: 500,
+            height: 800,
             borderRadius: '8px',
             overflow: 'hidden',
             boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
@@ -170,5 +188,3 @@ const UserReports = () => {
 };
 
 export default UserReports;
-
-
