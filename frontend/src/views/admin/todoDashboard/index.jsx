@@ -80,7 +80,7 @@ export default function UserReports() {
             }
             return response.json();
         }).then(data => {
-            console.log('Success:', data.data.map(s => s.title.name));
+            setAllCourses(data.data);
             setAvailableSubjects(data.data.map(s => s.title.name));
         }).catch(error => {
             console.error('Error:', error);
