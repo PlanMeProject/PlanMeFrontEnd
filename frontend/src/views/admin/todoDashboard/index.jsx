@@ -48,16 +48,15 @@ export default function UserReports() {
     const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200');
     const selectSubBtColor = useColorModeValue('#ff9393', 'red.500');
 
-    const { token, user_id: userId } = useParams();
+    const {token, user_id: userId} = useParams();
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
     const [availableSubjects, setAvailableSubjects] = useState([]);
     const [tempSelectedSubjects, setTempSelectedSubjects] = useState([]);
-
-    useEffect(() => {
-        console.log(token);
-        console.log(selectedSubjects);
-    }, [selectedSubjects]);
+    const [allCourses, setAllCourses] = useState([]);
+    const [selectedCourses, setSelectedCourses] = useState([]);
+    const [filterSelection, setFilterSelection] = useState("notCheck");
+    const [assignments, setAssignments] = useState([]);
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/courses/`, {
