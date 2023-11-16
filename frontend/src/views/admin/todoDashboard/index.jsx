@@ -354,7 +354,8 @@ export default function UserReports() {
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
-            <Button mb='10px' backgroundColor={selectSubBtColor} onClick={openSubjectModal}>Select Courses</Button>
+            <Button mb='10px' backgroundColor={selectSubBtColor}
+                    onClick={openSubjectModal}>Select Courses</Button>
             <Modal isOpen={isSubjectModalOpen}
                    onClose={() => setIsSubjectModalOpen(false)}>
                 <ModalOverlay/>
@@ -362,6 +363,15 @@ export default function UserReports() {
                     <ModalHeader>Select Courses</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody>
+                        <Select
+                            placeholder="Check Done Tasks?"
+                            value={filterSelection}
+                            onChange={(e) => setFilterSelection(e.target.value)}
+                            mb={3}
+                        >
+                            <option value="check">Checked Done Tasks</option>
+                            <option value="notCheck">Not Checked Done Tasks</option>
+                        </Select>
                         <VStack align="stretch" spacing={3}>
                             {availableSubjects.map((subject, index) => (
                                 <Checkbox
