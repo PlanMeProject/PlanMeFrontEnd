@@ -333,8 +333,13 @@ export default function UserReports() {
     };
 
     // useEffect(() => {
+    //
+    //     const baseURL = "http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/";
+    //     const courseParams = selectedCourses.map(course => `courses=${encodeURIComponent(course)}`).join('&');
+    //     const fetchURL = `${baseURL}?user_id=${encodeURIComponent(userId)}&${courseParams}`;
+    //
     //     // Your API endpoint
-    //     fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
+    //     fetch(fetchURL)
     //         .then((response) => response.json())
     //         .then((data) => {
     //             const taskData = data["data"];
