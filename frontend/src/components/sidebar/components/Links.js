@@ -1,8 +1,9 @@
 /* eslint-disable */
-import React from "react";
+import React, {useContext, useEffect} from "react";
 import {NavLink, useLocation} from "react-router-dom";
 // chakra imports
 import {Box, Flex, HStack, Text, useColorModeValue} from "@chakra-ui/react";
+import {SidebarContext} from "../../../contexts/SidebarContext";
 
 export function SidebarLinks(props) {
     //   Chakra color mode
@@ -16,11 +17,24 @@ export function SidebarLinks(props) {
     let textColor = useColorModeValue("secondaryGray.500", "white");
     let brandColor = useColorModeValue("brand.500", "brand.400");
 
-    const {routes} = props;
+    const {userToken, userId} = useContext(SidebarContext);
 
+    useEffect(() => {
+        console.log("link token", userToken);
+        console.log("link user", userId);
+    }, [userToken, userId]);
+
+    const {routes} = props;
     // verifies if routeName is the one active (in browser input)
     const activeRoute = (routeName) => {
         return location.pathname.includes(routeName);
+    };
+
+    const generateLinkUrl = (route) => {
+        if (route.name === "Task board") {
+            return `/admin/task-board/${userToken}/${userId}`;
+        }
+        return route.layout + route.path;
     };
 
     // this function creates the links from the secondary accordions (for example auth -> sign-in -> default)
@@ -51,11 +65,8 @@ export function SidebarLinks(props) {
                 route.layout === "/auth" ||
                 route.layout === "/rtl"
             ) {
-                if (route.path === "/task-board/task/:id") {
-                    return null;
-                }
                 return (
-                    <NavLink key={index} to={route.layout + route.path}>
+                    <NavLink key={index} to={generateLinkUrl(route)}>
                         {route.icon ? (
                             <Box>
                                 <HStack
