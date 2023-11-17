@@ -332,29 +332,29 @@ export default function UserReports() {
         }
     };
 
-    // useEffect(() => {
-    //
-    //     const baseURL = "http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/";
-    //     const courseParams = selectedCourses.map(course => `courses=${encodeURIComponent(course)}`).join('&');
-    //     const fetchURL = `${baseURL}?user_id=${encodeURIComponent(userId)}&${courseParams}`;
-    //
-    //     // Your API endpoint
-    //     fetch(fetchURL)
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             const taskData = data["data"];
-    //             if (taskData) {
-    //                 setTask(taskData);
-    //                 // setTask(taskData.filter(task => task.attributes.subject in selectedSubjects));
-    //                 setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
-    //                 setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
-    //                 setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error fetching data: ", error);
-    //         });
-    // }, []);
+    useEffect(() => {
+
+        const baseURL = `http://127.0.0.1:8000/api/users/${userId}/tasks/`;
+        const courseParams = selectedCourses.map(course => `courses=${course}`).join('&');
+        const fetchURL = `${baseURL}?user_id=${userId}&${courseParams}`;
+
+        // Your API endpoint
+        fetch(fetchURL)
+            .then((response) => response.json())
+            .then((data) => {
+                const taskData = data["data"];
+                if (taskData) {
+                    setTask(taskData);
+                    // setTask(taskData.filter(task => task.attributes.subject in selectedSubjects));
+                    setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
+                    setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
+                    setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching data: ", error);
+            });
+    }, []);
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
