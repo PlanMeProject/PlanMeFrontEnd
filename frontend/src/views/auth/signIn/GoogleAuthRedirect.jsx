@@ -1,18 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
+import {SidebarContext} from "../../../contexts/SidebarContext";
 
 const GoogleAuthHandler = () => {
     const location = useLocation();
     const searchUrl = location.search;
-    const [token, setToken] = useState(null);
-    const [userId, setUserId] = useState(null);
+    // const [token, setToken] = useState(null);
+    // const [userId, setUserId] = useState(null);
+    const { userToken, userId, updateUser } = useContext(SidebarContext);
+
     const history = useHistory();
 
     useEffect(() => {
-        if (token) {
-            history.push(`/admin/task-board/${token}/${userId}`);
+        if (userToken && userId) {
+            history.push(`/admin/task-board/${userToken}/${userId}`);
         }
-    }, [token, history]);
+    }, [userToken, userId, history]);
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/authorize/`, {
@@ -36,12 +39,13 @@ const GoogleAuthHandler = () => {
             }
             return response.json();
         }).then(data => {
-            setToken(data.data.token);
-            setUserId(data.data.user_id);
+            // setToken(data.data.token);
+            // setUserId(data.data.user_id);
+            updateUser(data.data.token, data.data.user_id);
         }).catch(error => {
             console.error('Error:', error);
         });
-    }, [searchUrl]);
+    }, [searchUrl, updateUser]);
 
     return (
         <div></div>
