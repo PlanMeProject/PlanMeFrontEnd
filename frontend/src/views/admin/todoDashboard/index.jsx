@@ -104,6 +104,7 @@ export default function UserReports() {
 
     const saveSelectedSubjects = () => {
         setSelectedSubjects(tempSelectedSubjects);
+        localStorage.setItem("selectedSubjects", JSON.stringify(tempSelectedSubjects));
         const selectedCourses = allCourses.filter(c => tempSelectedSubjects.includes(c.title.name));
         setSelectedCourses(selectedCourses);
         getAssignments(selectedCourses);
@@ -151,7 +152,6 @@ export default function UserReports() {
             return response.json();
         }).then(data => {
             console.log('Success jaaa:', data);
-            loadTask(selectedCourses);
             setAssignments(data.data);
         }).catch(error => {
             console.error('Error:', error);
@@ -218,7 +218,6 @@ export default function UserReports() {
         if (!taskTitle.trim() || !description.trim() || !dueDate.trim() || !status.trim()) {
             return;
         }
-        const userId = 'f6084d8f-3a96-4288-b18f-fc174ce13b01'; // Replace with actual user ID
         const newTaskDetails = {
             title: taskTitle,
             description: description,
@@ -237,7 +236,7 @@ export default function UserReports() {
 
     const handleDeleteTask = (taskId) => {
         // Perform the DELETE request
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}`, {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${taskId}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -298,7 +297,7 @@ export default function UserReports() {
             };
 
             // Perform the API call to update the status on the server
-            fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/`, {
+            fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${taskId}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/vnd.api+json',
@@ -329,10 +328,25 @@ export default function UserReports() {
         }
     };
 
-    const loadTask = (selectedCourses) => {
-        console.log("here", selectedCourses);
-        const courseParams = selectedCourses.map(course => `courses=${course.title.name}`).join('&');
-        console.log(courseParams);
+    useEffect(() => {
+        const selectedSubjectFromStorage = localStorage.getItem('selectedSubjects');
+        // console.log("mama", selectedSubjectFromStorage);
+
+        if (selectedSubjectFromStorage === null) {
+            return;
+        }
+
+        let selectedSubjects;
+        try {
+            // Parse the JSON string back into an array
+            selectedSubjects = JSON.parse(selectedSubjectFromStorage);
+        } catch (e) {
+            console.error("Error parsing JSON from localStorage:", e);
+            return;
+        }
+
+        const courseParams = selectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
+        // console.log(courseParams);
         const fetchURL = `http://127.0.0.1:8000/api/users/${userId}/tasks/?user_id=${userId}&${courseParams}`;
 
         // Your API endpoint
@@ -342,7 +356,6 @@ export default function UserReports() {
                 const taskData = data["data"];
                 if (taskData) {
                     setTask(taskData);
-                    // setTask(taskData.filter(task => task.attributes.subject in selectedSubjects));
                     setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
                     setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
                     setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
@@ -351,7 +364,8 @@ export default function UserReports() {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             });
-    };
+    });
+
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
@@ -371,7 +385,8 @@ export default function UserReports() {
                             mb={3}
                         >
                             <option value="check">Checked Done Tasks</option>
-                            <option value="notCheck">Not Checked Done Tasks</option>
+                            <option value="notCheck">Not Checked Done Tasks
+                            </option>
                         </Select>
                         <VStack align="stretch" spacing={3}>
                             {availableSubjects.map((subject, index) => (

@@ -47,10 +47,10 @@ import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
 import {useState, useRef} from "react";
 import {useParams} from "react-router-dom";
-import {MdDateRange} from "react-icons/md";
 
 export default function UserReports() {
 
+    const userId = localStorage.getItem("userId");
     const [task, setTask] = useState([]);
     const {id} = useParams();
     const [isEditing, setIsEditing] = useState(false);
@@ -64,12 +64,13 @@ export default function UserReports() {
     const [isEditingDueDate, setIsEditingDueDate] = useState(false);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
+        console.log('useerId', userId);
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`)
             .then((response) => response.json())
             .then((data) => {
                 const taskData = data["data"];
                 if (taskData) {
-                    const foundTask = taskData.find(task => task.id === id);
+                    const foundTask = taskData
                     if (foundTask) {
                         setTask(foundTask);
                         setDescription(foundTask.attributes.description);
@@ -81,7 +82,7 @@ export default function UserReports() {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             });
-    }, []);
+    }, [id, userId]);
 
     const handleEditTitle = () => {
         if (task.attributes) {
@@ -113,7 +114,7 @@ export default function UserReports() {
         }
 
         // Perform the API call to update the task title on the server
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'
@@ -170,7 +171,7 @@ export default function UserReports() {
             }
         }
 
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'
@@ -252,7 +253,7 @@ export default function UserReports() {
         };
 
         // API call to update due date
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'
@@ -293,13 +294,6 @@ export default function UserReports() {
 
     // ... existing states and functions ...
     const dateInputRef = useRef(null);
-
-    // Function to trigger the date picker
-    const handleIconClick = () => {
-        if (dateInputRef.current) {
-            dateInputRef.current.click();
-        }
-    };
 
     const titleColor = useColorModeValue("brand.800", "orange.500");
     const editTitleColor = useColorModeValue("red", "pink");
