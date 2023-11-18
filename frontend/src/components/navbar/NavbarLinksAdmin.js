@@ -27,6 +27,46 @@ import routes from 'routes.js';
 // import {ThemeEditor} from './ThemeEditor';
 
 export default function HeaderLinks(props) {
+
+    const handleSearchChange = (query) => {
+        removeHighlights();
+        if (!query) {
+            // If the query is empty, don't perform any search
+            return;
+        }
+
+        // Highlight matching text
+        highlightText(query);
+    };
+
+    const highlightText = (query) => {
+        const body = document.body;
+        const regex = new RegExp(query, 'gi');
+        const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null, false);
+
+        let node;
+        while ((node = walker.nextNode())) {
+            const matches = node.nodeValue.match(regex);
+            if (matches) {
+                const span = document.createElement('span');
+                span.className = 'highlight';
+                const highlightedText = node.nodeValue.replace(regex, (match) => `<mark style="background-color: yellow; color: black;">${match}</mark>`);
+                span.innerHTML = highlightedText;
+                node.parentNode.replaceChild(span, node);
+            }
+        }
+    };
+
+
+    const removeHighlights = () => {
+        document.querySelectorAll('.highlight').forEach((highlight) => {
+            const parent = highlight.parentNode;
+            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+            parent.normalize();
+        });
+    };
+
+
     const {secondary} = props;
     // Chakra Color Mode
     // const navbarIcon = useColorModeValue('gray.400', 'white');
@@ -52,8 +92,11 @@ export default function HeaderLinks(props) {
             p="10px"
             borderRadius="30px"
             boxShadow={shadow}>
+
             <SearchBar mb={secondary ? {base: '10px', md: 'unset'} : 'unset'}
-                       me="10px" borderRadius="30px"/>
+                       me="10px" borderRadius="30px"
+                       onSearchChange={handleSearchChange}
+            />
 
 
             <SidebarResponsive routes={routes}/>
@@ -93,10 +136,6 @@ export default function HeaderLinks(props) {
                                   borderRadius="8px" px="14px">
                             <Text fontSize="sm">Profile Settings</Text>
                         </MenuItem>
-                        {/*<MenuItem _hover={{bg: 'none'}} _focus={{bg: 'none'}}*/}
-                        {/*          borderRadius="8px" px="14px">*/}
-                        {/*    <Text fontSize="sm">Newsletter Settings</Text>*/}
-                        {/*</MenuItem>*/}
                         <MenuItem
                             _hover={{bg: 'none'}}
                             _focus={{bg: 'none'}}
