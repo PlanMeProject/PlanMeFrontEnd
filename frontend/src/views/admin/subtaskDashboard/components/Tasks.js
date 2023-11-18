@@ -89,7 +89,6 @@ export default function Conversion(props) {
             .then(response => response.json())
             .then(data => {
                 if (data) {
-                    console.log(data.data);
                     setSubtasks(data.data);
                 } else {
                     console.error('Failed to create the subtask', data.errors);
