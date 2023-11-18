@@ -151,6 +151,7 @@ export default function UserReports() {
             return response.json();
         }).then(data => {
             console.log('Success jaaa:', data);
+            loadTask(selectedCourses);
             setAssignments(data.data);
         }).catch(error => {
             console.error('Error:', error);
@@ -328,11 +329,11 @@ export default function UserReports() {
         }
     };
 
-    useEffect(() => {
-
-        const baseURL = `http://127.0.0.1:8000/api/users/${userId}/tasks/`;
-        const courseParams = selectedCourses.map(course => `courses=${course}`).join('&');
-        const fetchURL = `${baseURL}?user_id=${userId}&${courseParams}`;
+    const loadTask = (selectedCourses) => {
+        console.log("here", selectedCourses);
+        const courseParams = selectedCourses.map(course => `courses=${course.title.name}`).join('&');
+        console.log(courseParams);
+        const fetchURL = `http://127.0.0.1:8000/api/users/${userId}/tasks/?user_id=${userId}&${courseParams}`;
 
         // Your API endpoint
         fetch(fetchURL)
@@ -350,7 +351,7 @@ export default function UserReports() {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             });
-    }, []);
+    };
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
