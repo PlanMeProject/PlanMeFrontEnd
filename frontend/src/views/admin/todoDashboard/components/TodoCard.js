@@ -84,9 +84,9 @@ export default function Default(props) {
                             onClick={() => goToSubtask(task.id)}
                         >
                             <Flex display='inline-flex'>
-                                <Text
-                                    color='secondaryGray.900'
-                                >{task.attributes.title}</Text>
+                                <Text color='secondaryGray.900'>
+                                    {task.attributes.title.length > 40 ? `${task.attributes.title.slice(0, 50)}...` : task.attributes.title}
+                                </Text>
                                 <IconButton
                                     aria-label="Delete"
                                     color={delButtonColor}

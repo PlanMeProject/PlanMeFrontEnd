@@ -48,16 +48,15 @@ export default function UserReports() {
     const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200');
     const selectSubBtColor = useColorModeValue('#ff9393', 'red.500');
 
-    const { token, user_id: userId } = useParams();
+    const {token, user_id: userId} = useParams();
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
     const [availableSubjects, setAvailableSubjects] = useState([]);
     const [tempSelectedSubjects, setTempSelectedSubjects] = useState([]);
-
-    useEffect(() => {
-        console.log(token);
-        console.log(selectedSubjects);
-    }, [selectedSubjects]);
+    const [allCourses, setAllCourses] = useState([]);
+    const [selectedCourses, setSelectedCourses] = useState([]);
+    const [filterSelection, setFilterSelection] = useState("notCheck");
+    const [assignments, setAssignments] = useState([]);
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/courses/`, {
@@ -81,7 +80,7 @@ export default function UserReports() {
             }
             return response.json();
         }).then(data => {
-            console.log('Success:', data.data.map(s => s.title.name));
+            setAllCourses(data.data);
             setAvailableSubjects(data.data.map(s => s.title.name));
         }).catch(error => {
             console.error('Error:', error);
@@ -105,8 +104,60 @@ export default function UserReports() {
 
     const saveSelectedSubjects = () => {
         setSelectedSubjects(tempSelectedSubjects);
+        const selectedCourses = allCourses.filter(c => tempSelectedSubjects.includes(c.title.name));
+        setSelectedCourses(selectedCourses);
+        getAssignments(selectedCourses);
         setIsSubjectModalOpen(false);
     };
+
+    const getAssignments = (selectedCourses) => {
+
+        const body = filterSelection === "notCheck" ? {
+            data: {
+                type: "AssignmentsViewSet",
+                attributes: {
+                    user_id: userId,
+                    access_token: token,
+                    all_courses: {
+                        data: selectedCourses
+                    }
+                }
+            }
+        } : {
+            data: {
+                type: "AssignmentsViewSet",
+                attributes: {
+                    user_id: userId,
+                    check_status: "check",
+                    access_token: token,
+                    all_courses: {
+                        data: selectedCourses
+                    }
+                }
+            }
+        }
+        fetch(`http://127.0.0.1:8000/api/assignments/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(body),
+        }).then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            }
+            return response.json();
+        }).then(data => {
+            console.log('Success jaaa:', data);
+            loadTask(selectedCourses);
+            setAssignments(data.data);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    };
+
 
     const [task, setTask] = useState([]);
     const [numTodo, setNumTodo] = useState(0);
@@ -278,10 +329,14 @@ export default function UserReports() {
         }
     };
 
+    const loadTask = (selectedCourses) => {
+        console.log("here", selectedCourses);
+        const courseParams = selectedCourses.map(course => `courses=${course.title.name}`).join('&');
+        console.log(courseParams);
+        const fetchURL = `http://127.0.0.1:8000/api/users/${userId}/tasks/?user_id=${userId}&${courseParams}`;
 
-    useEffect(() => {
         // Your API endpoint
-        fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
+        fetch(fetchURL)
             .then((response) => response.json())
             .then((data) => {
                 const taskData = data["data"];
@@ -296,11 +351,12 @@ export default function UserReports() {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             });
-    }, []);
+    };
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
-            <Button mb='10px' backgroundColor={selectSubBtColor} onClick={openSubjectModal}>Select Courses</Button>
+            <Button mb='10px' backgroundColor={selectSubBtColor}
+                    onClick={openSubjectModal}>Select Courses</Button>
             <Modal isOpen={isSubjectModalOpen}
                    onClose={() => setIsSubjectModalOpen(false)}>
                 <ModalOverlay/>
@@ -308,6 +364,15 @@ export default function UserReports() {
                     <ModalHeader>Select Courses</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody>
+                        <Select
+                            placeholder="Check Done Tasks?"
+                            value={filterSelection}
+                            onChange={(e) => setFilterSelection(e.target.value)}
+                            mb={3}
+                        >
+                            <option value="check">Checked Done Tasks</option>
+                            <option value="notCheck">Not Checked Done Tasks</option>
+                        </Select>
                         <VStack align="stretch" spacing={3}>
                             {availableSubjects.map((subject, index) => (
                                 <Checkbox
