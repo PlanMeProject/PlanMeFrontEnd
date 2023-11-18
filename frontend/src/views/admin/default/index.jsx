@@ -9,28 +9,33 @@ const localizer = momentLocalizer(moment);
 const events = [
   {
     title: 'Event 1',
-    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
+    start: new Date(2023, 10, 1, 10, 0),
     end: new Date(2023, 10, 1, 12, 0),
+    showMore: true,
   },
-    {
-    title: 'Event 1',
-    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
-    end: new Date(2023, 10, 1, 12, 0),
+  {
+    title: 'Event 2',
+    start: new Date(2023, 10, 1, 14, 0),
+    end: new Date(2023, 10, 1, 15, 30),
+    showMore: true,
   },
-    {
-    title: 'Event 1',
-    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
-    end: new Date(2023, 10, 1, 12, 0),
+  {
+    title: 'Event 3',
+    start: new Date(2023, 10, 1, 16, 0),
+    end: new Date(2023, 10, 1, 17, 30),
+    showMore: true,
   },
-    {
-    title: 'Event 1',
-    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
-    end: new Date(2023, 10, 1, 12, 0),
+  {
+    title: 'Event 4',
+    start: new Date(2023, 10, 1, 18, 0),
+    end: new Date(2023, 10, 1, 19, 30),
+    showMore: true,
   },
-    {
-    title: 'Event 1',
-    start: new Date(2023, 10, 1, 10, 0), // Year, month (0-indexed), day, hour, minute
-    end: new Date(2023, 10, 1, 12, 0),
+  {
+    title: 'Event 5',
+    start: new Date(2023, 10, 1, 20, 0),
+    end: new Date(2023, 10, 1, 21, 30),
+    showMore: true,
   },
 ];
 
@@ -39,10 +44,9 @@ const CustomEvent = ({ event }) => (
     style={{
       backgroundColor: useColorModeValue('#0b1437' ,'#ffffff'),
       color: useColorModeValue( '#ffffff','#0b1437'),
-      padding: '8px',
+      padding: '3px',
       borderRadius: '5px',
       boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-      cursor: 'pointer',
       transition: 'background 0.3s ease, color 0.3s ease',
     }}
   >
@@ -111,10 +115,17 @@ const toolbarButtonStyle = {
 
 const UserReports = () => {
   const [view, setView] = useState('month');
+  const [showModal, setShowModal] = useState(false);
+  const [modalEvents, setModalEvents] = useState([]);
 
   const handleViewChange = (newView) => {
     setView(newView);
   };
+  const handleShowMore = (events, date) => {
+    setShowModal(true);
+    setModalEvents(events);
+  };
+
 
   // Custom function to get day properties
   const dayPropGetter = (date) => {
@@ -165,6 +176,9 @@ const UserReports = () => {
           events={events}
           startAccessor="start"
           endAccessor="end"
+          allDayMaxRows={3}
+          popup={true}
+          onShowMore={handleShowMore}
           style={{
             height: 800,
             borderRadius: '8px',
@@ -180,7 +194,7 @@ const UserReports = () => {
             week: true,
           }}
           view={view}
-          dayPropGetter={dayPropGetter} // Set the dayPropGetter function
+          dayPropGetter={dayPropGetter}
         />
       </Box>
     </Box>
