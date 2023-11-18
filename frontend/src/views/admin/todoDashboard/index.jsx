@@ -102,10 +102,6 @@ export default function UserReports() {
         });
     };
 
-    useEffect(() => {
-        setTask(assignments);
-    }, [assignments]);
-
     const saveSelectedSubjects = () => {
         setSelectedSubjects(tempSelectedSubjects);
         const selectedCourses = allCourses.filter(c => tempSelectedSubjects.includes(c.title.name));
