@@ -17,7 +17,9 @@ export function SidebarLinks(props) {
     let textColor = useColorModeValue("secondaryGray.500", "white");
     let brandColor = useColorModeValue("brand.500", "brand.400");
 
-    const {userToken, userId} = useContext(SidebarContext);
+    const userToken = localStorage.getItem('userToken') || '';
+    const userId = localStorage.getItem('userId') || '';
+
 
     useEffect(() => {
         console.log("link token", userToken);
