@@ -19,9 +19,6 @@ export const SidebarProvider = ({ children }) => {
     setUserId(newUserId);
   };
 
-  console.log("Current userToken:", userToken);
-  console.log("Current userId:", userId);
-
   return (
     <SidebarContext.Provider value={{ userToken, userId, updateUser }}>
       {children}

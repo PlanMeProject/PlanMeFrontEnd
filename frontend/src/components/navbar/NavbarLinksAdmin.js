@@ -24,6 +24,7 @@ import React from 'react';
 // import {MdNotificationsNone, MdInfoOutline} from 'react-icons/md';
 // import {FaEthereum} from 'react-icons/fa';
 import routes from 'routes.js';
+import {useHistory} from "react-router-dom";
 // import {ThemeEditor} from './ThemeEditor';
 
 export default function HeaderLinks(props) {
@@ -66,6 +67,13 @@ export default function HeaderLinks(props) {
         });
     };
 
+    const history = useHistory();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        history.push('/auth/sign-in');
+    }
 
     const {secondary} = props;
     // Chakra Color Mode
@@ -142,7 +150,7 @@ export default function HeaderLinks(props) {
                             color="red.400"
                             borderRadius="8px"
                             px="14px">
-                            <Text fontSize="sm">Log out</Text>
+                            <Text onClick={handleLogout} fontSize="sm">Log out</Text>
                         </MenuItem>
                     </Flex>
                 </MenuList>

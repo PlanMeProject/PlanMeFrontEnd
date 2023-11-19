@@ -35,7 +35,7 @@ const routes = [
     {
         name: "Task board",
         layout: "/admin",
-        path: "/task-board/:token/:user_id",
+        path: `/task-board/:usertoken/${userId}`,
         icon: <Icon as={MdCheckCircle} width='20px' height='20px' color='inherit'/>,
         component: TodoDashboard,
     },
