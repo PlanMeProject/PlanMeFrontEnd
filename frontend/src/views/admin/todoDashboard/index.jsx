@@ -35,7 +35,7 @@ import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 import React, {useEffect, useState} from "react";
-import {useParams} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import {MdAddTask} from "react-icons/md";
 import {AddIcon} from "@chakra-ui/icons";
 
@@ -47,8 +47,6 @@ export default function UserReports() {
     const doneCardColor = useColorModeValue("#9EEECC", "#51EFAD");
     const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200');
     const selectSubBtColor = useColorModeValue('#ff9393', 'red.500');
-
-    const {token, user_id: userId} = useParams();
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
     const [availableSubjects, setAvailableSubjects] = useState([]);
@@ -57,6 +55,9 @@ export default function UserReports() {
     const [selectedCourses, setSelectedCourses] = useState([]);
     const [filterSelection, setFilterSelection] = useState("notCheck");
     const [assignments, setAssignments] = useState([]);
+
+    const storedToken = localStorage.getItem('userToken');
+    const storedUserId = localStorage.getItem('userId');
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/courses/`, {
@@ -68,7 +69,7 @@ export default function UserReports() {
                 data: {
                     type: "CoursesViewSet",
                     attributes: {
-                        access_token: token
+                        access_token: storedToken
                     }
                 }
             }),
@@ -85,7 +86,7 @@ export default function UserReports() {
         }).catch(error => {
             console.error('Error:', error);
         });
-    }, [token]);
+    }, [storedToken]);
 
     const openSubjectModal = () => {
         setTempSelectedSubjects(selectedSubjects); // Initialize temporary selections
@@ -117,8 +118,8 @@ export default function UserReports() {
             data: {
                 type: "AssignmentsViewSet",
                 attributes: {
-                    user_id: userId,
-                    access_token: token,
+                    user_id: storedUserId,
+                    access_token: storedToken,
                     all_courses: {
                         data: selectedCourses
                     }
@@ -128,9 +129,9 @@ export default function UserReports() {
             data: {
                 type: "AssignmentsViewSet",
                 attributes: {
-                    user_id: userId,
+                    user_id: storedUserId,
                     check_status: "check",
-                    access_token: token,
+                    access_token: storedToken,
                     all_courses: {
                         data: selectedCourses
                     }
@@ -178,8 +179,8 @@ export default function UserReports() {
         openModal();
     };
 
-    const addTask = (userId, newTaskDetails) => {
-        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/`, {
+    const addTask = (storedUserId, newTaskDetails) => {
+        fetch(`http://127.0.0.1:8000/api/users/${storedUserId}/tasks/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
@@ -225,7 +226,7 @@ export default function UserReports() {
             due_date: dueDate,
             status: status,
         };
-        addTask(userId, newTaskDetails);
+        addTask(storedUserId, newTaskDetails);
         closeModal(); // Close the modal after submitting
     };
 
@@ -236,7 +237,7 @@ export default function UserReports() {
 
     const handleDeleteTask = (taskId) => {
         // Perform the DELETE request
-        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${taskId}`, {
+        fetch(`http://127.0.0.1:8000/api/users/${storedUserId}/tasks/${taskId}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -297,7 +298,7 @@ export default function UserReports() {
             };
 
             // Perform the API call to update the status on the server
-            fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${taskId}/`, {
+            fetch(`http://127.0.0.1:8000/api/users/${storedUserId}/tasks/${taskId}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/vnd.api+json',
@@ -347,7 +348,7 @@ export default function UserReports() {
 
         const courseParams = selectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
         // console.log(courseParams);
-        const fetchURL = `http://127.0.0.1:8000/api/users/${userId}/tasks/?user_id=${userId}&${courseParams}`;
+        const fetchURL = `http://127.0.0.1:8000/api/users/${storedUserId}/tasks/?user_id=${storedUserId}&${courseParams}`;
 
         // Your API endpoint
         fetch(fetchURL)

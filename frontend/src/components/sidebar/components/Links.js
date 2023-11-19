@@ -20,12 +20,6 @@ export function SidebarLinks(props) {
     const userToken = localStorage.getItem('userToken') || '';
     const userId = localStorage.getItem('userId') || '';
 
-
-    useEffect(() => {
-        console.log("link token", userToken);
-        console.log("link user", userId);
-    }, [userToken, userId]);
-
     const {routes} = props;
     // verifies if routeName is the one active (in browser input)
     const activeRoute = (routeName) => {

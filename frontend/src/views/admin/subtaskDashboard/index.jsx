@@ -46,7 +46,7 @@ import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 // import data
 
 import {useState, useRef} from "react";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
 export default function UserReports() {
 
@@ -62,8 +62,12 @@ export default function UserReports() {
     const [isLoading, setIsLoading] = useState(false);
     const [dueDate, setDueDate] = useState(task.attributes ? task.attributes.due_date : new Date());
     const [isEditingDueDate, setIsEditingDueDate] = useState(false);
+    const history = useHistory();
 
     useEffect(() => {
+        if (!localStorage.getItem("userToken") || !localStorage.getItem("userId")) {
+            history.push(`/auth/sign-in`);
+        }
         fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`)
             .then((response) => response.json())
             .then((data) => {
