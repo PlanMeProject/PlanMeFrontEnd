@@ -3,6 +3,7 @@ import { Box, Flex, Select, useColorModeValue } from "@chakra-ui/react";
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
 const localizer = momentLocalizer(moment);
 
@@ -179,6 +180,7 @@ const Calendar = () => {
                 view={view}
                 dayPropGetter={dayPropGetter}
             />
+            <FixedPlugin />
         </Box>
     );
 };
