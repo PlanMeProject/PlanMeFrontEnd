@@ -5,6 +5,7 @@ import {
     FormHelperText,
     Icon,
     IconButton,
+    Progress,
     SimpleGrid,
     Text,
     useColorModeValue, VStack,
@@ -28,14 +29,12 @@ import {
     Select,
     FormControl,
     FormLabel,
-    DatePicker,
 } from "@chakra-ui/react";
 
 import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 import React, {useEffect, useState} from "react";
-import {useHistory, useParams} from 'react-router-dom';
 import {MdAddTask} from "react-icons/md";
 import {AddIcon} from "@chakra-ui/icons";
 
@@ -55,6 +54,7 @@ export default function UserReports() {
     const [selectedCourses, setSelectedCourses] = useState([]);
     const [filterSelection, setFilterSelection] = useState("notCheck");
     const [assignments, setAssignments] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const storedToken = localStorage.getItem('userToken');
     const storedUserId = localStorage.getItem('userId');
@@ -83,6 +83,7 @@ export default function UserReports() {
         }).then(data => {
             setAllCourses(data.data);
             setAvailableSubjects(data.data.map(s => s.title.name));
+            console.log("Successfully Set Course:", data.data);
         }).catch(error => {
             console.error('Error:', error);
         });
@@ -113,7 +114,7 @@ export default function UserReports() {
     };
 
     const getAssignments = (selectedCourses) => {
-
+        setIsLoading(true);
         const body = filterSelection === "notCheck" ? {
             data: {
                 type: "AssignmentsViewSet",
@@ -152,8 +153,9 @@ export default function UserReports() {
             }
             return response.json();
         }).then(data => {
-            console.log('Success jaaa:', data);
+            console.log("Done get assignment")
             setAssignments(data.data);
+            setIsLoading(false);
         }).catch(error => {
             console.error('Error:', error);
         });
@@ -207,6 +209,7 @@ export default function UserReports() {
                 setNumTodo(updatedTasks.filter(task => task.attributes.status === 'Todo').length);
                 setNumInProgress(updatedTasks.filter(task => task.attributes.status === 'In progress').length);
                 setNumCompleted(updatedTasks.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
+                console.log("Successfully Create Task:", data.data);
             })
             .catch(error => {
                 console.error('Error adding task:', error);
@@ -244,12 +247,10 @@ export default function UserReports() {
                 if (response.ok) {
                     setTask(currentTasks => {
                         const updatedTasks = currentTasks.filter(t => t.id !== taskId);
-
-                        // Immediately update the counters based on the updated tasks array
                         setNumTodo(updatedTasks.filter(task => task.attributes.status === 'Todo').length);
                         setNumInProgress(updatedTasks.filter(task => task.attributes.status === 'In progress').length);
                         setNumCompleted(updatedTasks.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
-
+                        console.log("Successfully Deleted Task:", taskId);
                         return updatedTasks;
                     });
                 } else {
@@ -321,6 +322,7 @@ export default function UserReports() {
                         setNumTodo(prev => oldStatus === 'Todo' ? prev - 1 : newStatus === 'Todo' ? prev + 1 : prev);
                         setNumInProgress(prev => oldStatus === 'In progress' ? prev - 1 : newStatus === 'In progress' ? prev + 1 : prev);
                         setNumCompleted(prev => (oldStatus === 'Completed' || oldStatus === 'Complete') ? prev - 1 : (newStatus === 'Completed' || newStatus === 'Complete') ? prev + 1 : prev);
+                        console.log("Successfully Updated Task Status:", taskId);
                     }
                 })
                 .catch((error) => {
@@ -331,7 +333,6 @@ export default function UserReports() {
 
     useEffect(() => {
         const selectedSubjectFromStorage = localStorage.getItem('selectedSubjects');
-        // console.log("mama", selectedSubjectFromStorage);
 
         if (selectedSubjectFromStorage === null) {
             return;
@@ -360,18 +361,36 @@ export default function UserReports() {
                     setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
                     setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
                     setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
+                    console.log("Successfully Set Task:", taskData);
                 }
             })
             .catch((error) => {
                 console.error("Error fetching data: ", error);
-            });
-    });
+                // setIsLoading(false);
+            })
+    }, [assignments]);
 
+    const LoadingModal = () => (
+        <Modal isOpen={isLoading} isCentered onClose={() => {
+        }} closeOnOverlayClick={false}>
+            <ModalOverlay/>
+            <ModalContent>
+                <Flex justifyContent="center" alignItems="center" p={6}
+                      flexDirection="column">
+                    <Text mb={4}>Loading</Text>
+                    <Progress isIndeterminate width="100%"/>
+                    <Text mt={4}>Please wait...</Text>
+                </Flex>
+            </ModalContent>
+        </Modal>
+    );
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <Button mb='10px' backgroundColor={selectSubBtColor}
                     onClick={openSubjectModal}>Select Courses</Button>
+            {/* Loading Modal */}
+            {isLoading && <LoadingModal/>}
             <Modal isOpen={isSubjectModalOpen}
                    onClose={() => setIsSubjectModalOpen(false)}>
                 <ModalOverlay/>
@@ -380,12 +399,11 @@ export default function UserReports() {
                     <ModalCloseButton/>
                     <ModalBody>
                         <Select
-                            placeholder="Check Done Tasks?"
-                            value={filterSelection}
+                            placeholder="Checked Done Tasks"
+                            value="check"
                             onChange={(e) => setFilterSelection(e.target.value)}
                             mb={3}
                         >
-                            <option value="check">Checked Done Tasks</option>
                             <option value="notCheck">Not Checked Done Tasks
                             </option>
                         </Select>

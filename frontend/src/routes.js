@@ -19,8 +19,6 @@ import SubTask from "views/admin/subtaskDashboard";
 
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
-import GoogleAuthRedirect from "views/auth/signIn";
-// const userToken = localStorage.getItem('userToken');
 const userId = localStorage.getItem('userId');
 
 const routes = [
@@ -28,6 +26,7 @@ const routes = [
         name: "Subtask",
         layout: "/admin",
         path: "/task-board/task/:id",
+        visible: "no",
         icon: <Icon as={MdTask} width='20px' height='20px' color='inherit'/>,
         component: SubTask,
     },
@@ -35,6 +34,7 @@ const routes = [
         name: "Task board",
         layout: "/admin",
         path: `/task-board/:usertoken/${userId}`,
+        visible: "yes",
         icon: <Icon as={MdCheckCircle} width='20px' height='20px' color='inherit'/>,
         component: TodoDashboard,
     },
@@ -42,6 +42,7 @@ const routes = [
         name: "Calendar",
         layout: "/admin",
         path: "/calendar",
+        visible: "yes",
         icon: <Icon as={MdHome} width='20px' height='20px' color='inherit'/>,
         component: Calendar,
     },
@@ -49,6 +50,7 @@ const routes = [
         name: "Data Tables",
         layout: "/admin",
         path: "/data-tables",
+        visible: "no",
         icon: <Icon as={MdBarChart} width='20px' height='20px'
                     color='inherit'/>,
         component: DataTables,
@@ -57,6 +59,7 @@ const routes = [
         name: "Profile",
         layout: "/admin",
         path: "/profile",
+        visible: "no",
         icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit'/>,
         component: Profile,
     },
@@ -64,6 +67,7 @@ const routes = [
         name: "Sign In",
         layout: "/auth",
         path: "/sign-in",
+        visible: "no",
         icon: <Icon as={MdLock} width='20px' height='20px' color='inherit'/>,
         component: SignInCentered,
     },
