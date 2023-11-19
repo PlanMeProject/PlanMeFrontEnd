@@ -32,7 +32,7 @@ const routes = [
     {
         name: "Task board",
         layout: "/admin",
-        path: "/task-board",
+        path: "/task-board/:token/:user_id",
         icon: <Icon as={MdCheckCircle} width='20px' height='20px' color='inherit'/>,
         component: TodoDashboard,
     },
@@ -61,7 +61,7 @@ const routes = [
     },
     {
         name: "Google Auth Redirect",
-        layout: "/redirect",
+        layout: "/google-auth",
         path: ":code",
     },
     {

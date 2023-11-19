@@ -47,10 +47,10 @@ import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
 import {useState, useRef} from "react";
 import {useParams} from "react-router-dom";
-import {MdDateRange} from "react-icons/md";
 
 export default function UserReports() {
 
+    const userId = localStorage.getItem("userId");
     const [task, setTask] = useState([]);
     const {id} = useParams();
     const [isEditing, setIsEditing] = useState(false);
@@ -64,12 +64,12 @@ export default function UserReports() {
     const [isEditingDueDate, setIsEditingDueDate] = useState(false);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`)
             .then((response) => response.json())
             .then((data) => {
                 const taskData = data["data"];
                 if (taskData) {
-                    const foundTask = taskData.find(task => task.id === id);
+                    const foundTask = taskData
                     if (foundTask) {
                         setTask(foundTask);
                         setDescription(foundTask.attributes.description);
@@ -81,7 +81,7 @@ export default function UserReports() {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             });
-    }, []);
+    }, [id, userId]);
 
     const handleEditTitle = () => {
         if (task.attributes) {
@@ -113,7 +113,7 @@ export default function UserReports() {
         }
 
         // Perform the API call to update the task title on the server
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'
@@ -170,7 +170,7 @@ export default function UserReports() {
             }
         }
 
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'
@@ -204,7 +204,7 @@ export default function UserReports() {
                 type: "SummarizeViewSet",
                 id: id,
                 attributes: {
-                    "text": task_description,
+                    "text": plainTextDescription,
                     "task_id": id
                 }
             }
@@ -252,7 +252,7 @@ export default function UserReports() {
         };
 
         // API call to update due date
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${id}/`, {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'
@@ -291,22 +291,22 @@ export default function UserReports() {
         </Modal>
     );
 
-    // ... existing states and functions ...
+    function htmlToText(html) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = html;
+        return tempDiv.textContent || tempDiv.innerText || "";
+    }
+
+    const descriptionParam = task.attributes ? task.attributes.description : "Loading...";
+
+    const plainTextDescription = htmlToText(he.decode(descriptionParam));
+
     const dateInputRef = useRef(null);
-
-    // Function to trigger the date picker
-    const handleIconClick = () => {
-        if (dateInputRef.current) {
-            dateInputRef.current.click();
-        }
-    };
-
     const titleColor = useColorModeValue("brand.800", "orange.500");
     const editTitleColor = useColorModeValue("red", "pink");
     const dueDateColor = useColorModeValue("red.600", "red.500");
     const taskSubjectColor = useColorModeValue("brand.600", "navy.200");
     const {colorMode} = useColorMode();
-
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <simpleGrid columns={{base: 1, md: 1, xl: 2}} gap='20px' mb='20px'>
@@ -342,7 +342,8 @@ export default function UserReports() {
                                 onClick={() => setIsEditingTaskTitle(false)}>Cancel</Button>
                         </Flex>
                     ) : (
-                        <Button onClick={handleEditTitle}>Edit Task Title</Button>
+                        <Button onClick={handleEditTitle}>Edit Task
+                            Title</Button>
                     )}
                 </Flex>
                 <Flex mb='10px' flexDirection='column'>
@@ -381,15 +382,15 @@ export default function UserReports() {
                         Due Date: &nbsp;
                     </Text>
                     {isEditingDueDate ? (
-                            <input
-                                ref={dateInputRef}
-                                type="date"
-                                value={dueDate}
-                                onChange={handleDueDateChange}
-                                style={{
-                                    border: 'solid 1px',
-                                }}
-                            />
+                        <input
+                            ref={dateInputRef}
+                            type="date"
+                            value={dueDate}
+                            onChange={handleDueDateChange}
+                            style={{
+                                border: 'solid 1px',
+                            }}
+                        />
                     ) : (
                         <Text color={dueDateColor} fontSize='xl'
                               fontWeight='bold'>
@@ -426,7 +427,8 @@ export default function UserReports() {
                 </Flex>
             </simpleGrid>
             <Tasks taskId={id}
-                   task_description={task.attributes ? task.attributes.description : "Loading..."}/>
+                   task_description={plainTextDescription}
+            />
             <FixedPlugin/>
         </Box>
     );

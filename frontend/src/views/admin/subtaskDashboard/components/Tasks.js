@@ -54,7 +54,7 @@ export default function Conversion(props) {
                 const subtaskData = data['data'];
                 if (subtaskData) {
                     setSubtasks(subtaskData);
-                    console.log("Subtask data loaded", subtaskData);
+                    // console.log("Subtask data loaded", subtaskData);
                 } else {
                     console.log("No subtask data");
                 }
@@ -89,7 +89,6 @@ export default function Conversion(props) {
             .then(response => response.json())
             .then(data => {
                 if (data) {
-                    console.log(data.data);
                     setSubtasks(data.data);
                 } else {
                     console.error('Failed to create the subtask', data.errors);

@@ -1,13 +1,13 @@
 // Chakra imports
 import {
-    Box,
+    Box, Checkbox,
     Flex,
     FormHelperText,
     Icon,
     IconButton,
     SimpleGrid,
     Text,
-    useColorModeValue,
+    useColorModeValue, VStack,
 } from "@chakra-ui/react";
 
 import {
@@ -35,6 +35,7 @@ import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 import React, {useEffect, useState} from "react";
+import {useParams} from 'react-router-dom';
 import {MdAddTask} from "react-icons/md";
 import {AddIcon} from "@chakra-ui/icons";
 
@@ -44,7 +45,119 @@ export default function UserReports() {
     const todoCardColor = useColorModeValue("#FFE999", "#FFDE6A");
     const inProgressCardColor = useColorModeValue("#CDC5FF", "#8F7CFF");
     const doneCardColor = useColorModeValue("#9EEECC", "#51EFAD");
-    const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200')
+    const iconColor = useColorModeValue('secondaryGray', 'secondaryGray.200');
+    const selectSubBtColor = useColorModeValue('#ff9393', 'red.500');
+
+    const {token, user_id: userId} = useParams();
+    const [selectedSubjects, setSelectedSubjects] = useState([]);
+    const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
+    const [availableSubjects, setAvailableSubjects] = useState([]);
+    const [tempSelectedSubjects, setTempSelectedSubjects] = useState([]);
+    const [allCourses, setAllCourses] = useState([]);
+    const [selectedCourses, setSelectedCourses] = useState([]);
+    const [filterSelection, setFilterSelection] = useState("notCheck");
+    const [assignments, setAssignments] = useState([]);
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/api/courses/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify({
+                data: {
+                    type: "CoursesViewSet",
+                    attributes: {
+                        access_token: token
+                    }
+                }
+            }),
+        }).then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            }
+            return response.json();
+        }).then(data => {
+            setAllCourses(data.data);
+            setAvailableSubjects(data.data.map(s => s.title.name));
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }, [token]);
+
+    const openSubjectModal = () => {
+        setTempSelectedSubjects(selectedSubjects); // Initialize temporary selections
+        setIsSubjectModalOpen(true);
+    };
+
+    const handleSubjectChange = (subject) => {
+        setTempSelectedSubjects(prev => {
+            if (prev.includes(subject)) {
+                return prev.filter(s => s !== subject);
+            } else {
+                return [...prev, subject];
+            }
+        });
+    };
+
+    const saveSelectedSubjects = () => {
+        setSelectedSubjects(tempSelectedSubjects);
+        localStorage.setItem("selectedSubjects", JSON.stringify(tempSelectedSubjects));
+        const selectedCourses = allCourses.filter(c => tempSelectedSubjects.includes(c.title.name));
+        setSelectedCourses(selectedCourses);
+        getAssignments(selectedCourses);
+        setIsSubjectModalOpen(false);
+    };
+
+    const getAssignments = (selectedCourses) => {
+
+        const body = filterSelection === "notCheck" ? {
+            data: {
+                type: "AssignmentsViewSet",
+                attributes: {
+                    user_id: userId,
+                    access_token: token,
+                    all_courses: {
+                        data: selectedCourses
+                    }
+                }
+            }
+        } : {
+            data: {
+                type: "AssignmentsViewSet",
+                attributes: {
+                    user_id: userId,
+                    check_status: "check",
+                    access_token: token,
+                    all_courses: {
+                        data: selectedCourses
+                    }
+                }
+            }
+        }
+        fetch(`http://127.0.0.1:8000/api/assignments/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(body),
+        }).then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            }
+            return response.json();
+        }).then(data => {
+            console.log('Success jaaa:', data);
+            setAssignments(data.data);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    };
+
 
     const [task, setTask] = useState([]);
     const [numTodo, setNumTodo] = useState(0);
@@ -105,7 +218,6 @@ export default function UserReports() {
         if (!taskTitle.trim() || !description.trim() || !dueDate.trim() || !status.trim()) {
             return;
         }
-        const userId = 'f6084d8f-3a96-4288-b18f-fc174ce13b01'; // Replace with actual user ID
         const newTaskDetails = {
             title: taskTitle,
             description: description,
@@ -124,7 +236,7 @@ export default function UserReports() {
 
     const handleDeleteTask = (taskId) => {
         // Perform the DELETE request
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}`, {
+        fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${taskId}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -185,7 +297,7 @@ export default function UserReports() {
             };
 
             // Perform the API call to update the status on the server
-            fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/`, {
+            fetch(`http://127.0.0.1:8000/api/users/${userId}/tasks/${taskId}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/vnd.api+json',
@@ -216,10 +328,29 @@ export default function UserReports() {
         }
     };
 
-
     useEffect(() => {
+        const selectedSubjectFromStorage = localStorage.getItem('selectedSubjects');
+        // console.log("mama", selectedSubjectFromStorage);
+
+        if (selectedSubjectFromStorage === null) {
+            return;
+        }
+
+        let selectedSubjects;
+        try {
+            // Parse the JSON string back into an array
+            selectedSubjects = JSON.parse(selectedSubjectFromStorage);
+        } catch (e) {
+            console.error("Error parsing JSON from localStorage:", e);
+            return;
+        }
+
+        const courseParams = selectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
+        // console.log(courseParams);
+        const fetchURL = `http://127.0.0.1:8000/api/users/${userId}/tasks/?user_id=${userId}&${courseParams}`;
+
         // Your API endpoint
-        fetch("http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/")
+        fetch(fetchURL)
             .then((response) => response.json())
             .then((data) => {
                 const taskData = data["data"];
@@ -233,10 +364,52 @@ export default function UserReports() {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             });
-    }, []);
+    });
+
 
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
+            <Button mb='10px' backgroundColor={selectSubBtColor}
+                    onClick={openSubjectModal}>Select Courses</Button>
+            <Modal isOpen={isSubjectModalOpen}
+                   onClose={() => setIsSubjectModalOpen(false)}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>Select Courses</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody>
+                        <Select
+                            placeholder="Check Done Tasks?"
+                            value={filterSelection}
+                            onChange={(e) => setFilterSelection(e.target.value)}
+                            mb={3}
+                        >
+                            <option value="check">Checked Done Tasks</option>
+                            <option value="notCheck">Not Checked Done Tasks
+                            </option>
+                        </Select>
+                        <VStack align="stretch" spacing={3}>
+                            {availableSubjects.map((subject, index) => (
+                                <Checkbox
+                                    key={index}
+                                    isChecked={tempSelectedSubjects.includes(subject)}
+                                    onChange={() => handleSubjectChange(subject)}
+                                >
+                                    {subject}
+                                </Checkbox>
+                            ))}
+                        </VStack>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3}
+                                onClick={saveSelectedSubjects}>
+                            Save Selection
+                        </Button>
+                        <Button variant="ghost"
+                                onClick={() => setIsSubjectModalOpen(false)}>Cancel</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
             <SimpleGrid columns={{base: 1, md: 2, lg: 3, '2xl': 6}} gap='20px'
                         mb='20px'>
                 {/* Group for 'Todo' */}
