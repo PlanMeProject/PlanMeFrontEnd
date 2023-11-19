@@ -140,7 +140,7 @@ export default function Dashboard(props) {
 							<Box mx='auto' p={{ base: '20px', md: '30px' }} pe='20px' minH='100vh' pt='50px'>
 								<Switch>
 									{getRoutes(routes)}
-									<Redirect from='/' to='/admin/task-board' />
+									<Redirect from='/' to='/auth/sign-in' />
 								</Switch>
 							</Box>
 						) : null}
