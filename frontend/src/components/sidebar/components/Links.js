@@ -33,7 +33,6 @@ export function SidebarLinks(props) {
         return route.layout + route.path;
     };
 
-    // this function creates the links from the secondary accordions (for example auth -> sign-in -> default)
     const createLinks = (routes) => {
         return routes.map((route, index) => {
             if (route.category) {
@@ -139,7 +138,6 @@ export function SidebarLinks(props) {
             }
         });
     };
-    //  BRAND
     return createLinks(routes);
 }
 

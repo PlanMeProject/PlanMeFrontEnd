@@ -11,11 +11,9 @@ import {
 } from "react-icons/md";
 
 // Admin Imports
-import MainDashboard from "views/admin/default";
-// import NFTMarketplace from "views/admin/marketplace";
+import Calendar from "views/admin/calendar";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
-// import RTL from "views/admin/rtl";
 import TodoDashboard from "views/admin/todoDashboard";
 import SubTask from "views/admin/subtaskDashboard";
 
@@ -24,6 +22,7 @@ import SignInCentered from "views/auth/signIn";
 import GoogleAuthRedirect from "views/auth/signIn";
 // const userToken = localStorage.getItem('userToken');
 const userId = localStorage.getItem('userId');
+
 const routes = [
     {
         name: "Subtask",
@@ -40,11 +39,11 @@ const routes = [
         component: TodoDashboard,
     },
     {
-        name: "Main Dashboard",
+        name: "Calendar",
         layout: "/admin",
-        path: "/default",
+        path: "/calendar",
         icon: <Icon as={MdHome} width='20px' height='20px' color='inherit'/>,
-        component: MainDashboard,
+        component: Calendar,
     },
     {
         name: "Data Tables",
