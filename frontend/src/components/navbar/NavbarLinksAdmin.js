@@ -70,8 +70,8 @@ export default function HeaderLinks(props) {
     const history = useHistory();
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userId');
         history.push('/auth/sign-in');
     }
 
