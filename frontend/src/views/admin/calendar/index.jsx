@@ -113,7 +113,7 @@ const toolbarButtonStyle = {
 };
 
 
-const UserReports = () => {
+const Calendar = () => {
   const [view, setView] = useState('month');
   const [showModal, setShowModal] = useState(false);
   const [modalEvents, setModalEvents] = useState([]);
@@ -201,4 +201,4 @@ const UserReports = () => {
   );
 };
 
-export default UserReports;
+export default Calendar;
