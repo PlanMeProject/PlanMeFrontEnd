@@ -19,7 +19,9 @@ import SubTask from "views/admin/subtaskDashboard";
 
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
-
+import GoogleAuthRedirect from "views/auth/signIn";
+// const userToken = localStorage.getItem('userToken');
+const userId = localStorage.getItem('userId');
 
 const routes = [
     {
@@ -32,11 +34,10 @@ const routes = [
     {
         name: "Task board",
         layout: "/admin",
-        path: "/task-board/:token/:user_id",
+        path: `/task-board/:usertoken/${userId}`,
         icon: <Icon as={MdCheckCircle} width='20px' height='20px' color='inherit'/>,
         component: TodoDashboard,
     },
-
     {
         name: "Calendar",
         layout: "/admin",
@@ -47,9 +48,9 @@ const routes = [
     {
         name: "Data Tables",
         layout: "/admin",
+        path: "/data-tables",
         icon: <Icon as={MdBarChart} width='20px' height='20px'
                     color='inherit'/>,
-        path: "/data-tables",
         component: DataTables,
     },
     {
@@ -58,11 +59,6 @@ const routes = [
         path: "/profile",
         icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit'/>,
         component: Profile,
-    },
-    {
-        name: "Google Auth Redirect",
-        layout: "/google-auth",
-        path: ":code",
     },
     {
         name: "Sign In",

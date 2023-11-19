@@ -11,7 +11,6 @@ import {
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
-import {handleGoogleSignIn} from '../../views/auth/signIn/auth';
 import AdminNavbarLinks from 'components/navbar/NavbarLinksAdmin';
 
 export default function AdminNavbar(props) {
