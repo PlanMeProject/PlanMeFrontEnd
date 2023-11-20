@@ -20,7 +20,6 @@ import {
     ModalBody,
     ModalCloseButton,
     Button,
-    // other imports...
 } from "@chakra-ui/react";
 
 import {
@@ -58,6 +57,7 @@ export default function UserReports() {
 
     const storedToken = localStorage.getItem('userToken');
     const storedUserId = localStorage.getItem('userId');
+    const storedSelectedSubjects = JSON.parse(localStorage.getItem('selectedSubjects'));
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/courses/`, {
@@ -172,6 +172,7 @@ export default function UserReports() {
     const [description, setDescription] = useState("");
     const [dueDate, setDueDate] = useState("");
     const [status, setStatus] = useState("");
+    const [courseAdded, setCourseAdded] = useState("");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -219,7 +220,7 @@ export default function UserReports() {
 
     // Example function to handle form submission
     const handleFormSubmit = () => {
-        if (!taskTitle.trim() || !description.trim() || !dueDate.trim() || !status.trim()) {
+        if (!taskTitle.trim() || !description.trim() || !dueDate.trim() || !status.trim() || !courseAdded.trim()) {
             return;
         }
         const newTaskDetails = {
@@ -228,9 +229,10 @@ export default function UserReports() {
             summarized_text: "summaries text",
             due_date: dueDate,
             status: status,
+            course: courseAdded
         };
         addTask(storedUserId, newTaskDetails);
-        closeModal(); // Close the modal after submitting
+        closeModal();
     };
 
     const closeModal = () => {
@@ -332,22 +334,12 @@ export default function UserReports() {
     };
 
     useEffect(() => {
-        const selectedSubjectFromStorage = localStorage.getItem('selectedSubjects');
 
-        if (selectedSubjectFromStorage === null) {
+        if (storedSelectedSubjects === null) {
             return;
         }
 
-        let selectedSubjects;
-        try {
-            // Parse the JSON string back into an array
-            selectedSubjects = JSON.parse(selectedSubjectFromStorage);
-        } catch (e) {
-            console.error("Error parsing JSON from localStorage:", e);
-            return;
-        }
-
-        const courseParams = selectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
+        const courseParams = storedSelectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
         // console.log(courseParams);
         const fetchURL = `http://127.0.0.1:8000/api/users/${storedUserId}/tasks/?user_id=${storedUserId}&${courseParams}`;
 
@@ -631,6 +623,21 @@ export default function UserReports() {
                                 <option value="In progress">In progress
                                 </option>
                                 <option value="Completed">Completed</option>
+                            </Select>
+                        </FormControl>
+                        <FormControl mt={4}>
+                            <FormLabel>Course</FormLabel>
+                            <Select
+                                placeholder="Select course"
+                                value={courseAdded}
+                                isInvalid={courseAdded === ""}
+                                onChange={(e) => setCourseAdded(e.target.value)}
+                            >
+                                {storedSelectedSubjects.map((course) => {
+                                    return <option
+                                        value={course}>{course}</option>
+                                })
+                                }
                             </Select>
                         </FormControl>
                     </ModalBody>
