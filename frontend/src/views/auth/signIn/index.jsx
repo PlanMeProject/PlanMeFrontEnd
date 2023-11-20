@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink, useHistory } from "react-router-dom";
 import { handleGoogleSignIn } from './auth';
 import {
     Box,
@@ -24,9 +23,8 @@ function SignIn() {
     const iconColor = useColorModeValue("green.500", "green.500");
 
     return (
-        <DefaultAuth image={"image_3d_placeholder"}>
+        <DefaultAuth image={"frontend/src/assets/img/3dplanme.png"}>
             <Flex
-                // bg='red.500'
                 maxW={{base: "100%", md: "max-content"}}
                 w='100%'
                 mx={{base: "auto", lg: "0px"}}
@@ -55,7 +53,15 @@ function SignIn() {
                         color={textColorSecondary}
                         fontWeight='400'
                         fontSize='md'>
-                        Please sign in with your google account!
+
+                    </Text>
+                    <Text
+                        mb='36px'
+                        ms='4px'
+                        color={textColorSecondary}
+                        fontWeight='400'
+                        fontSize='md'>
+                        Please sign in with your google account!<br/>
                     </Text>
                 </Box>
                 <Flex

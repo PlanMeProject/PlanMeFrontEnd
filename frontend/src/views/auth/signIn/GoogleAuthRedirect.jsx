@@ -5,8 +5,6 @@ import {SidebarContext} from "../../../contexts/SidebarContext";
 const GoogleAuthHandler = () => {
     const location = useLocation();
     const searchUrl = location.search;
-    // const [token, setToken] = useState(null);
-    // const [userId, setUserId] = useState(null);
     const { userToken, userId, updateUser } = useContext(SidebarContext);
 
     const history = useHistory();
@@ -39,9 +37,7 @@ const GoogleAuthHandler = () => {
             }
             return response.json();
         }).then(data => {
-            // setToken(data.data.token);
-            // setUserId(data.data.user_id);
-            updateUser(data.data.token, data.data.user_id);
+            updateUser(data.data.token, data.data.user_id, data.data.email);
         }).catch(error => {
             console.error('Error:', error);
         });
