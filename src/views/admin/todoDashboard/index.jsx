@@ -50,7 +50,7 @@ export default function UserReports() {
     const [availableSubjects, setAvailableSubjects] = useState([]);
     const [tempSelectedSubjects, setTempSelectedSubjects] = useState([]);
     const [allCourses, setAllCourses] = useState([]);
-    const [selectedCourses, setSelectedCourses] = useState([]);
+    const [setSelectedCourses] = useState([]);
     const [filterSelection, setFilterSelection] = useState("notCheck");
     const [assignments, setAssignments] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -166,7 +166,7 @@ export default function UserReports() {
     const [numTodo, setNumTodo] = useState(0);
     const [numInProgress, setNumInProgress] = useState(0);
     const [numCompleted, setNumCompleted] = useState(0);
-    const [draggedTask, setDraggedTask] = useState(null);
+    const [setDraggedTask] = useState(null);
 
     const [taskTitle, setTaskTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -340,7 +340,6 @@ export default function UserReports() {
         }
 
         const courseParams = storedSelectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
-        // console.log(courseParams);
         const fetchURL = `http://127.0.0.1:8000/api/users/${storedUserId}/tasks/?user_id=${storedUserId}&${courseParams}`;
 
         // Your API endpoint
@@ -358,9 +357,8 @@ export default function UserReports() {
             })
             .catch((error) => {
                 console.error("Error fetching data: ", error);
-                // setIsLoading(false);
             })
-    }, [assignments]);
+    }, [storedSelectedSubjects, assignments, storedUserId]);
 
     const LoadingModal = () => (
         <Modal isOpen={isLoading} isCentered onClose={() => {
@@ -403,7 +401,7 @@ export default function UserReports() {
                             {availableSubjects.map((subject, index) => (
                                 <Checkbox
                                     key={index}
-                                    isChecked={storedSelectedSubjects.includes(subject)}
+                                    isChecked={tempSelectedSubjects.includes(subject) || storedSelectedSubjects.includes(subject)}
                                     onChange={() => handleSubjectChange(subject)}
                                 >
                                     {subject}
