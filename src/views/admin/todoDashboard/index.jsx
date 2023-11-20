@@ -403,7 +403,7 @@ export default function UserReports() {
                             {availableSubjects.map((subject, index) => (
                                 <Checkbox
                                     key={index}
-                                    isChecked={tempSelectedSubjects.includes(subject)}
+                                    isChecked={storedSelectedSubjects.includes(subject)}
                                     onChange={() => handleSubjectChange(subject)}
                                 >
                                     {subject}
