@@ -20,7 +20,6 @@ import {
     ModalBody,
     ModalCloseButton,
     Button,
-    // other imports...
 } from "@chakra-ui/react";
 
 import {
@@ -339,15 +338,6 @@ export default function UserReports() {
         if (storedSelectedSubjects === null) {
             return;
         }
-
-        // let selectedSubjects;
-        // try {
-        //     // Parse the JSON string back into an array
-        //     selectedSubjects = JSON.parse(selectedSubjectFromStorage);
-        // } catch (e) {
-        //     console.error("Error parsing JSON from localStorage:", e);
-        //     return;
-        // }
 
         const courseParams = storedSelectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
         // console.log(courseParams);
