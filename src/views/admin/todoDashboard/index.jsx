@@ -50,7 +50,7 @@ export default function UserReports() {
     const [availableSubjects, setAvailableSubjects] = useState([]);
     const [tempSelectedSubjects, setTempSelectedSubjects] = useState([]);
     const [allCourses, setAllCourses] = useState([]);
-    const [setSelectedCourses] = useState([]);
+    const [selectedCourses, setSelectedCourses] = useState([]);
     const [filterSelection, setFilterSelection] = useState("notCheck");
     const [assignments, setAssignments] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -166,7 +166,7 @@ export default function UserReports() {
     const [numTodo, setNumTodo] = useState(0);
     const [numInProgress, setNumInProgress] = useState(0);
     const [numCompleted, setNumCompleted] = useState(0);
-    const [setDraggedTask] = useState(null);
+    const [draggedTask, setDraggedTask] = useState(null);
 
     const [taskTitle, setTaskTitle] = useState("");
     const [description, setDescription] = useState("");
