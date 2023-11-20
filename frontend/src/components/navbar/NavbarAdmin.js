@@ -26,7 +26,7 @@ export default function AdminNavbar(props) {
     });
 
     useEffect(() => {
-        const storedUsername = localStorage.getItem('name');
+        const storedUsername = localStorage.getItem('email');
         if (storedUsername) {
             setUsername(storedUsername);
         } else {

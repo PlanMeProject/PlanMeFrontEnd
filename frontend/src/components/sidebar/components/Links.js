@@ -29,6 +29,8 @@ export function SidebarLinks(props) {
     const generateLinkUrl = (route) => {
         if (route.name === "Task board") {
             return `/admin/task-board/${userToken}/${userId}`;
+        } else if (route.name === "Calendar") {
+            return `/admin/calendar/${userId}`;
         }
         return route.layout + route.path;
     };

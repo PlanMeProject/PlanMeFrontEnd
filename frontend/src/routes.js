@@ -41,7 +41,7 @@ const routes = [
     {
         name: "Calendar",
         layout: "/admin",
-        path: "/calendar",
+        path: `/calendar/${userId}`,
         visible: "yes",
         icon: <Icon as={MdHome} width='20px' height='20px' color='inherit'/>,
         component: Calendar,
