@@ -358,7 +358,7 @@ export default function UserReports() {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             })
-    }, [storedSelectedSubjects, assignments, storedUserId]);
+    }, [assignments]);
 
     const LoadingModal = () => (
         <Modal isOpen={isLoading} isCentered onClose={() => {
@@ -401,7 +401,7 @@ export default function UserReports() {
                             {availableSubjects.map((subject, index) => (
                                 <Checkbox
                                     key={index}
-                                    isChecked={tempSelectedSubjects.includes(subject) || storedSelectedSubjects.includes(subject)}
+                                    isChecked={tempSelectedSubjects.includes(subject)}
                                     onChange={() => handleSubjectChange(subject)}
                                 >
                                     {subject}
