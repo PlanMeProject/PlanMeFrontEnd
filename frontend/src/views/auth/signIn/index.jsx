@@ -53,7 +53,15 @@ function SignIn() {
                         color={textColorSecondary}
                         fontWeight='400'
                         fontSize='md'>
-                        Please sign in with your google account!
+
+                    </Text>
+                    <Text
+                        mb='36px'
+                        ms='4px'
+                        color={textColorSecondary}
+                        fontWeight='400'
+                        fontSize='md'>
+                        Please sign in with your google account!<br/>
                     </Text>
                 </Box>
                 <Flex
