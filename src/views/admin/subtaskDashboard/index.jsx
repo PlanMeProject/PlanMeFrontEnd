@@ -338,6 +338,15 @@ export default function UserReports() {
                     )}
                 </Flex>
                 <Flex mb='20px'>
+                    <Text color={taskSubjectColor} fontSize='xl'
+                            fontWeight='bold'>
+                        Course: &nbsp;
+                    </Text>
+                    <Text fontSize='xl'>
+                        {task.attributes ? task.attributes.course : "Loading..."}
+                    </Text>
+                </Flex>
+                <Flex mb='20px'>
                     {isEditingTaskTitle ? (
                         <Flex display='inline-flex'>
                             <Button onClick={handleSaveTitle}

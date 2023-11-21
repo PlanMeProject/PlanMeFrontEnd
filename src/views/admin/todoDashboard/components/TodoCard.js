@@ -85,7 +85,7 @@ export default function Default(props) {
                         >
                             <Flex display='inline-flex'>
                                 <Text color='secondaryGray.900'>
-                                    {task.attributes.title.length > 40 ? `${task.attributes.title.slice(0, 50)}...` : task.attributes.title}
+                                    {task.attributes.title.length > 25 ? `${task.attributes.title.slice(0, 25)}...` : task.attributes.title}
                                 </Text>
                                 <IconButton
                                     aria-label="Delete"
@@ -99,6 +99,9 @@ export default function Default(props) {
                                     onClick={(e) => openDeleteConfirmation(task.id, e)}
                                 />
                             </Flex>
+                            <Text
+                                color='navy.400'
+                            >{task.attributes.course}</Text>
                             <Text
                                 color='red.400'
                             >{task.attributes.due_date}</Text>
