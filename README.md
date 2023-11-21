@@ -24,7 +24,7 @@ git clone https://github.com/PlanMeProject/PlanMeFrontEnd.git
 ```
 Navigate to the project directory:
 ```
-cd frontend
+cd PlanMeFrontEnd
 ```
 Install the necessary dependencies:
 ```
