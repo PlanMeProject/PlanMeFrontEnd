@@ -3,7 +3,7 @@ import {Box, Flex} from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import React from "react";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
-import image from "../../assets/img/3dplanme.png";
+import image from "assets/img/3dplanme.png";
 
 function AuthIllustration(props) {
     const {children} = props;
