@@ -1,5 +1,5 @@
 import React from "react";
-import { handleGoogleSignIn } from './auth';
+import {handleGoogleSignIn} from './auth';
 import {
     Box,
     Button,
@@ -9,17 +9,18 @@ import {
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
-import { MdTask } from "react-icons/md";
-import { FcGoogle } from "react-icons/fc";
+import {MdTask} from "react-icons/md";
+import {FcGoogle} from "react-icons/fc";
 import DefaultAuth from "layouts/auth/Default";
 
 function SignIn() {
     const textColor = useColorModeValue("navy.700", "white");
-    const textColorSecondary = "gray.400";
+    const textColorSecondary = useColorModeValue("navy.700", "whiteAlpha.900");
+    const signInTextColor = useColorModeValue("blue.500", "orange.500");
     const googleBg = useColorModeValue("secondaryGray.300", "whiteAlpha.200");
     const googleText = useColorModeValue("navy.700", "white");
-    const googleHover = useColorModeValue({ bg: "gray.200" }, { bg: "whiteAlpha.300" });
-    const googleActive = useColorModeValue({ bg: "secondaryGray.300" }, { bg: "whiteAlpha.200" });
+    const googleHover = useColorModeValue({bg: "gray.200"}, {bg: "whiteAlpha.300"});
+    const googleActive = useColorModeValue({bg: "secondaryGray.300"}, {bg: "whiteAlpha.200"});
     const iconColor = useColorModeValue("green.500", "green.500");
 
     return (
@@ -57,11 +58,35 @@ function SignIn() {
                     </Text>
                     <Text
                         mb='36px'
-                        ms='4px'
+                        ms='20px'
                         color={textColorSecondary}
-                        fontWeight='400'
+                        fontWeight='600'
                         fontSize='md'>
-                        Please sign in with your google account!<br/>
+                        A task management web-application for you!<br/>
+                        <Text
+                            mb='36px'
+                            ms='40px'
+                            color={textColorSecondary}
+                            fontWeight='400'
+                            fontSize='md'>
+                            <br/>
+                            <ul>
+                                <li>Plan your tasks</li>
+                                <li>Track your progress</li>
+                                <li>Get things done!</li>
+                            </ul>
+                        </Text>
+                        <Text
+                            mb='36px'
+                            ms='4px'
+                            color={textColorSecondary}
+                            fontWeight='400'
+                            fontSize='md'
+                            textColor={signInTextColor}
+                        >
+                            Please sign in with your google classroom account!<br/>
+
+                        </Text>
                     </Text>
                 </Box>
                 <Flex
