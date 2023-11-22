@@ -39,11 +39,11 @@ function SignIn() {
                 flexDirection='column'>
                 <Box me='auto'>
 
-                    <Flex display='inline-flex'>
-                        <Icon mt='4px' ml='5px' mr='5px' w='37px' h='37px'
+                    <Flex display='inline-flex' mt={{base: "100px", md: "60px"}}>
+                        <Icon mt='4px' ml='5px' mr='5px' w='40px' h='40px'
                               as={MdTask}
                               color={iconColor}/>
-                        <Heading color={textColor} fontSize='36px' mb='10px'>
+                        <Heading color={textColor} fontSize='40px' mb='10px'>
                             PlanMe
                         </Heading>
                     </Flex>
