@@ -60,7 +60,7 @@ export default function UserReports() {
     const storedSelectedSubjects = JSON.parse(localStorage.getItem('selectedSubjects'));
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/courses/`, {
+        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/courses/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
@@ -139,7 +139,7 @@ export default function UserReports() {
                 }
             }
         }
-        fetch(`http://127.0.0.1:8000/api/assignments/`, {
+        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/assignments/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
@@ -183,7 +183,7 @@ export default function UserReports() {
     };
 
     const addTask = (storedUserId, newTaskDetails) => {
-        fetch(`http://127.0.0.1:8000/api/users/${storedUserId}/tasks/`, {
+        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/${storedUserId}/tasks/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
@@ -242,7 +242,7 @@ export default function UserReports() {
 
     const handleDeleteTask = (taskId) => {
         // Perform the DELETE request
-        fetch(`http://127.0.0.1:8000/api/users/${storedUserId}/tasks/${taskId}`, {
+        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/${storedUserId}/tasks/${taskId}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -301,7 +301,7 @@ export default function UserReports() {
             };
 
             // Perform the API call to update the status on the server
-            fetch(`http://127.0.0.1:8000/api/users/${storedUserId}/tasks/${taskId}/`, {
+            fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/${storedUserId}/tasks/${taskId}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/vnd.api+json',
@@ -340,7 +340,7 @@ export default function UserReports() {
         }
 
         const courseParams = storedSelectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
-        const fetchURL = `http://127.0.0.1:8000/api/users/${storedUserId}/tasks/?user_id=${storedUserId}&${courseParams}`;
+        const fetchURL = `https://planme-ff1a0ca44046.herokuapp.com/api/users/${storedUserId}/tasks/?user_id=${storedUserId}&${courseParams}`;
 
         // Your API endpoint
         fetch(fetchURL)
