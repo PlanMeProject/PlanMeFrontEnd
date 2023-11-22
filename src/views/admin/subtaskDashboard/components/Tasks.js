@@ -48,7 +48,7 @@ export default function Conversion(props) {
     });
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks`)
+        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks`)
             .then((response) => response.json())
             .then((data) => {
                 const subtaskData = data['data'];
@@ -79,7 +79,7 @@ export default function Conversion(props) {
             }
         };
 
-        fetch(`http://127.0.0.1:8000/api/tts/`, {
+        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/tts/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
@@ -144,7 +144,7 @@ export default function Conversion(props) {
             }
         };
 
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/`, {
+        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
@@ -172,7 +172,7 @@ export default function Conversion(props) {
 // Delete function
     const handleDelete = (subtaskId) => {
         // Perform the DELETE request
-        fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
+        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -203,7 +203,7 @@ export default function Conversion(props) {
                 }
             };
 
-            fetch(`http://127.0.0.1:8000/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
+            fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/f6084d8f-3a96-4288-b18f-fc174ce13b01/tasks/${taskId}/subtasks/${subtaskId}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/vnd.api+json',
