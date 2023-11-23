@@ -60,6 +60,7 @@ export default function UserReports() {
     const storedSelectedSubjects = localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : [];
 
     useEffect(() => {
+        console.log("task board");
         fetch(`https://planme-3366bb9023b7.herokuapp.com/api/courses/`, {
             method: 'POST',
             headers: {
