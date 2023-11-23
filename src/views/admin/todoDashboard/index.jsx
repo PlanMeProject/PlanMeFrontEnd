@@ -57,7 +57,7 @@ export default function UserReports() {
 
     const storedToken = localStorage.getItem('userToken');
     const storedUserId = localStorage.getItem('userId');
-    const storedSelectedSubjects = JSON.parse(localStorage.getItem('selectedSubjects'));
+    const storedSelectedSubjects = localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : [];
 
     useEffect(() => {
         fetch(`https://planme-3366bb9023b7.herokuapp.com/api/courses/`, {

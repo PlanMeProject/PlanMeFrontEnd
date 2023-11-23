@@ -1,4 +1,4 @@
-const GOOGLE_CLIENT_ID = "15670792015-5pehjr9jqnmqceossuqhp3jbbid0joc3.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "15670792015-fjgqol88bpri5bpijlhvhi03pr1l6cl0.apps.googleusercontent.com";
 const REDIRECT_URI = "https://planme.vercel.app/google-auth";
 const SCOPES = [
     "https://www.googleapis.com/auth/classroom.courses.readonly",

@@ -31,6 +31,7 @@ const GoogleAuthHandler = () => {
             }),
         }).then(response => {
             if (!response.ok) {
+                console.log(searchUrl.toString());
                 return response.text().then(text => {
                     throw new Error(text)
                 });
@@ -41,7 +42,7 @@ const GoogleAuthHandler = () => {
         }).catch(error => {
             console.error('Error:', error);
         });
-    }, [searchUrl, updateUser]);
+    }, []);
 
     return (
         <div></div>
