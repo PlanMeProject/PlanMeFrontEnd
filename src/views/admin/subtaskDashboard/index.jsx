@@ -68,7 +68,7 @@ export default function UserReports() {
         if (!localStorage.getItem("userToken") || !localStorage.getItem("userId")) {
             history.push(`/auth/sign-in`);
         }
-        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/${userId}/tasks/${id}/`)
+        fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${userId}/tasks/${id}/`)
             .then((response) => response.json())
             .then((data) => {
                 const taskData = data["data"];
@@ -117,7 +117,7 @@ export default function UserReports() {
         }
 
         // Perform the API call to update the task title on the server
-        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/${userId}/tasks/${id}/`, {
+        fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'
@@ -174,7 +174,7 @@ export default function UserReports() {
             }
         }
 
-        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/${userId}/tasks/${id}/`, {
+        fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'
@@ -214,7 +214,7 @@ export default function UserReports() {
             }
         };
 
-        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/summarize/${id}/`, {
+        fetch(`https://planme-3366bb9023b7.herokuapp.com/api/summarize/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
@@ -256,7 +256,7 @@ export default function UserReports() {
         };
 
         // API call to update due date
-        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/users/${userId}/tasks/${id}/`, {
+        fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${userId}/tasks/${id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json'

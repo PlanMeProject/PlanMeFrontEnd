@@ -29,7 +29,7 @@ const Calendar = () => {
             }
 
             const courseParams = selectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
-            const fetchURL = `https://planme-ff1a0ca44046.herokuapp.com/api/users/${userId}/tasks/?user_id=${userId}&${courseParams}`;
+            const fetchURL = `https://planme-3366bb9023b7.herokuapp.com/api/users/${userId}/tasks/?user_id=${userId}&${courseParams}`;
 
             fetch(fetchURL)
                 .then((response) => response.json())
