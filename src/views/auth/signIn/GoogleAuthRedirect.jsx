@@ -16,7 +16,7 @@ const GoogleAuthHandler = () => {
     }, [userToken, userId, history]);
 
     useEffect(() => {
-        fetch(`https://planme-ff1a0ca44046.herokuapp.com/api/authorize/`, {
+        fetch(`https://planme-3366bb9023b7.herokuapp.com/api/authorize/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
