@@ -7,6 +7,7 @@ const GoogleAuthHandler = () => {
     const searchUrl = location.search;
     const { userToken, userId, updateUser } = useContext(SidebarContext);
 
+
     const history = useHistory();
 
     useEffect(() => {

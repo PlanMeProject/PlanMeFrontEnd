@@ -64,6 +64,7 @@ export default function HeaderLinks(props) {
         localStorage.removeItem('userToken');
         localStorage.removeItem('userId');
         localStorage.removeItem('name');
+        localStorage.removeItem('selectedSubjects');
         history.push('/auth/sign-in');
     }
 
