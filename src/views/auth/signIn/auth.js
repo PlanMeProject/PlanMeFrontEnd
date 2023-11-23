@@ -8,8 +8,6 @@ const SCOPES = [
 ];
 
 export const handleGoogleSignIn = () => {
-    console.log('GOOGLE_CLIENT_ID', GOOGLE_CLIENT_ID);
-    console.log('REDIRECT_URI', REDIRECT_URI);
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent(SCOPES.join(' '))}&access_type=offline&prompt=consent`;
     window.location.href = authUrl;
 };
