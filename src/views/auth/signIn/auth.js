@@ -1,5 +1,5 @@
-const GOOGLE_CLIENT_ID = "15670792015-fjgqol88bpri5bpijlhvhi03pr1l6cl0.apps.googleusercontent.com";
-const REDIRECT_URI = "https://planme.vercel.app/google-auth";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const REDIRECT_URI = process.env.REDIRECT_URI;
 const SCOPES = [
     "https://www.googleapis.com/auth/classroom.courses.readonly",
     "https://www.googleapis.com/auth/classroom.course-work.readonly",
