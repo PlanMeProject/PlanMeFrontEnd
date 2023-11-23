@@ -31,9 +31,9 @@ function SignIn() {
     useEffect(() => {
         console.log(storedToken);
         console.log(storedUserId);
-        if (storedToken && storedUserId) {
-            // history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
-        }
+        // if (storedToken && storedUserId) {
+        //     // history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
+        // }
     }, []);
 
     return (
