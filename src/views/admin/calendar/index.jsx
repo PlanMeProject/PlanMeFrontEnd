@@ -161,7 +161,7 @@ const Calendar = () => {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                allDayMaxRows={3}
+                allDayMaxRows={2}
                 popup={true}
                 style={{
                     height: 800,
