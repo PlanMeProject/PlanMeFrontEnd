@@ -110,7 +110,7 @@ export default function UserReports() {
         if (tempSelectedSubjects.length === 0) {
             setSelectedCourses([]);
             setAssignments([]);
-            setIsLoading(false);
+            setIsSubjectModalOpen(false);
             return;
         }
         localStorage.setItem("selectedSubjects", JSON.stringify(tempSelectedSubjects));
@@ -248,7 +248,6 @@ export default function UserReports() {
 
 
     const handleDeleteTask = (taskId) => {
-        // Perform the DELETE request
         fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${storedUserId}/tasks/${taskId}`, {
             method: 'DELETE'
         })
@@ -270,23 +269,19 @@ export default function UserReports() {
     };
 
 
-    // Example of onDragStart function in UserReports component
     const handleDragStart = (event, task) => {
         event.dataTransfer.setData("text/plain", task.id.toString()); // Set the drag data to the task's id
-        setDraggedTask(task); // Update the state to reflect the currently dragged task
+        setDraggedTask(task);
     };
 
-    // This function will be called when the drag is over a drop zone
     const handleDragOver = (event) => {
-        event.preventDefault(); // Necessary to allow a drop
+        event.preventDefault();
     };
 
-    // This function will be called when the task is dropped
     const handleDrop = (newStatus, event) => {
         event.preventDefault();
         const taskId = event.dataTransfer.getData("text/plain");
         if (taskId) {
-            // Find the current task to get its current status
             const currentTask = task.find(t => t.id === taskId);
 
             if (!currentTask) {
@@ -296,7 +291,6 @@ export default function UserReports() {
 
             const oldStatus = currentTask.attributes.status;
 
-            // Create the request body with the new status
             const requestBody = {
                 data: {
                     type: "TaskViewSet",
@@ -307,7 +301,6 @@ export default function UserReports() {
                 }
             };
 
-            // Perform the API call to update the status on the server
             fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${storedUserId}/tasks/${taskId}/`, {
                 method: 'PUT',
                 headers: {
@@ -327,7 +320,7 @@ export default function UserReports() {
                     } : t));
 
                     // Update task counters accordingly
-                    if (oldStatus !== newStatus) { // Only update counters if the status has changed
+                    if (oldStatus !== newStatus) {
                         setNumTodo(prev => oldStatus === 'Todo' ? prev - 1 : newStatus === 'Todo' ? prev + 1 : prev);
                         setNumInProgress(prev => oldStatus === 'In progress' ? prev - 1 : newStatus === 'In progress' ? prev + 1 : prev);
                         setNumCompleted(prev => (oldStatus === 'Completed' || oldStatus === 'Complete') ? prev - 1 : (newStatus === 'Completed' || newStatus === 'Complete') ? prev + 1 : prev);
@@ -396,13 +389,12 @@ export default function UserReports() {
                     <ModalCloseButton/>
                     <ModalBody>
                         <Select
-                            placeholder="Checked Done Tasks"
-                            value="check"
+                            value={filterSelection}
                             onChange={(e) => setFilterSelection(e.target.value)}
                             mb={3}
                         >
-                            <option value="notCheck">Not Checked Done Tasks
-                            </option>
+                            <option value="notCheck">Not Checked Done Tasks</option>
+                            <option value="check">Checked Done Tasks</option>
                         </Select>
                         <VStack align="stretch" spacing={3}>
                             {availableSubjects.map((subject, index) => (
@@ -639,7 +631,8 @@ export default function UserReports() {
                                 onChange={(e) => setCourseAdded(e.target.value)}
                             >
                                 {storedSelectedSubjects.map((course) => {
-                                    return <option value={course}>{course}</option>
+                                    return <option
+                                        value={course}>{course}</option>
                                 })
                                 }
                             </Select>
