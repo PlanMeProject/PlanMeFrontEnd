@@ -154,6 +154,7 @@ export default function UserReports() {
             setIsLoading(false);
         }).catch(error => {
             console.error('Error:', error);
+            setIsLoading(false);
         });
     };
 
@@ -356,9 +357,9 @@ export default function UserReports() {
             <ModalContent>
                 <Flex justifyContent="center" alignItems="center" p={6}
                       flexDirection="column">
-                    <Text mb={4}>Loading</Text>
+                    <Text mb={4}>Loading your tasks</Text>
                     <Progress isIndeterminate width="100%"/>
-                    <Text mt={4}>Please wait...</Text>
+                    <Text mt={4}>This might take a few minutes...especially if you selected many courses</Text>
                 </Flex>
             </ModalContent>
         </Modal>
