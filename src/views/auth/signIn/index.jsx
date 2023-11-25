@@ -12,6 +12,8 @@ import {
 import {MdTask} from "react-icons/md";
 import {FcGoogle} from "react-icons/fc";
 import DefaultAuth from "layouts/auth/Default";
+import {useHistory} from "react-router-dom";
+import {useEffect} from "react";
 
 function SignIn() {
     const textColor = useColorModeValue("navy.700", "white");
@@ -22,6 +24,17 @@ function SignIn() {
     const googleHover = useColorModeValue({bg: "gray.200"}, {bg: "whiteAlpha.300"});
     const googleActive = useColorModeValue({bg: "secondaryGray.300"}, {bg: "whiteAlpha.200"});
     const iconColor = useColorModeValue("green.500", "green.500");
+    const storedToken = localStorage.getItem('userToken');
+    const storedUserId = localStorage.getItem('userId');
+    const history = useHistory();
+
+    useEffect(() => {
+        console.log(storedToken);
+        console.log(storedUserId);
+        if (storedToken && storedUserId) {
+            history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
+        }
+    }, [storedToken, storedUserId, history]);
 
     return (
         <DefaultAuth image={"frontend/src/assets/img/3dplanme.png"}>
