@@ -127,6 +127,7 @@ export default function UserReports() {
                 type: "AssignmentsViewSet",
                 attributes: {
                     user_id: storedUserId,
+                    check_status: "check",
                     access_token: storedToken,
                     all_courses: {
                         data: selectedCourses
