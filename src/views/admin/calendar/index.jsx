@@ -139,59 +139,65 @@ const Calendar = () => {
         };
     };
 
-    return (
-        <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-            <Flex mb="4" justify="space-between" align="center">
-                <Select
-                    value={view}
-                    onChange={(e) => handleViewChange(e.target.value)}
-                    width="150px"
-                    marginRight="4"
-                    color={useColorModeValue('#0b1437', '#ffffff')}
-                    bg={useColorModeValue('#ffffff', '#1a202c')}
-                    borderRadius="4px"
-                    _focus={{ boxShadow: '0 0 0 1px #6678b4' }}
-                >
-                    <option value="month" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
-                        Month
-                    </option>
-                    <option value="week" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
-                        Week
-                    </option>
-                    <option value="agenda" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
-                        Agenda
-                    </option>
+    const moveEvent = ({ event, start, end }) => {
+        const { id } = event;
+        };
 
-                </Select>
-            </Flex>
-            <BigCalendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                allDayMaxRows={2}
-                popup={true}
-                style={{
-                    height: 800,
-                    borderRadius: '8px',
-                    overflow: 'hidden',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                }}
-                components={{
-                    event: CustomEvent,
-                    toolbar: CustomToolbar,
-                }}
-                views={{
-                    month: true,
-                    week: true,
-                    agenda: true
-                }}
-                view={view}
-                dayPropGetter={dayPropGetter}
-            />
-            <FixedPlugin />
-        </Box>
+
+    return (
+    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+        <Flex mb="4" justify="space-between" align="center">
+            <Select
+                value={view}
+                onChange={(e) => handleViewChange(e.target.value)}
+                width="150px"
+                marginRight="4"
+                color={useColorModeValue('#0b1437', '#ffffff')}
+                bg={useColorModeValue('#ffffff', '#1a202c')}
+                borderRadius="4px"
+                _focus={{ boxShadow: '0 0 0 1px #6678b4' }}
+            >
+                <option value="month" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
+                    Month
+                </option>
+                <option value="week" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
+                    Week
+                </option>
+                <option value="agenda" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
+                    Agenda
+                </option>
+            </Select>
+        </Flex>
+        <DraggableCalendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            allDayMaxRows={2}
+            popup={true}
+            style={{
+                height: 800,
+                borderRadius: '8px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+            }}
+            components={{
+                event: CustomEvent,
+                toolbar: CustomToolbar,
+            }}
+            views={{
+                month: true,
+                week: true,
+                agenda: true,
+            }}
+            view={view}
+            dayPropGetter={dayPropGetter}
+            onEventDrop={moveEvent}
+        />
+        <FixedPlugin />
+    </Box>
     );
+
 };
 
 export default Calendar;
