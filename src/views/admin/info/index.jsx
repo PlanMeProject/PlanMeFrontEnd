@@ -12,7 +12,7 @@ export default function InformationPage() {
         gap={{ base: "20px", xl: "20px" }}>
         <VStack spacing={4}>
           <Text fontSize="xxl" fontWeight="bold">
-            Information Title
+            For Non-Students
           </Text>
           <Text>
             PlanMe is designed for students who have at least one Google Classroom they are a student in. In case you don't, we've prepared a testing Classroom for you to experience the `Get Google Classroom Assignments` feature. Here is the link and the QR code, feel free to pick one.
@@ -29,6 +29,9 @@ export default function InformationPage() {
           />
           <Text>
             Scan the QR code for more details.
+          </Text>
+           <Text>
+            After you join the classroom, you can go back to the Task Board page and select the 'PlanMe' course. Feel free to leave it whenever you want.
           </Text>
         </VStack>
       </Grid>
