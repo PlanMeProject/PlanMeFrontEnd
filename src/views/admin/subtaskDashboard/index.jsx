@@ -76,8 +76,8 @@ export default function UserReports() {
                     const foundTask = taskData
                     if (foundTask) {
                         setTask(foundTask);
-                        if (foundTask.attributes.description) {
-                        setDescription(foundTask.attributes.description);
+                        if (foundTask.attributes.description && foundTask.attributes.description.toString().trim() !== "") {
+                            setDescription(foundTask.attributes.description);
                         } else {
                             setDescription("You should fill in the description to use the AI.");
                         }
