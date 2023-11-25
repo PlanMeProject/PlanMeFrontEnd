@@ -107,6 +107,12 @@ export default function UserReports() {
 
     const saveSelectedSubjects = () => {
         setSelectedSubjects(tempSelectedSubjects);
+        if (tempSelectedSubjects.length === 0) {
+            setSelectedCourses([]);
+            setAssignments([]);
+            setIsLoading(false);
+            return;
+        }
         localStorage.setItem("selectedSubjects", JSON.stringify(tempSelectedSubjects));
         const selectedCourses = allCourses.filter(c => tempSelectedSubjects.includes(c.title.name));
         setSelectedCourses(selectedCourses);
@@ -633,8 +639,7 @@ export default function UserReports() {
                                 onChange={(e) => setCourseAdded(e.target.value)}
                             >
                                 {storedSelectedSubjects.map((course) => {
-                                    return <option
-                                        value={course}>{course}</option>
+                                    return <option value={course}>{course}</option>
                                 })
                                 }
                             </Select>

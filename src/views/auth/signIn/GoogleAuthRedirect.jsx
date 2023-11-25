@@ -11,7 +11,7 @@ const GoogleAuthHandler = () => {
 
     useEffect(() => {
         if (userToken && userId) {
-            history.push(`/admin/task-board/${userToken}/${userId}`);
+            history.push(`https://planme-git-bugfix-task-board-feature-yanatgs-projects.vercel.app/admin/task-board/${userToken}/${userId}`);
         }
     }, [userToken, userId, history]);
 

@@ -99,9 +99,9 @@ export default function Default(props) {
                                     onClick={(e) => openDeleteConfirmation(task.id, e)}
                                 />
                             </Flex>
-                            <Text
-                                color='navy.400'
-                            >{task.attributes.course}</Text>
+                            <Text color='navy.400'>
+                                {task.attributes.course.length > 25 ? `${task.attributes.course.slice(0, 25)}...` : task.attributes.course}
+                            </Text>
                             <Text
                                 color='red.400'
                             >{task.attributes.due_date}</Text>
