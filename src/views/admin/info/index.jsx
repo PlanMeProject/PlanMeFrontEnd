@@ -1,4 +1,3 @@
-// Chakra imports
 import { Box, Grid, Text, VStack, Image, Link } from "@chakra-ui/react";
 
 import qrcode from "assets/img/qr.png";
@@ -15,7 +14,10 @@ export default function InformationPage() {
             For Non-Students
           </Text>
           <Text>
-            PlanMe is designed for students who have at least one Google Classroom they are a student in. In case you don't, we've prepared a testing Classroom for you to experience the `Get Google Classroom Assignments` feature. Here is the link and the QR code, feel free to pick one.
+            PlanMe is designed for students who have at least one Google Classroom they were a student. In case that you don't, we've prepared a testing Classroom for you to experience the `Get Google Classroom Assignments` feature. Here is the link and the QR code, feel free to pick one.
+          </Text>
+          <Text color="red.500" fontWeight="bold">
+            (Make sure to use the same mail that you logged in to the application)
           </Text>
           <Link href="https://classroom.google.com/c/NTMwNzYwOTUxODMy?cjc=xyrson2" isExternal color="blue.500">
             https://classroom.google.com/c/NTMwNzYwOTUxODMy?cjc=xyrson2
@@ -30,7 +32,7 @@ export default function InformationPage() {
           <Text>
             Scan the QR code for more details.
           </Text>
-           <Text>
+          <Text>
             After you join the classroom, you can go back to the Task Board page and select the 'PlanMe' course. Feel free to leave it whenever you want.
           </Text>
         </VStack>
