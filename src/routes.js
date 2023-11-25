@@ -39,7 +39,7 @@ const routes = [
         component: TodoDashboard,
     },
     {
-        name: "Calendar",
+        name: "Calendar (In progress)",
         layout: "/admin",
         path: `/calendar/${userId}`,
         visible: "yes",
