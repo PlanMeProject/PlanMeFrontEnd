@@ -1,11 +1,6 @@
 // Chakra imports
 import { Box, Grid, Text, VStack, Image } from "@chakra-ui/react";
 
-// Custom components
-import Banner from "views/admin/profile/components/Banner";
-
-// Assets
-import banner from "assets/img/auth/banner.png";
 import qrcode from "assets/img/qr.png";
 import React from "react";
 
