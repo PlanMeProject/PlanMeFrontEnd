@@ -48,7 +48,7 @@ const Calendar = () => {
 
         loadTasks();
     }, []);
-    
+
     const events = tasks.map(task => {
         const dueDate = new Date(task.attributes.due_date);
         return {
@@ -62,7 +62,7 @@ const Calendar = () => {
 
     const CustomEvent = ({ event }) => (
         <div
-            onClick={() => window.location.href = `/task/${event.id}`}
+            onClick={() => window.location.href = `/admin/task-board/task/${event.id}`}
             style={{
                 backgroundColor: useColorModeValue('#0b1437', '#ffffff'),
                 color: useColorModeValue('#ffffff', '#0b1437'),
