@@ -15,15 +15,6 @@ export default function InformationPage() {
       <Grid
         templateColumns="1fr"
         gap={{ base: "20px", xl: "20px" }}>
-        <Banner
-          banner={banner}
-          avatar={avatar}
-          name='[Your Name]'
-          job='[Your Job Title]'
-          posts='[Number of Posts]'
-          followers='[Number of Followers]'
-          following='[Number Following]'
-        />
         <VStack spacing={4}>
           <Text fontSize="xl" fontWeight="bold">
             Information Title
