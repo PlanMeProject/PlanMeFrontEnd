@@ -134,13 +134,13 @@ export default function HeaderLinks(props) {
                         </Text>
                     </Flex>
                     <Flex flexDirection="column" p="10px">
-                        <MenuItem
+                        <MenuItem onClick={handleLogout}
                             _hover={{bg: 'none'}}
                             _focus={{bg: 'none'}}
                             color="red.400"
                             borderRadius="8px"
                             px="14px">
-                            <Text onClick={handleLogout} fontSize="sm">Log out</Text>
+                            <Text fontSize="sm">Log out</Text>
                         </MenuItem>
                     </Flex>
                 </MenuList>

@@ -110,16 +110,9 @@ export default function AdminNavbar(props) {
                 {/* box for header subjects */}
                 <Box mb={{sm: '8px', md: '0px'}}>
                     <Breadcrumb>
-                        <BreadcrumbItem color={secondaryText} fontSize='sm'
-                                        mb='5px'>
-                            <BreadcrumbLink href='#' color={secondaryText}>
-                                Pages
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
-
                         <BreadcrumbItem color={secondaryText} fontSize='sm'>
-                            <BreadcrumbLink href='#' color={secondaryText}>
-                                {brandText}
+                            <BreadcrumbLink href='https://planme.vercel.app/' color={secondaryText}>
+                                Main page
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                     </Breadcrumb>
