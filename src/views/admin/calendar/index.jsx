@@ -4,8 +4,10 @@ import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 
 const localizer = momentLocalizer(moment);
+const DraggableCalendar = withDragAndDrop(BigCalendar);
 
 const Calendar = () => {
     const [tasks, setTasks] = useState([]);
@@ -50,6 +52,7 @@ const Calendar = () => {
     const events = tasks.map(task => {
         const dueDate = new Date(task.attributes.due_date);
         return {
+            id: task.id,
             title: task.attributes.title,
             start: dueDate,
             end: dueDate,
@@ -59,6 +62,7 @@ const Calendar = () => {
 
     const CustomEvent = ({ event }) => (
         <div
+            onClick={() => window.location.href = `/admin/task-board/task/${event.id}`}
             style={{
                 backgroundColor: useColorModeValue('#0b1437', '#ffffff'),
                 color: useColorModeValue('#ffffff', '#0b1437'),
@@ -154,6 +158,10 @@ const Calendar = () => {
                     <option value="week" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
                         Week
                     </option>
+                    <option value="agenda" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
+                        Agenda
+                    </option>
+
                 </Select>
             </Flex>
             <BigCalendar
@@ -176,6 +184,7 @@ const Calendar = () => {
                 views={{
                     month: true,
                     week: true,
+                    agenda: true
                 }}
                 view={view}
                 dayPropGetter={dayPropGetter}
