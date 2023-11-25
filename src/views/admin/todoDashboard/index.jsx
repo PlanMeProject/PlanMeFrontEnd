@@ -155,8 +155,10 @@ export default function UserReports() {
             setAssignments(data.data);
             setIsLoading(false);
         }).catch(error => {
-            console.error('Error:', error);
+            setMessage("You have selected course that your role is not a student.");
+            setIsNoTasks(true);
             setIsLoading(false);
+            console.error('Error:', error);
         });
     };
 
@@ -354,8 +356,6 @@ export default function UserReports() {
                 }
             })
             .catch((error) => {
-                setIsNoTasks(true);
-                setMessage("You have selected course that your role is not a student.");
                 console.error("Error fetching data: ", error);
             })
     }, [assignments]);
@@ -369,7 +369,8 @@ export default function UserReports() {
                       flexDirection="column">
                     <Text mb={4}>Loading your tasks</Text>
                     <Progress isIndeterminate width="100%"/>
-                    <Text mt={4}>This might take a few minutes...especially if you selected many courses</Text>
+                    <Text mt={4}>This might take a few minutes...especially if
+                        you selected many courses</Text>
                 </Flex>
             </ModalContent>
         </Modal>
