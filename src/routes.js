@@ -12,7 +12,7 @@ import {
 
 // Admin Imports
 import Calendar from "views/admin/calendar";
-import Profile from "views/admin/profile";
+import Info from "views/admin/info";
 import DataTables from "views/admin/dataTables";
 import TodoDashboard from "views/admin/todoDashboard";
 import SubTask from "views/admin/subtaskDashboard";
@@ -56,12 +56,12 @@ const routes = [
         component: DataTables,
     },
     {
-        name: "Profile",
+        name: "Info",
         layout: "/admin",
-        path: "/profile",
-        visible: "no",
+        path: "/info",
+        visible: "yes",
         icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit'/>,
-        component: Profile,
+        component: Info,
     },
     {
         name: "Sign In",
