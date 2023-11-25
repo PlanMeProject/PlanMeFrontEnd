@@ -54,6 +54,7 @@ export default function UserReports() {
     const [filterSelection, setFilterSelection] = useState("notCheck");
     const [assignments, setAssignments] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isNoTasks, setIsNoTasks] = useState(false);
 
     const storedToken = localStorage.getItem('userToken');
     const storedUserId = localStorage.getItem('userId');
@@ -339,6 +340,11 @@ export default function UserReports() {
                 const taskData = data["data"];
                 if (taskData) {
                     setTask(taskData);
+                    if (taskData.length === 0) {
+                        setIsNoTasks(true);
+                    } else {
+                        setIsNoTasks(false);
+                    }
                     setNumTodo(taskData.filter(task => task.attributes.status === 'Todo').length);
                     setNumInProgress(taskData.filter(task => task.attributes.status === 'In progress').length);
                     setNumCompleted(taskData.filter(task => task.attributes.status === 'Completed' || task.attributes.status === 'Complete').length);
@@ -369,6 +375,7 @@ export default function UserReports() {
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <Button mb='10px' backgroundColor={selectSubBtColor}
                     onClick={openSubjectModal}>Select Courses</Button>
+            {isNoTasks && <Text color={textColor} mb='10px'>No tasks found for the selected courses</Text>}
             {/* Loading Modal */}
             {isLoading && <LoadingModal/>}
             <Modal isOpen={isSubjectModalOpen}
