@@ -55,6 +55,7 @@ export default function UserReports() {
     const [assignments, setAssignments] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isNoTasks, setIsNoTasks] = useState(false);
+    const [message, setMessage] = useState("");
 
     const storedToken = localStorage.getItem('userToken');
     const storedUserId = localStorage.getItem('userId');
@@ -341,6 +342,7 @@ export default function UserReports() {
                 if (taskData) {
                     setTask(taskData);
                     if (taskData.length === 0) {
+                        setMessage("No tasks found for the selected courses or you do not selected any course yet.");
                         setIsNoTasks(true);
                     } else {
                         setIsNoTasks(false);
@@ -352,6 +354,8 @@ export default function UserReports() {
                 }
             })
             .catch((error) => {
+                setIsNoTasks(true);
+                setMessage("You have selected course that your role is not a student.");
                 console.error("Error fetching data: ", error);
             })
     }, [assignments]);
@@ -375,7 +379,7 @@ export default function UserReports() {
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <Button mb='10px' backgroundColor={selectSubBtColor}
                     onClick={openSubjectModal}>Select Courses</Button>
-            {isNoTasks && <Text color={textColor} mb='10px'>No tasks found for the selected courses</Text>}
+            {isNoTasks && <Text color={textColor} mb='20px'>{message}</Text>}
             {/* Loading Modal */}
             {isLoading && <LoadingModal/>}
             <Modal isOpen={isSubjectModalOpen}
