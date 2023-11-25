@@ -155,7 +155,7 @@ export default function UserReports() {
             setAssignments(data.data);
             setIsLoading(false);
         }).catch(error => {
-            setMessage("You have selected course that your role is not a student.");
+            setMessage("You have selected a course that you are not a student.");
             setIsNoTasks(true);
             setIsLoading(false);
             console.error('Error:', error);
