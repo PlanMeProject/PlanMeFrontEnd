@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex, Select, useColorModeValue } from "@chakra-ui/react";
-import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
+import React, {useState, useEffect} from "react";
+import {Box, Flex, Select, useColorModeValue} from "@chakra-ui/react";
+import {Calendar as BigCalendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
@@ -60,7 +60,7 @@ const Calendar = () => {
         };
     });
 
-    const CustomEvent = ({ event }) => (
+    const CustomEvent = ({event}) => (
         <div
             onClick={() => window.location.href = `/admin/task-board/task/${event.id}`}
             style={{
@@ -89,17 +89,20 @@ const Calendar = () => {
                 alignItems: 'center',
             }}
         >
-            <div style={{ fontWeight: 'bold', fontSize: '18px' }}>
+            <div style={{fontWeight: 'bold', fontSize: '18px'}}>
                 {toolbar.label}
             </div>
             <div>
-                <button style={toolbarButtonStyle} onClick={() => toolbar.onNavigate('TODAY')}>
+                <button style={toolbarButtonStyle}
+                        onClick={() => toolbar.onNavigate('TODAY')}>
                     Today
                 </button>
-                <button style={toolbarButtonStyle} onClick={() => toolbar.onNavigate('PREV')}>
+                <button style={toolbarButtonStyle}
+                        onClick={() => toolbar.onNavigate('PREV')}>
                     Back
                 </button>
-                <button style={toolbarButtonStyle} onClick={() => toolbar.onNavigate('NEXT')}>
+                <button style={toolbarButtonStyle}
+                        onClick={() => toolbar.onNavigate('NEXT')}>
                     Next
                 </button>
             </div>
@@ -139,63 +142,101 @@ const Calendar = () => {
         };
     };
 
-    const moveEvent = ({ event, start, end }) => {
-        const { id } = event;
-        };
+    const moveEvent = ({event, start, end}) => {
+        const {id} = event;
 
+        // Format the new start date to match your backend requirements
+        const newDueDate = moment(start).format('YYYY-MM-DD');
+
+        // API call to update the task
+        const updateURL = `https://planme-3366bb9023b7.herokuapp.com/api/tasks/${id}`;
+        fetch(updateURL, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify({due_date: newDueDate}),
+        })
+            .then(response => response.json())
+            .then(updatedTask => {
+                const updatedTasks = tasks.map(task => {
+                    if (task.id === id) {
+                        return {
+                            ...task,
+                            attributes: {
+                                ...task.attributes,
+                                due_date: newDueDate
+                            }
+                        };
+                    }
+                    return task;
+                });
+                setTasks(updatedTasks);
+            })
+            .catch(error => console.error('Error updating task:', error));
+    };
 
     return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-        <Flex mb="4" justify="space-between" align="center">
-            <Select
-                value={view}
-                onChange={(e) => handleViewChange(e.target.value)}
-                width="150px"
-                marginRight="4"
-                color={useColorModeValue('#0b1437', '#ffffff')}
-                bg={useColorModeValue('#ffffff', '#1a202c')}
-                borderRadius="4px"
-                _focus={{ boxShadow: '0 0 0 1px #6678b4' }}
-            >
-                <option value="month" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
-                    Month
-                </option>
-                <option value="week" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
-                    Week
-                </option>
-                <option value="agenda" style={{ backgroundColor: useColorModeValue('#ffffff','#1a202c'), color: useColorModeValue('#1a202c','#ffffff') }}>
-                    Agenda
-                </option>
-            </Select>
-        </Flex>
-        <DraggableCalendar
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            allDayMaxRows={2}
-            popup={true}
-            style={{
-                height: 800,
-                borderRadius: '8px',
-                overflow: 'hidden',
-                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-            }}
-            components={{
-                event: CustomEvent,
-                toolbar: CustomToolbar,
-            }}
-            views={{
-                month: true,
-                week: true,
-                agenda: true,
-            }}
-            view={view}
-            dayPropGetter={dayPropGetter}
-            onEventDrop={moveEvent}
-        />
-        <FixedPlugin />
-    </Box>
+        <Box pt={{base: '130px', md: '80px', xl: '80px'}}>
+            <Flex mb="4" justify="space-between" align="center">
+                <Select
+                    value={view}
+                    onChange={(e) => handleViewChange(e.target.value)}
+                    width="150px"
+                    marginRight="4"
+                    color={useColorModeValue('#0b1437', '#ffffff')}
+                    bg={useColorModeValue('#ffffff', '#1a202c')}
+                    borderRadius="4px"
+                    _focus={{boxShadow: '0 0 0 1px #6678b4'}}
+                >
+                    <option value="month" style={{
+                        backgroundColor: useColorModeValue('#ffffff', '#1a202c'),
+                        color: useColorModeValue('#1a202c', '#ffffff')
+                    }}>
+                        Month
+                    </option>
+                    <option value="week" style={{
+                        backgroundColor: useColorModeValue('#ffffff', '#1a202c'),
+                        color: useColorModeValue('#1a202c', '#ffffff')
+                    }}>
+                        Week
+                    </option>
+                    <option value="agenda" style={{
+                        backgroundColor: useColorModeValue('#ffffff', '#1a202c'),
+                        color: useColorModeValue('#1a202c', '#ffffff')
+                    }}>
+                        Agenda
+                    </option>
+                </Select>
+            </Flex>
+            <DraggableCalendar
+                localizer={localizer}
+                events={events}
+                startAccessor="start"
+                endAccessor="end"
+                allDayMaxRows={2}
+                popup={true}
+                style={{
+                    height: 800,
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                }}
+                components={{
+                    event: CustomEvent,
+                    toolbar: CustomToolbar,
+                }}
+                views={{
+                    month: true,
+                    week: true,
+                    agenda: true,
+                }}
+                view={view}
+                dayPropGetter={dayPropGetter}
+                onEventDrop={moveEvent}
+            />
+            <FixedPlugin/>
+        </Box>
     );
 
 };
