@@ -144,37 +144,60 @@ const Calendar = () => {
 
     const moveEvent = ({event, start, end}) => {
         const {id} = event;
-
+        const {userId} = localStorage.getItem("userId");
         // Format the new start date to match your backend requirements
         const newDueDate = moment(start).format('YYYY-MM-DD');
+        const requestBody = {
+            // Update this according to the expected structure of your API request body
+            data: {
+                type: "tasks", // Assuming 'tasks' is the type, change as needed
+                id: id,
+                attributes: {
+                    due_date: newDueDate
+                }
+            }
+        };
 
         // API call to update the task
-        const updateURL = `https://planme-3366bb9023b7.herokuapp.com/api/tasks/${id}`;
+        const updateURL = `https://planme-3366bb9023b7.herokuapp.com/api/users/${userId}/tasks/${id}/`;
         fetch(updateURL, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/vnd.api+json',
             },
-            body: JSON.stringify({due_date: newDueDate}),
+            body: JSON.stringify(requestBody),
         })
-            .then(response => response.json())
-            .then(updatedTask => {
-                const updatedTasks = tasks.map(task => {
-                    if (task.id === id) {
-                        return {
-                            ...task,
-                            attributes: {
-                                ...task.attributes,
-                                due_date: newDueDate
-                            }
-                        };
-                    }
-                    return task;
-                });
-                setTasks(updatedTasks);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
             })
-            .catch(error => console.error('Error updating task:', error));
+            .then(data => {
+                if (data && data.data) {
+                    // Update tasks in state
+                    const updatedTasks = tasks.map(task => {
+                        if (task.id === id) {
+                            return {
+                                ...task,
+                                attributes: {
+                                    ...task.attributes,
+                                    due_date: newDueDate
+                                }
+                            };
+                        }
+                        return task;
+                    });
+                    setTasks(updatedTasks);
+                } else {
+                    console.log("No data found");
+                }
+            })
+            .catch(error => {
+                console.error('Failed to update task:', error);
+            });
     };
+
 
     return (
         <Box pt={{base: '130px', md: '80px', xl: '80px'}}>
