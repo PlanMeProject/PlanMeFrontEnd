@@ -122,31 +122,19 @@ export default function UserReports() {
 
     const getAssignments = (selectedCourses) => {
         setIsLoading(true);
-        const body = filterSelection === "notCheck" ? {
+        const body = {
             data: {
                 type: "AssignmentsViewSet",
                 attributes: {
                     user_id: storedUserId,
-                    check_status: "check",
+                    check_status: "checked",
                     access_token: storedToken,
                     all_courses: {
                         data: selectedCourses
                     }
                 }
             }
-        } : {
-            data: {
-                type: "AssignmentsViewSet",
-                attributes: {
-                    user_id: storedUserId,
-                    check_status: "check",
-                    access_token: storedToken,
-                    all_courses: {
-                        data: selectedCourses
-                    }
-                }
-            }
-        }
+        };
         fetch(`https://planme-3366bb9023b7.herokuapp.com/api/assignments/`, {
             method: 'POST',
             headers: {
@@ -389,14 +377,6 @@ export default function UserReports() {
                     <ModalHeader>Select Courses</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody>
-                        <Select
-                            value={filterSelection}
-                            onChange={(e) => setFilterSelection(e.target.value)}
-                            mb={3}
-                        >
-                            <option value="notCheck">Not Checked Done Tasks</option>
-                            <option value="check">Checked Done Tasks</option>
-                        </Select>
                         <VStack align="stretch" spacing={3}>
                             {availableSubjects.map((subject, index) => (
                                 <Checkbox
