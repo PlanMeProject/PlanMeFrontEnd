@@ -1,5 +1,5 @@
 // Chakra imports
-import { Box, Grid, Text, VStack, Image } from "@chakra-ui/react";
+import { Box, Grid, Text, VStack, Image, Link } from "@chakra-ui/react";
 
 import qrcode from "assets/img/qr.png";
 import React from "react";
@@ -11,15 +11,22 @@ export default function InformationPage() {
         templateColumns="1fr"
         gap={{ base: "20px", xl: "20px" }}>
         <VStack spacing={4}>
-          <Text fontSize="xl" fontWeight="bold">
+          <Text fontSize="xxl" fontWeight="bold">
             Information Title
           </Text>
           <Text>
-            Here is the place where you can add all the additional information
-            you want to display on this page. Replace this text with your actual
-            content.
+            PlanMe is designed for students who have at least one Google Classroom they are a student in. In case you don't, we've prepared a testing Classroom for you to experience the `Get Google Classroom Assignments` feature. Here is the link and the QR code, feel free to pick one.
           </Text>
-          <Image src={qrcode} alt="QR Code" boxSize="100px" />
+          <Link href="https://classroom.google.com/c/NTMwNzYwOTUxODMy?cjc=xyrson2" isExternal color="blue.500">
+            https://classroom.google.com/c/NTMwNzYwOTUxODMy?cjc=xyrson2
+          </Link>
+          <Image
+            src={qrcode}
+            alt="QR Code"
+            boxSize="100px"
+            height="150px"
+            objectFit="cover"
+          />
           <Text>
             Scan the QR code for more details.
           </Text>
