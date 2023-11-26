@@ -11,15 +11,6 @@ const GoogleAuthHandler = () => {
     const history = useHistory();
 
     useEffect(() => {
-
-        if (userToken && userId) {
-            history.push(`/admin/task-board/${userToken}/${userId}`);
-        }else {
-            history.push(`/auth/sign-in`);
-        }
-    }, [userToken, userId]);
-
-    useEffect(() => {
         fetch(`https://planme-3366bb9023b7.herokuapp.com/api/authorize/`, {
             method: 'POST',
             headers: {
@@ -47,6 +38,19 @@ const GoogleAuthHandler = () => {
             console.error('Error:', error);
         });
     }, []);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (userToken && userId) {
+                history.push(`/admin/task-board/${userToken}/${userId}`);
+            } else {
+                history.push(`/auth/sign-in`);
+            }
+        }, 500);
+
+        return () => clearTimeout(timeoutId);
+    }, [userToken, userId, history]);
+
 
     return (
         <div></div>
