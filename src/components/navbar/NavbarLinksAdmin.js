@@ -110,7 +110,7 @@ export default function HeaderLinks(props) {
                     <Avatar
                         _hover={{cursor: 'pointer'}}
                         color="white"
-                        name="PlanMe"
+                        name={props.name.toString().replace(".", " ")}
                         // src="https://bit.ly/broken-link"
                         bg="#11047A"
                         size="sm"
