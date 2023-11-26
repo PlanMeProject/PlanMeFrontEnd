@@ -11,9 +11,12 @@ import {
     TabPanels,
     Tab,
     TabPanel,
-    List,
-    ListItem
+    UnorderedList,
+    ListItem,
+    Heading,
+    Icon
 } from '@chakra-ui/react';
+import { MdCheckCircle } from 'react-icons/md'; // Example icon
 
 import qrcode from 'assets/img/qr.png';
 
@@ -22,26 +25,47 @@ export default function InformationPage() {
         <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
             <Tabs variant="enclosed">
                 <TabList>
+                    <Tab>Mini Guide</Tab>
                     <Tab>For Non-Students</Tab>
-                    <Tab>How to Use the Website</Tab>
                 </TabList>
 
                 <TabPanels>
-                  <TabPanel>
-                        {/* New Content for Website Usage */}
-                            <Text fontSize="xxl" fontWeight="bold">
-                              Mini How To
-                            </Text>
-                        <List spacing={3}>
-
+                    <TabPanel>
+                        <Heading as="h3" size="lg" mb={4}>
+                            Mini How To
+                        </Heading>
+                        <UnorderedList spacing={3}>
                             <ListItem>
-                                Step 1: Log in to the website using your credentials.
+                                <Heading as="h4" size="md" color="blue.500" mb={2}>
+                                    <Icon as={MdCheckCircle} mr={2} /> Select Courses
+                                </Heading>
+                                Pick the courses you want to manage. You'll need to re-select them whenever you log in so we can check for new assignments.
                             </ListItem>
                             <ListItem>
-                                Step 2: Navigate to the dashboard to view your tasks and assignments.
+                                <Heading as="h4" size="md" color="green.500" mb={2}>
+                                    <Icon as={MdCheckCircle} mr={2} /> Delete Tasks
+                                </Heading>
+                                Deleted tasks won't reappear, even if you re-select the course. You can also try delete tasks in PlanMe Google Classroom (check the next tab).
                             </ListItem>
-                            {/* Add more ListItems with additional steps as needed */}
-                        </List>
+                            <ListItem>
+                                <Heading as="h4" size="md" color="orange.500" mb={2}>
+                                    <Icon as={MdCheckCircle} mr={2} /> Non-Students
+                                </Heading>
+                                You can't get the task from the courses that you aren't a student (check the next tab).
+                            </ListItem>
+                            <ListItem>
+                                <Heading as="h4" size="md" color="red.500" mb={2}>
+                                    <Icon as={MdCheckCircle} mr={2} /> Re-authenticate
+                                </Heading>
+                                You can stay logged in for up to 1 hour before needing to re-authenticate. This regenerates your Google Classroom token.
+                            </ListItem>
+                            <ListItem>
+                                <Heading as="h4" size="md" color="purple.500" mb={2}>
+                                    <Icon as={MdCheckCircle} mr={2} /> Drag and Drop
+                                </Heading>
+                                You can drag and drop tasks between the task board and calendar.
+                            </ListItem>
+                        </UnorderedList>
                     </TabPanel>
                     <TabPanel>
                         {/* Content for Non-Students */}

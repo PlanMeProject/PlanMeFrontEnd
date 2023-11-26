@@ -56,7 +56,7 @@ const routes = [
         component: DataTables,
     },
     {
-        name: "Additional Info",
+        name: "Information",
         layout: "/admin",
         path: "/info",
         visible: "yes",
