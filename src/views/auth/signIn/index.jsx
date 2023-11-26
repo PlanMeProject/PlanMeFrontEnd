@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {handleGoogleSignIn} from './auth';
 import {
     Box,
@@ -14,6 +14,7 @@ import {FcGoogle} from "react-icons/fc";
 import DefaultAuth from "layouts/auth/Default";
 import {useHistory} from "react-router-dom";
 import {useEffect} from "react";
+import {SidebarContext} from "../../../contexts/SidebarContext";
 
 function SignIn() {
     const textColor = useColorModeValue("navy.700", "white");
@@ -25,14 +26,15 @@ function SignIn() {
     const googleActive = useColorModeValue({bg: "secondaryGray.300"}, {bg: "whiteAlpha.200"});
     const iconColor = useColorModeValue("green.500", "green.500");
     const history = useHistory();
+    const { userToken, userId } = useContext(SidebarContext);
 
 useEffect(() => {
     const interval = setInterval(() => {
-        const storedToken = localStorage.getItem('userToken');
-        const storedUserId = localStorage.getItem('userId');
-        if (storedToken && storedUserId) {
+        // const storedToken = localStorage.getItem('userToken');
+        // const storedUserId = localStorage.getItem('userId');
+        if (userId && userToken) {
             clearInterval(interval);
-            history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
+            history.push(`/admin/task-board/${userId}/${userToken}`);
         }
     }, 500);
 

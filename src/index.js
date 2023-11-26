@@ -12,7 +12,7 @@ import {SidebarProvider} from "./contexts/SidebarContext";
 
 ReactDOM.render(
     <ChakraProvider theme={theme}>
-        {/*<React.StrictMode>*/}
+        <React.StrictMode>
             <ThemeEditorProvider>
                 <SidebarProvider>
                     <BrowserRouter>
@@ -25,7 +25,7 @@ ReactDOM.render(
                     </BrowserRouter>
                 </SidebarProvider>
             </ThemeEditorProvider>
-        {/*</React.StrictMode>*/}
+        </React.StrictMode>
     </ChakraProvider>,
     document.getElementById('root')
 );

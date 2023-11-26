@@ -29,10 +29,11 @@ import {
 import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
 import FixedPlugin from "components/fixedPlugin/FixedPlugin";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {MdAddTask} from "react-icons/md";
 import {AddIcon} from "@chakra-ui/icons";
 import {useHistory} from "react-router-dom";
+import {SidebarContext} from "../../../contexts/SidebarContext";
 
 
 export default function UserReports() {
@@ -53,9 +54,10 @@ export default function UserReports() {
     const [isLoading, setIsLoading] = useState(false);
     const [isNoTasks, setIsNoTasks] = useState(false);
     const [message, setMessage] = useState("");
+    const { userToken, userId } = useContext(SidebarContext);
 
-    const storedToken = localStorage.getItem('userToken');
-    const storedUserId = localStorage.getItem('userId');
+    // const storedToken = localStorage.getItem('userToken');
+    // const storedUserId = localStorage.getItem('userId');
     const storedSelectedSubjects = localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : [];
     const history = useHistory();
 
@@ -80,7 +82,7 @@ export default function UserReports() {
                 data: {
                     type: "CoursesViewSet",
                     attributes: {
-                        access_token: storedToken
+                        access_token: userToken
                     }
                 }
             }),
@@ -137,9 +139,9 @@ export default function UserReports() {
             data: {
                 type: "AssignmentsViewSet",
                 attributes: {
-                    user_id: storedUserId,
+                    user_id: userToken,
                     check_status: "checked",
-                    access_token: storedToken,
+                    access_token: userToken,
                     all_courses: {
                         data: selectedCourses
                     }
@@ -242,7 +244,7 @@ export default function UserReports() {
             status: status,
             course: courseAdded
         };
-        addTask(storedUserId, newTaskDetails);
+        addTask(userToken, newTaskDetails);
         closeModal();
     };
 
@@ -252,7 +254,7 @@ export default function UserReports() {
 
 
     const handleDeleteTask = (taskId) => {
-        fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${storedUserId}/tasks/${taskId}`, {
+        fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${userToken}/tasks/${taskId}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -308,7 +310,7 @@ export default function UserReports() {
                 }
             };
 
-            fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${storedUserId}/tasks/${taskId}/`, {
+            fetch(`https://planme-3366bb9023b7.herokuapp.com/api/users/${userToken}/tasks/${taskId}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/vnd.api+json',
@@ -348,7 +350,7 @@ export default function UserReports() {
         }
 
         const courseParams = storedSelectedSubjects.map(course => `courses=${encodeURIComponent(course)}`).join('&');
-        const fetchURL = `https://planme-3366bb9023b7.herokuapp.com/api/users/${storedUserId}/tasks/?user_id=${storedUserId}&${courseParams}`;
+        const fetchURL = `https://planme-3366bb9023b7.herokuapp.com/api/users/${userToken}/tasks/?user_id=${userToken}&${courseParams}`;
 
         // Your API endpoint
         fetch(fetchURL)
