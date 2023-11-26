@@ -36,7 +36,7 @@ useEffect(() => {
             clearInterval(interval);
             history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
         }
-    }, 100);
+    }, 500);
 
     return () => clearInterval(interval);
 }, []);

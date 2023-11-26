@@ -89,7 +89,7 @@ export default function UserReports() {
     }, [storedToken]);
 
     const openSubjectModal = () => {
-        setTempSelectedSubjects(selectedSubjects); // Initialize temporary selections
+        setTempSelectedSubjects(selectedSubjects);
         setIsSubjectModalOpen(true);
     };
 
