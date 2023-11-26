@@ -99,7 +99,7 @@ export default function UserReports() {
             handleLogout();
             console.error('Error:', error);
         });
-    }, [storedToken]);
+    }, []);
 
     const openSubjectModal = () => {
         setTempSelectedSubjects(selectedSubjects);
