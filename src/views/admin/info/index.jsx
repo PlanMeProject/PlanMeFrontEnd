@@ -18,6 +18,8 @@ import {
     Center
 } from '@chakra-ui/react';
 import { MdCheckCircle, MdSchool } from 'react-icons/md';
+import { DiAsterisk } from "react-icons/di";
+import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 
 import qrcode from 'assets/img/qr.png';
 
@@ -33,8 +35,8 @@ export default function InformationPage() {
                 <TabPanels>
                     <TabPanel>
                         <Center>
-                            <Heading as="h3" size="lg" mb={4}>
-                                Mini Guide
+                            <Heading as="h3" size="lg" mb={4} color="orange.500">
+                                <Icon as={DiAsterisk} mr={2} /> Mini Guide
                             </Heading>
                         </Center>
                         <UnorderedList spacing={5}>
@@ -48,7 +50,7 @@ export default function InformationPage() {
                                 <Heading as="h4" size="md" color="teal.500" mb={2}>
                                     <Icon as={MdCheckCircle} mr={2} /> AI Models
                                 </Heading>
-                                Summarize/Generate subtasks is based on your description, we fine-tuned the <Text as="span" bg="yellow.100">generated subtasks</Text> model ourselves but the summarize one we don't. Feel free to report any description format that the generated subtasks doesn't do well.
+                                Summarize/Generate subtasks is based on your description, we fine-tuned the <Text as="span">generated subtasks</Text> model ourselves but the summarize one we don't. Feel free to report any description format that the generated subtasks doesn't do well.
                             </ListItem>
                             <ListItem>
                                 <Heading as="h4" size="md" color="green.500" mb={2}>
@@ -111,6 +113,7 @@ export default function InformationPage() {
                     </TabPanel>
                 </TabPanels>
             </Tabs>
+        <FixedPlugin />
         </Box>
     );
 }
