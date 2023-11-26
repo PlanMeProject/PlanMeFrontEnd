@@ -13,13 +13,13 @@ const GoogleAuthHandler = () => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log(userToken, userId);
-        if (userToken && userId) {
+        console.log("usertoken and id:", userToken, userId);
+        if (userToken.toString() !== null && userId.toString() !== null) {
             history.push(`/admin/task-board/${userToken}/${userId}`);
         }else {
             history.push(`/auth/sign-in`);
         }
-    }, [userToken, userId, history]);
+    });
 
     useEffect(() => {
         fetch(`https://planme-3366bb9023b7.herokuapp.com/api/authorize/`, {
@@ -45,6 +45,7 @@ const GoogleAuthHandler = () => {
             return response.json();
         }).then(data => {
             // updateUser(data.data.token, data.data.user_id, data.data.email);
+            console.log("set user token and id and email:", data.data.token, data.data.user_id, data.data.email);
             localStorage.setItem('userToken', data.data.token);
             localStorage.setItem('userId', data.data.user_id);
             localStorage.setItem('email', data.data.email);
