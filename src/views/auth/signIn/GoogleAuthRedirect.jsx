@@ -11,12 +11,13 @@ const GoogleAuthHandler = () => {
     const history = useHistory();
 
     useEffect(() => {
+
         if (userToken && userId) {
             history.push(`/admin/task-board/${userToken}/${userId}`);
         }else {
             history.push(`/auth/sign-in`);
         }
-    }, [userToken, userId, history]);
+    }, [userToken, userId]);
 
     useEffect(() => {
         fetch(`https://planme-3366bb9023b7.herokuapp.com/api/authorize/`, {
