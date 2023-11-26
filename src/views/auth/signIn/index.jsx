@@ -34,7 +34,7 @@ function SignIn() {
         if (storedToken && storedUserId) {
             history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
         }
-    }, [storedToken, storedUserId, history]);
+    }, []);
 
     return (
         <DefaultAuth image={"frontend/src/assets/img/3dplanme.png"}>
