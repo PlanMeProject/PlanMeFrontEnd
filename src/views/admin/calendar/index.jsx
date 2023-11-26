@@ -150,7 +150,7 @@ const Calendar = () => {
         const requestBody = {
             // Update this according to the expected structure of your API request body
             data: {
-                type: "tasks", // Assuming 'tasks' is the type, change as needed
+                type: "TaskViewSet",
                 id: id,
                 attributes: {
                     due_date: newDueDate
@@ -180,6 +180,7 @@ const Calendar = () => {
                         if (task.id === id) {
                             return {
                                 attributes: {
+
                                     due_date: newDueDate
                                 }
                             };
