@@ -30,8 +30,6 @@ useEffect(() => {
     const interval = setInterval(() => {
         const storedToken = localStorage.getItem('userToken');
         const storedUserId = localStorage.getItem('userId');
-        console.log(storedToken);
-        console.log(storedUserId);
         if (storedToken && storedUserId) {
             clearInterval(interval);
             history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
