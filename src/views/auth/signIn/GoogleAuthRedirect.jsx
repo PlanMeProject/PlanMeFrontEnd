@@ -14,7 +14,7 @@ const GoogleAuthHandler = () => {
 
     useEffect(() => {
         console.log("usertoken and id:", userToken, userId);
-        if (userToken.toString() !== null && userId.toString() !== null) {
+        if (userToken !== null && userId !== null) {
             history.push(`/admin/task-board/${userToken}/${userId}`);
         }else {
             history.push(`/auth/sign-in`);
@@ -49,8 +49,10 @@ const GoogleAuthHandler = () => {
             localStorage.setItem('userToken', data.data.token);
             localStorage.setItem('userId', data.data.user_id);
             localStorage.setItem('email', data.data.email);
+            history.push(`/admin/task-board/${userToken}/${userId}`);
         }).catch(error => {
             console.error('Error:', error);
+            history.push(`/auth/sign-in`);
         });
     }, []);
 
