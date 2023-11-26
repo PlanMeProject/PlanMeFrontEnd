@@ -84,9 +84,11 @@ function SignIn() {
                             fontSize='md'>
                             <br/>
                             <ul>
-                                <li>Plan your tasks</li>
-                                <li>Track your progress</li>
-                                <li>Get things done!</li>
+                                <li>Dashboard</li>
+                                <li>Get Google Classroom Assignments</li>
+                                <li>Automate Summarization</li>
+                                <li>Task-to-Subtask</li>
+                                <li>Data Visualization</li>
                             </ul>
                         </Text>
                         <Text

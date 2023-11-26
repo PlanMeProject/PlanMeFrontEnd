@@ -56,9 +56,8 @@ export default function UserReports() {
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingTaskTitle, setIsEditingTaskTitle] = useState(false);
     const [taskTitle, setTaskTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [description, setDescription] = useState("You should fill in the description to use the AI.");
     const [showSummary, setShowSummary] = useState(false);
-    const task_description = task.attributes ? task.attributes.description : "Loading...";
     const [isLoading, setIsLoading] = useState(false);
     const [dueDate, setDueDate] = useState(task.attributes ? task.attributes.due_date : new Date());
     const [isEditingDueDate, setIsEditingDueDate] = useState(false);
@@ -376,7 +375,8 @@ export default function UserReports() {
                         />
                     ) : (
                         <div
-                            dangerouslySetInnerHTML={{__html: he.decode(task.attributes ? task.attributes.description : "Loading...")}}></div>
+                            dangerouslySetInnerHTML={{__html: he.decode(task.attributes && task.attributes.description ? task.attributes.description : description)}}>
+                        </div>
                     )}
                 </Flex>
                 <Flex mb='20px'>
