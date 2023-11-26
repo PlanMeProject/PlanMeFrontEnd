@@ -1,5 +1,14 @@
 import React, {useState, useEffect} from "react";
-import {Box, Flex, Select, useColorModeValue} from "@chakra-ui/react";
+import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent, AlertDialogFooter, AlertDialogHeader,
+    AlertDialogOverlay,
+    Box, Button,
+    Flex,
+    Select,
+    useColorModeValue
+} from "@chakra-ui/react";
 import {Calendar as BigCalendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
 import {useHistory} from "react-router-dom";
@@ -15,6 +24,13 @@ const Calendar = () => {
     const [view, setView] = useState('month');
     const history = useHistory();
     const [updateTrigger, setUpdateTrigger] = useState(false);
+    const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+    const [errorDialogMessage, setErrorDialogMessage] = useState("Your session has expired. Please log in again.");
+
+    const showErrorDialog = (message) => {
+        setErrorDialogMessage(message);
+        setIsErrorDialogOpen(true);
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('userToken');
@@ -54,7 +70,7 @@ const Calendar = () => {
                     }
                 })
                 .catch((error) => {
-                    handleLogout();
+                    showErrorDialog(errorDialogMessage);
                     console.error("Error fetching data: ", error);
                 });
         };
@@ -195,7 +211,7 @@ const Calendar = () => {
                 }
             })
             .catch(error => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error('Failed to update task:', error);
             });
     };
@@ -260,6 +276,27 @@ const Calendar = () => {
                 dayPropGetter={dayPropGetter}
                 onEventDrop={moveEvent}
             />
+            <AlertDialog
+                isOpen={isErrorDialogOpen}
+                onClose={() => {
+                }} // Empty function
+                isCentered
+                isClosable={false} // Prevent closing by clicking outside or pressing ESC
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>Error</AlertDialogHeader>
+                        <AlertDialogBody>
+                            {errorDialogMessage}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button colorScheme="red" onClick={handleLogout}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
             <FixedPlugin/>
         </Box>
     );

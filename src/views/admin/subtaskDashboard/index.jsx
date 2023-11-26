@@ -31,7 +31,11 @@ import {
     ModalOverlay,
     ModalContent,
     useColorModeValue,
-    useColorMode
+    useColorMode,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody, AlertDialogFooter, AlertDialog
 } from "@chakra-ui/react";
 
 import ReactQuill from 'react-quill';
@@ -62,6 +66,14 @@ export default function UserReports() {
     const [dueDate, setDueDate] = useState(task.attributes ? task.attributes.due_date : new Date());
     const [isEditingDueDate, setIsEditingDueDate] = useState(false);
     const history = useHistory();
+    const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+    const [errorDialogMessage, setErrorDialogMessage] = useState("Your session has expired. Please log in again.");
+
+
+    const showErrorDialog = (message) => {
+        setErrorDialogMessage(message);
+        setIsErrorDialogOpen(true);
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('userToken');
@@ -95,7 +107,7 @@ export default function UserReports() {
                 }
             })
             .catch((error) => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error("Error fetching data: ", error);
             });
     }, [id, userId]);
@@ -152,7 +164,7 @@ export default function UserReports() {
                 setIsEditingTaskTitle(false);
             })
             .catch(error => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error('Failed to save the task title', error);
             });
     };
@@ -210,7 +222,7 @@ export default function UserReports() {
                 setIsEditing(false);
             })
             .catch(error => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error('Failed to save the description', error);
             });
     };
@@ -246,7 +258,7 @@ export default function UserReports() {
                 }
             })
             .catch(error => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error('Error:', error)
             })
             .finally(() => setIsLoading(false));
@@ -294,7 +306,7 @@ export default function UserReports() {
                 }
             })
             .catch(error => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error('Failed to save the due date', error);
             });
     };
@@ -358,7 +370,7 @@ export default function UserReports() {
                 </Flex>
                 <Flex mb='20px'>
                     <Text color={taskSubjectColor} fontSize='xl'
-                            fontWeight='bold'>
+                          fontWeight='bold'>
                         Course: &nbsp;
                     </Text>
                     <Text fontSize='xl'>
@@ -462,6 +474,27 @@ export default function UserReports() {
             <Tasks taskId={id}
                    task_description={plainTextDescription}
             />
+            <AlertDialog
+                isOpen={isErrorDialogOpen}
+                onClose={() => {
+                }} // Empty function
+                isCentered
+                isClosable={false} // Prevent closing by clicking outside or pressing ESC
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>Error</AlertDialogHeader>
+                        <AlertDialogBody>
+                            {errorDialogMessage}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button colorScheme="red" onClick={handleLogout}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
             <FixedPlugin/>
         </Box>
     );
