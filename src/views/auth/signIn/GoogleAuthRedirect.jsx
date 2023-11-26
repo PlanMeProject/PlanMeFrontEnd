@@ -40,17 +40,13 @@ const GoogleAuthHandler = () => {
     }, []);
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            if (userToken && userId) {
-                history.push(`/admin/task-board/${userToken}/${userId}`);
-            } else {
-                history.push(`/auth/sign-in`);
-            }
-        }, 500);
 
-        return () => clearTimeout(timeoutId);
-    }, [userToken, userId, history]);
-
+        if (userToken && userId) {
+            history.push(`/admin/task-board/${userToken}/${userId}`);
+        }else {
+            history.push(`/auth/sign-in`);
+        }
+    }, [userToken, userId]);
 
     return (
         <div></div>
