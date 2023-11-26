@@ -14,7 +14,8 @@ import {
     UnorderedList,
     ListItem,
     Heading,
-    Icon
+    Icon,
+    Center
 } from '@chakra-ui/react';
 import { MdCheckCircle, MdSchool } from 'react-icons/md';
 
@@ -31,10 +32,12 @@ export default function InformationPage() {
 
                 <TabPanels>
                     <TabPanel>
-                        <Heading as="h3" size="lg" mb={4}>
-                            Mini How To
-                        </Heading>
-                        <UnorderedList spacing={3}>
+                        <Center>
+                            <Heading as="h3" size="lg" mb={4}>
+                                Mini Guide
+                            </Heading>
+                        </Center>
+                        <UnorderedList spacing={5}>
                             <ListItem>
                                 <Heading as="h4" size="md" color="blue.500" mb={2}>
                                     <Icon as={MdCheckCircle} mr={2} /> Select Courses
@@ -45,7 +48,7 @@ export default function InformationPage() {
                                 <Heading as="h4" size="md" color="teal.500" mb={2}>
                                     <Icon as={MdCheckCircle} mr={2} /> AI Models
                                 </Heading>
-                                Summarize/Generate subtasks is based on your description, we fine-tuned the generate subtasks model ourselves but the summarize one we don't. Feel free to report any description format that the `generated subtasks` doesn't do well.
+                                Summarize/Generate subtasks is based on your description, we fine-tuned the <Text as="span" bg="yellow.100">generated subtasks</Text> model ourselves but the summarize one we don't. Feel free to report any description format that the generated subtasks doesn't do well.
                             </ListItem>
                             <ListItem>
                                 <Heading as="h4" size="md" color="green.500" mb={2}>
@@ -74,9 +77,11 @@ export default function InformationPage() {
                         </UnorderedList>
                     </TabPanel>
                     <TabPanel>
-                        <Heading as="h3" size="lg" mb={4} color="orange.500">
-                            <Icon as={MdSchool} mr={2} /> For Non-Students
-                        </Heading>
+                        <Center>
+                            <Heading as="h3" size="lg" mb={4} color="orange.500">
+                                <Icon as={MdSchool} mr={2} /> For Non-Students
+                            </Heading>
+                        </Center>
                         <Grid templateColumns="1fr" gap={{ base: '20px', xl: '20px' }}>
                             <VStack spacing={4}>
                                 <Text>
