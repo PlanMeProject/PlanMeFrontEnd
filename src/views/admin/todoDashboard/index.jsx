@@ -24,7 +24,14 @@ import {
     Textarea,
     useColorModeValue,
     VStack,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
 } from "@chakra-ui/react";
+
 
 import TodoCard from "./components/TodoCard";
 import IconBox from "components/icons/IconBox";
@@ -54,11 +61,18 @@ export default function UserReports() {
     const [isLoading, setIsLoading] = useState(false);
     const [isNoTasks, setIsNoTasks] = useState(false);
     const [message, setMessage] = useState("");
+    const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+    const [errorDialogMessage, setErrorDialogMessage] = useState("Your session has expired. Please log in again.");
 
     const storedToken = localStorage.getItem('userToken');
     const storedUserId = localStorage.getItem('userId');
     const storedSelectedSubjects = localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : [];
     const history = useHistory();
+
+    const showErrorDialog = (message) => {
+        setErrorDialogMessage(message);
+        setIsErrorDialogOpen(true);
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('userToken');
@@ -68,7 +82,6 @@ export default function UserReports() {
         localStorage.removeItem('selectedSubjects');
         history.push('/auth/sign-in');
     }
-
 
     useEffect(() => {
         console.log("task board");
@@ -97,7 +110,7 @@ export default function UserReports() {
             setAvailableSubjects(data.data.map(s => s.title.name));
             console.log("Successfully Set Course:", data.data);
         }).catch(error => {
-            handleLogout();
+            showErrorDialog(errorDialogMessage);
             console.error('Error:', error);
         });
     }, []);
@@ -166,7 +179,7 @@ export default function UserReports() {
             setIsLoading(false);
         }).catch(error => {
             if (error.status === 404) {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
             }
             setMessage("You have selected a course that you are not a student.");
             setIsNoTasks(true);
@@ -227,7 +240,7 @@ export default function UserReports() {
                 console.log("Successfully Create Task:", data.data);
             })
             .catch(error => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error('Error adding task:', error);
             });
     };
@@ -274,7 +287,7 @@ export default function UserReports() {
                 }
             })
             .catch(error => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error('Error:', error);
             });
     };
@@ -339,7 +352,7 @@ export default function UserReports() {
                     }
                 })
                 .catch((error) => {
-                    handleLogout();
+                    showErrorDialog();
                     console.error('Error updating task status:', error);
                 });
         }
@@ -374,7 +387,7 @@ export default function UserReports() {
                 }
             })
             .catch((error) => {
-                handleLogout();
+                showErrorDialog(errorDialogMessage);
                 console.error("Error fetching data: ", error);
             })
     }, [assignments]);
@@ -395,7 +408,7 @@ export default function UserReports() {
         </Modal>
     );
 
-        const isValidDate = (dateStr) => {
+    const isValidDate = (dateStr) => {
         const currentYear = new Date().getFullYear();
         const year = new Date(dateStr).getFullYear();
         return year >= currentYear && year <= 9999;
@@ -675,6 +688,27 @@ export default function UserReports() {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            <AlertDialog
+                isOpen={isErrorDialogOpen}
+                onClose={() => {
+                }} // Empty function
+                isCentered
+                isClosable={false} // Prevent closing by clicking outside or pressing ESC
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>Error</AlertDialogHeader>
+                        <AlertDialogBody>
+                            {errorDialogMessage}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button colorScheme="red" onClick={handleLogout}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
         </Box>
     );
 }
