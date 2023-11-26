@@ -63,6 +63,15 @@ export default function UserReports() {
     const [isEditingDueDate, setIsEditingDueDate] = useState(false);
     const history = useHistory();
 
+    const handleLogout = () => {
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
+        localStorage.removeItem('selectedSubjects');
+        history.push('/auth/sign-in');
+    }
+
     useEffect(() => {
         if (!localStorage.getItem("userToken") || !localStorage.getItem("userId")) {
             history.push(`/auth/sign-in`);
@@ -86,6 +95,7 @@ export default function UserReports() {
                 }
             })
             .catch((error) => {
+                handleLogout();
                 console.error("Error fetching data: ", error);
             });
     }, [id, userId]);
@@ -142,6 +152,7 @@ export default function UserReports() {
                 setIsEditingTaskTitle(false);
             })
             .catch(error => {
+                handleLogout();
                 console.error('Failed to save the task title', error);
             });
     };
@@ -199,6 +210,7 @@ export default function UserReports() {
                 setIsEditing(false);
             })
             .catch(error => {
+                handleLogout();
                 console.error('Failed to save the description', error);
             });
     };
@@ -233,7 +245,10 @@ export default function UserReports() {
                     console.error('Failed to create the subtask', data.errors);
                 }
             })
-            .catch(error => console.error('Error:', error))
+            .catch(error => {
+                handleLogout();
+                console.error('Error:', error)
+            })
             .finally(() => setIsLoading(false));
     };
 
@@ -279,6 +294,7 @@ export default function UserReports() {
                 }
             })
             .catch(error => {
+                handleLogout();
                 console.error('Failed to save the due date', error);
             });
     };
