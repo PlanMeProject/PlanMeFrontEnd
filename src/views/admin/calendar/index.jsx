@@ -144,7 +144,7 @@ const Calendar = () => {
 
     const moveEvent = ({event, start, end}) => {
         const {id} = event;
-        const {userId} = localStorage.getItem("userId");
+        const userId = localStorage.getItem("userId");
         // Format the new start date to match your backend requirements
         const newDueDate = moment(start).format('YYYY-MM-DD');
         const requestBody = {
@@ -179,9 +179,7 @@ const Calendar = () => {
                     const updatedTasks = tasks.map(task => {
                         if (task.id === id) {
                             return {
-                                ...task,
                                 attributes: {
-                                    ...task.attributes,
                                     due_date: newDueDate
                                 }
                             };
