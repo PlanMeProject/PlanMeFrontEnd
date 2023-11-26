@@ -34,6 +34,28 @@ import {MdAddTask} from "react-icons/md";
 import {AddIcon} from "@chakra-ui/icons";
 import {useHistory} from "react-router-dom";
 
+function useLocalStorageData(key, defaultVal) {
+    const [data, setData] = useState(() => {
+        const storedData = localStorage.getItem(key);
+        return storedData ? JSON.parse(storedData) : defaultVal;
+    });
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const storedData = localStorage.getItem(key);
+            if (storedData) {
+                const parsedData = JSON.parse(storedData);
+                if (JSON.stringify(parsedData) !== JSON.stringify(data)) {
+                    setData(parsedData);
+                }
+            }
+        }, 250);
+
+        return () => clearInterval(interval);
+    }, [key, data]);
+
+    return data;
+}
 
 export default function UserReports() {
     const textColor = useColorModeValue("navy.700", "gray.200");
@@ -54,29 +76,10 @@ export default function UserReports() {
     const [isNoTasks, setIsNoTasks] = useState(false);
     const [message, setMessage] = useState("");
 
-    const [storedToken, setStoredToken] = useState(localStorage.getItem('userToken'));
-    const [storedUserId, setStoredUserId] = useState(localStorage.getItem('userId'));
-    const [storedSelectedSubjects, setStoredSelectedSubjects] = useState(
-        localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : []
-    );
-
+    const storedToken = useLocalStorageData('userToken', null);
+    const storedUserId = useLocalStorageData('userId', null);
+    const storedSelectedSubjects = useLocalStorageData('selectedSubjects', []);
     const history = useHistory();
-    useEffect(() => {
-        const handleStorageChange = () => {
-            setStoredToken(localStorage.getItem('userToken'));
-            setStoredUserId(localStorage.getItem('userId'));
-            setStoredSelectedSubjects(
-                localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : []
-            );
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-
-        return () => {
-            window.removeEventListener('storage', handleStorageChange);
-        };
-    }, []);
-    
 
     const handleLogout = () => {
         localStorage.removeItem('userToken');
