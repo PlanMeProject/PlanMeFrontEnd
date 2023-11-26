@@ -14,6 +14,7 @@ const Calendar = () => {
     const [tasks, setTasks] = useState([]);
     const [view, setView] = useState('month');
     const history = useHistory();
+    const [updateTrigger, setUpdateTrigger] = useState(false);
 
     const handleLogout = () => {
         localStorage.removeItem('userToken');
@@ -59,7 +60,7 @@ const Calendar = () => {
         };
 
         loadTasks();
-    }, []);
+    }, [updateTrigger]);
 
     const events = tasks.map(task => {
         const dueDate = new Date(task.attributes.due_date);
@@ -160,17 +161,6 @@ const Calendar = () => {
         // Format the new start date to match your backend requirements
         const newDueDate = moment(start).format('YYYY-MM-DD');
 
-        const updatedTasks = tasks.map(task => {
-            if (task.id === id) {
-                return {
-                    ...task,
-                    attributes: {...task.attributes, due_date: newDueDate}
-                };
-            }
-            return task;
-        });
-        setTasks(updatedTasks);
-
         const requestBody = {
             // Update this according to the expected structure of your API request body
             data: {
@@ -199,19 +189,7 @@ const Calendar = () => {
             })
             .then(data => {
                 if (data && data.data) {
-                    // Update tasks in state
-                    const updatedTasks = tasks.map(task => {
-                        if (task.id === id) {
-                            return {
-                                attributes: {
-
-                                    due_date: newDueDate
-                                }
-                            };
-                        }
-                        return task;
-                    });
-                    setTasks(updatedTasks);
+                    setUpdateTrigger(prev => !prev);
                 } else {
                     console.log("No data found");
                 }
