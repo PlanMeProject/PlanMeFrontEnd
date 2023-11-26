@@ -183,6 +183,9 @@ export default function UserReports() {
             setAssignments(data.data);
             setIsLoading(false);
         }).catch(error => {
+            if (error.status === 404) {
+                handleLogout();
+            }
             setMessage("You have selected a course that you are not a student.");
             setIsNoTasks(true);
             setIsLoading(false);
