@@ -25,9 +25,9 @@ function SignIn() {
     const googleHover = useColorModeValue({bg: "gray.200"}, {bg: "whiteAlpha.300"});
     const googleActive = useColorModeValue({bg: "secondaryGray.300"}, {bg: "whiteAlpha.200"});
     const iconColor = useColorModeValue("green.500", "green.500");
-    // const storedToken = localStorage.getItem('userToken');
-    // const storedUserId = localStorage.getItem('userId');
-    const { userToken, userId } = useContext(SidebarContext);
+    const userToken = localStorage.getItem('userToken');
+    const userId = localStorage.getItem('userId');
+    // const { userToken, userId } = useContext(SidebarContext);
 
     const history = useHistory();
 
