@@ -159,6 +159,18 @@ const Calendar = () => {
         const userId = localStorage.getItem("userId");
         // Format the new start date to match your backend requirements
         const newDueDate = moment(start).format('YYYY-MM-DD');
+
+        const updatedTasks = tasks.map(task => {
+            if (task.id === id) {
+                return {
+                    ...task,
+                    attributes: {...task.attributes, due_date: newDueDate}
+                };
+            }
+            return task;
+        });
+        setTasks(updatedTasks);
+
         const requestBody = {
             // Update this according to the expected structure of your API request body
             data: {
