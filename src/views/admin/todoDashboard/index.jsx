@@ -54,29 +54,10 @@ export default function UserReports() {
     const [isNoTasks, setIsNoTasks] = useState(false);
     const [message, setMessage] = useState("");
 
-    const [storedToken, setStoredToken] = useState(localStorage.getItem('userToken'));
-    const [storedUserId, setStoredUserId] = useState(localStorage.getItem('userId'));
-    const [storedSelectedSubjects, setStoredSelectedSubjects] = useState(
-        localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : []
-    );
-
+    const storedToken = localStorage.getItem('userToken');
+    const storedUserId = localStorage.getItem('userId');
+    const storedSelectedSubjects = localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : [];
     const history = useHistory();
-    useEffect(() => {
-        const handleStorageChange = () => {
-            setStoredToken(localStorage.getItem('userToken'));
-            setStoredUserId(localStorage.getItem('userId'));
-            setStoredSelectedSubjects(
-                localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : []
-            );
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-
-        return () => {
-            window.removeEventListener('storage', handleStorageChange);
-        };
-    }, []);
-    
 
     const handleLogout = () => {
         localStorage.removeItem('userToken');
