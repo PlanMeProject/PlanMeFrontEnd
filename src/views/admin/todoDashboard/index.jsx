@@ -68,6 +68,7 @@ export default function UserReports() {
         history.push('/auth/sign-in');
     }
 
+
     useEffect(() => {
         console.log("task board");
         fetch(`https://planme-3366bb9023b7.herokuapp.com/api/courses/`, {
@@ -101,7 +102,7 @@ export default function UserReports() {
     }, [storedToken]);
 
     const openSubjectModal = () => {
-        setTempSelectedSubjects(selectedSubjects); // Initialize temporary selections
+        setTempSelectedSubjects(selectedSubjects);
         setIsSubjectModalOpen(true);
     };
 
