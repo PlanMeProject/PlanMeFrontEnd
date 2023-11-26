@@ -1,11 +1,9 @@
 import React, {useContext, useEffect} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import {SidebarContext} from "../../../contexts/SidebarContext";
 
 const GoogleAuthHandler = () => {
     const location = useLocation();
     const searchUrl = location.search;
-    // const { userToken, userId, updateUser } = useContext(SidebarContext);
     const userToken = localStorage.getItem('userToken')
     const userId = localStorage.getItem('userId')
 

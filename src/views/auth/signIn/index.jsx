@@ -14,7 +14,6 @@ import {FcGoogle} from "react-icons/fc";
 import DefaultAuth from "layouts/auth/Default";
 import {useHistory} from "react-router-dom";
 import {useEffect} from "react";
-import {SidebarContext} from "../../../contexts/SidebarContext";
 
 function SignIn() {
     const textColor = useColorModeValue("navy.700", "white");
@@ -27,7 +26,6 @@ function SignIn() {
     const iconColor = useColorModeValue("green.500", "green.500");
     const userToken = localStorage.getItem('userToken');
     const userId = localStorage.getItem('userId');
-    // const { userToken, userId } = useContext(SidebarContext);
 
     const history = useHistory();
 
