@@ -1,33 +1,29 @@
 // Chakra imports
 import {
-    Box, Checkbox,
+    Box,
+    Button,
+    Checkbox,
     Flex,
+    FormControl,
     FormHelperText,
+    FormLabel,
     Icon,
     IconButton,
-    Progress,
-    SimpleGrid,
-    Text,
-    useColorModeValue, VStack,
-} from "@chakra-ui/react";
-
-import {
+    Input,
     Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
-    Button,
-} from "@chakra-ui/react";
-
-import {
-    Input,
-    Textarea,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Progress,
     Select,
-    FormControl,
-    FormLabel,
+    SimpleGrid,
+    Text,
+    Textarea,
+    useColorModeValue,
+    VStack,
 } from "@chakra-ui/react";
 
 import TodoCard from "./components/TodoCard";
@@ -376,6 +372,13 @@ export default function UserReports() {
         </Modal>
     );
 
+        const isValidDate = (dateStr) => {
+        const currentYear = new Date().getFullYear();
+        const year = new Date(dateStr).getFullYear();
+        return year >= currentYear && year <= 9999;
+    };
+
+
     return (
         <Box pt={{base: "130px", md: "80px", xl: "80px"}}>
             <Button mb='10px' backgroundColor={selectSubBtColor}
@@ -594,12 +597,18 @@ export default function UserReports() {
                                 color={textColor}
                                 type="date"
                                 value={dueDate}
-                                isInvalid={dueDate === ""}
-                                onChange={(e) => setDueDate(e.target.value)}
+                                isInvalid={dueDate === "" || !isValidDate(dueDate)}
+                                onChange={(e) => {
+                                    if (isValidDate(e.target.value)) {
+                                        setDueDate(e.target.value);
+                                    }
+                                }}
                             />
-                            {dueDate === "" &&
-                                <FormHelperText color="red.500">Due date is
-                                    required</FormHelperText>}
+                            {(dueDate === "" || !isValidDate(dueDate)) && (
+                                <FormHelperText color="red.500">
+                                    {dueDate === "" ? "Due date is required" : "Please enter a valid date (between current year and 2100)"}
+                                </FormHelperText>
+                            )}
                         </FormControl>
 
                         <FormControl mt={4}>

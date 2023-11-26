@@ -24,17 +24,18 @@ function SignIn() {
     const googleHover = useColorModeValue({bg: "gray.200"}, {bg: "whiteAlpha.300"});
     const googleActive = useColorModeValue({bg: "secondaryGray.300"}, {bg: "whiteAlpha.200"});
     const iconColor = useColorModeValue("green.500", "green.500");
-    const storedToken = localStorage.getItem('userToken');
-    const storedUserId = localStorage.getItem('userId');
+
     const history = useHistory();
 
     useEffect(() => {
+        const storedToken = localStorage.getItem('userToken');
+        const storedUserId = localStorage.getItem('userId');
         console.log(storedToken);
         console.log(storedUserId);
         if (storedToken && storedUserId) {
             history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
         }
-    }, );
+    });
 
     return (
         <DefaultAuth image={"frontend/src/assets/img/3dplanme.png"}>
