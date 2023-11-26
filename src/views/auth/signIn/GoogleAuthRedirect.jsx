@@ -13,6 +13,8 @@ const GoogleAuthHandler = () => {
     useEffect(() => {
         if (userToken && userId) {
             history.push(`/admin/task-board/${userToken}/${userId}`);
+        }else {
+            history.push(`/auth/sign-in`);
         }
     }, [userToken, userId, history]);
 
