@@ -67,7 +67,7 @@ export function SidebarLinks(props) {
                             <Box>
                                 <HStack
                                     spacing={
-                                        activeRoute(route.path.toLowerCase()) ? "22px" : "26px"
+                                        activeRoute(generateLinkUrl(route)) ? "22px" : "26px"
                                     }
                                     py='5px'
                                     ps='10px'>
@@ -75,7 +75,7 @@ export function SidebarLinks(props) {
                                           justifyContent='center'>
                                         <Box
                                             color={
-                                                activeRoute(route.path.toLowerCase())
+                                                activeRoute(generateLinkUrl(route))
                                                     ? activeIcon
                                                     : textColor
                                             }
@@ -85,12 +85,12 @@ export function SidebarLinks(props) {
                                         <Text
                                             me='auto'
                                             color={
-                                                activeRoute(route.path.toLowerCase())
+                                                activeRoute(generateLinkUrl(route))
                                                     ? activeColor
                                                     : textColor
                                             }
                                             fontWeight={
-                                                activeRoute(route.path.toLowerCase())
+                                                activeRoute(generateLinkUrl(route))
                                                     ? "bold"
                                                     : "normal"
                                             }>
@@ -101,7 +101,7 @@ export function SidebarLinks(props) {
                                         h='36px'
                                         w='4px'
                                         bg={
-                                            activeRoute(route.path.toLowerCase())
+                                            activeRoute(generateLinkUrl(route))
                                                 ? brandColor
                                                 : "transparent"
                                         }
@@ -113,19 +113,19 @@ export function SidebarLinks(props) {
                             <Box>
                                 <HStack
                                     spacing={
-                                        activeRoute(route.path.toLowerCase()) ? "22px" : "26px"
+                                        activeRoute(generateLinkUrl(route)) ? "22px" : "26px"
                                     }
                                     py='5px'
                                     ps='10px'>
                                     <Text
                                         me='auto'
                                         color={
-                                            activeRoute(route.path.toLowerCase())
+                                            activeRoute(generateLinkUrl(route))
                                                 ? activeColor
                                                 : inactiveColor
                                         }
                                         fontWeight={
-                                            activeRoute(route.path.toLowerCase()) ? "bold" : "normal"
+                                            activeRoute(generateLinkUrl(route)) ? "bold" : "normal"
                                         }>
                                         {route.name}
                                     </Text>
