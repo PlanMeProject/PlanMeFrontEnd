@@ -32,6 +32,7 @@ import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 import React, {useEffect, useState} from "react";
 import {MdAddTask} from "react-icons/md";
 import {AddIcon} from "@chakra-ui/icons";
+import {useHistory} from "react-router-dom";
 
 
 export default function UserReports() {
@@ -56,6 +57,16 @@ export default function UserReports() {
     const storedToken = localStorage.getItem('userToken');
     const storedUserId = localStorage.getItem('userId');
     const storedSelectedSubjects = localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : [];
+    const history = useHistory();
+
+    const handleLogout = () => {
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
+        localStorage.removeItem('selectedSubjects');
+        history.push('/auth/sign-in');
+    }
 
     useEffect(() => {
         console.log("task board");
@@ -84,6 +95,7 @@ export default function UserReports() {
             setAvailableSubjects(data.data.map(s => s.title.name));
             console.log("Successfully Set Course:", data.data);
         }).catch(error => {
+            handleLogout();
             console.error('Error:', error);
         });
     }, [storedToken]);
@@ -210,6 +222,7 @@ export default function UserReports() {
                 console.log("Successfully Create Task:", data.data);
             })
             .catch(error => {
+                handleLogout();
                 console.error('Error adding task:', error);
             });
     };
@@ -255,7 +268,10 @@ export default function UserReports() {
                     console.error('Failed to delete the task');
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                handleLogout();
+                console.error('Error:', error);
+            });
     };
 
 
@@ -318,6 +334,7 @@ export default function UserReports() {
                     }
                 })
                 .catch((error) => {
+                    handleLogout();
                     console.error('Error updating task status:', error);
                 });
         }
@@ -352,6 +369,7 @@ export default function UserReports() {
                 }
             })
             .catch((error) => {
+                handleLogout();
                 console.error("Error fetching data: ", error);
             })
     }, [assignments]);
