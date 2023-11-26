@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Box, Flex, Select, useColorModeValue} from "@chakra-ui/react";
 import {Calendar as BigCalendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
+import {useHistory} from "react-router-dom";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import FixedPlugin from "../../../components/fixedPlugin/FixedPlugin";
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
@@ -12,6 +13,16 @@ const DraggableCalendar = withDragAndDrop(BigCalendar);
 const Calendar = () => {
     const [tasks, setTasks] = useState([]);
     const [view, setView] = useState('month');
+    const history = useHistory();
+
+    const handleLogout = () => {
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
+        localStorage.removeItem('selectedSubjects');
+        history.push('/auth/sign-in');
+    }
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");
@@ -42,6 +53,7 @@ const Calendar = () => {
                     }
                 })
                 .catch((error) => {
+                    handleLogout();
                     console.error("Error fetching data: ", error);
                 });
         };
@@ -144,13 +156,13 @@ const Calendar = () => {
 
     const moveEvent = ({event, start, end}) => {
         const {id} = event;
-        const {userId} = localStorage.getItem("userId");
+        const userId = localStorage.getItem("userId");
         // Format the new start date to match your backend requirements
         const newDueDate = moment(start).format('YYYY-MM-DD');
         const requestBody = {
             // Update this according to the expected structure of your API request body
             data: {
-                type: "tasks", // Assuming 'tasks' is the type, change as needed
+                type: "TaskViewSet",
                 id: id,
                 attributes: {
                     due_date: newDueDate
@@ -179,9 +191,8 @@ const Calendar = () => {
                     const updatedTasks = tasks.map(task => {
                         if (task.id === id) {
                             return {
-                                ...task,
                                 attributes: {
-                                    ...task.attributes,
+
                                     due_date: newDueDate
                                 }
                             };
@@ -194,6 +205,7 @@ const Calendar = () => {
                 }
             })
             .catch(error => {
+                handleLogout();
                 console.error('Failed to update task:', error);
             });
     };

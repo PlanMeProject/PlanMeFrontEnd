@@ -32,6 +32,7 @@ import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 import React, {useEffect, useState} from "react";
 import {MdAddTask} from "react-icons/md";
 import {AddIcon} from "@chakra-ui/icons";
+import {useHistory} from "react-router-dom";
 
 
 export default function UserReports() {
@@ -53,20 +54,19 @@ export default function UserReports() {
     const [isNoTasks, setIsNoTasks] = useState(false);
     const [message, setMessage] = useState("");
 
-    const [storedToken, setStoredToken] = useState(localStorage.getItem('userToken') || '');
-    const [storedUserId, setStoredUserId] = useState(localStorage.getItem('userId') || '');
-    const [storedSelectedSubjects, setStoredSelectedSubjects] = useState(
-        localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : []
-    );
-    useEffect(() => {
-        const token = localStorage.getItem('userToken');
-        const userId = localStorage.getItem('userId');
-        const selectedSubjects = localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : [];
+    const storedToken = localStorage.getItem('userToken');
+    const storedUserId = localStorage.getItem('userId');
+    const storedSelectedSubjects = localStorage.getItem('selectedSubjects') ? JSON.parse(localStorage.getItem('selectedSubjects')) : [];
+    const history = useHistory();
 
-        setStoredToken(token);
-        setStoredUserId(userId);
-        setStoredSelectedSubjects(selectedSubjects);
-    }, []);
+    const handleLogout = () => {
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
+        localStorage.removeItem('selectedSubjects');
+        history.push('/auth/sign-in');
+    }
 
 
     useEffect(() => {
@@ -96,6 +96,7 @@ export default function UserReports() {
             setAvailableSubjects(data.data.map(s => s.title.name));
             console.log("Successfully Set Course:", data.data);
         }).catch(error => {
+            handleLogout();
             console.error('Error:', error);
         });
     }, [storedToken]);
@@ -163,7 +164,7 @@ export default function UserReports() {
             setAssignments(data.data);
             setIsLoading(false);
         }).catch(error => {
-            setMessage("You have selected course that your role is not a student.");
+            setMessage("You have selected a course that you are not a student.");
             setIsNoTasks(true);
             setIsLoading(false);
             console.error('Error:', error);
@@ -222,6 +223,7 @@ export default function UserReports() {
                 console.log("Successfully Create Task:", data.data);
             })
             .catch(error => {
+                handleLogout();
                 console.error('Error adding task:', error);
             });
     };
@@ -267,7 +269,10 @@ export default function UserReports() {
                     console.error('Failed to delete the task');
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                handleLogout();
+                console.error('Error:', error);
+            });
     };
 
 
@@ -330,6 +335,7 @@ export default function UserReports() {
                     }
                 })
                 .catch((error) => {
+                    handleLogout();
                     console.error('Error updating task status:', error);
                 });
         }
@@ -364,6 +370,7 @@ export default function UserReports() {
                 }
             })
             .catch((error) => {
+                handleLogout();
                 console.error("Error fetching data: ", error);
             })
     }, [assignments]);
