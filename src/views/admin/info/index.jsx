@@ -16,7 +16,7 @@ import {
     Heading,
     Icon
 } from '@chakra-ui/react';
-import { MdCheckCircle } from 'react-icons/md'; // Example icon
+import { MdCheckCircle, MdSchool } from 'react-icons/md';
 
 import qrcode from 'assets/img/qr.png';
 
@@ -42,10 +42,16 @@ export default function InformationPage() {
                                 Pick the courses you want to manage. You'll need to re-select them whenever you log in so we can check for new assignments.
                             </ListItem>
                             <ListItem>
+                                <Heading as="h4" size="md" color="teal.500" mb={2}>
+                                    <Icon as={MdCheckCircle} mr={2} /> AI Models
+                                </Heading>
+                                Summarize/Generate subtasks is based on your description, we fine-tuned the generate subtasks model ourselves but the summarize one we don't. Feel free to report any description format that the `generated subtasks` doesn't do well.
+                            </ListItem>
+                            <ListItem>
                                 <Heading as="h4" size="md" color="green.500" mb={2}>
                                     <Icon as={MdCheckCircle} mr={2} /> Delete Tasks
                                 </Heading>
-                                Deleted tasks won't reappear, even if you re-select the course. You can also try delete tasks in PlanMe Google Classroom (check the next tab).
+                                Deleted tasks won't reappear, even if you re-select the course. You can also try to delete tasks in PlanMe Google Classroom (check the next tab).
                             </ListItem>
                             <ListItem>
                                 <Heading as="h4" size="md" color="orange.500" mb={2}>
@@ -68,12 +74,11 @@ export default function InformationPage() {
                         </UnorderedList>
                     </TabPanel>
                     <TabPanel>
-                        {/* Content for Non-Students */}
+                        <Heading as="h3" size="lg" mb={4} color="orange.500">
+                            <Icon as={MdSchool} mr={2} /> For Non-Students
+                        </Heading>
                         <Grid templateColumns="1fr" gap={{ base: '20px', xl: '20px' }}>
                             <VStack spacing={4}>
-                                <Text fontSize="xxl" fontWeight="bold">
-                                    For Non-Students
-                                </Text>
                                 <Text>
                                     PlanMe is designed for students who have at least one Google Classroom they were a student. In case that you don't, we've prepared a testing Classroom for you to experience the `Get Google Classroom Assignments` feature. Here is the link and the QR code, feel free to pick one.
                                 </Text>
