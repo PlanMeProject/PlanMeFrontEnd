@@ -26,15 +26,14 @@ function SignIn() {
     const googleActive = useColorModeValue({bg: "secondaryGray.300"}, {bg: "whiteAlpha.200"});
     const iconColor = useColorModeValue("green.500", "green.500");
     const history = useHistory();
-    const { userToken, userId } = useContext(SidebarContext);
 
 useEffect(() => {
     const interval = setInterval(() => {
-        // const storedToken = localStorage.getItem('userToken');
-        // const storedUserId = localStorage.getItem('userId');
-        if (userId && userToken) {
+        const storedToken = localStorage.getItem('userToken');
+        const storedUserId = localStorage.getItem('userId');
+        if (storedToken && storedUserId) {
             clearInterval(interval);
-            history.push(`/admin/task-board/${userId}/${userToken}`);
+            history.push(`/admin/task-board/${storedUserId}/${storedToken}`);
         }
     }, 500);
 
