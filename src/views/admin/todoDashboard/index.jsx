@@ -178,7 +178,7 @@ export default function UserReports() {
             setAssignments(data.data);
             setIsLoading(false);
         }).catch(error => {
-            if (error.status === 404) {
+            if (error.status === 400) {
                 showErrorDialog(errorDialogMessage);
             }
             setMessage("You have selected a course that you are not a student.");
