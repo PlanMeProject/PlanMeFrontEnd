@@ -109,7 +109,7 @@ export default function Conversion(props) {
                       flexDirection="column">
                     <Text mb={4}>Loading</Text>
                     <Progress isIndeterminate width="100%"/>
-                    <Text mb={4} mt={4}>random text</Text>
+                    <Text mb={4} mt={4}>This might take a few minutes, please wait.</Text>
                 </Flex>
             </ModalContent>
         </Modal>
