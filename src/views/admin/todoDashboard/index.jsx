@@ -179,10 +179,8 @@ export default function UserReports() {
             setIsLoading(false);
         }).catch(error => {
             const message = error.message || "";
-            const statusCode = parseInt(message.split(":")[0]);
             console.log("Error msg:", message);
-            console.log("Error status code:", statusCode);
-            if (statusCode === 400 || statusCode === 401) {
+            if (message.includes("Missing required data")) {
                 showErrorDialog(errorDialogMessage);
             }
             setMessage("You have selected a course that you are not a student.");
