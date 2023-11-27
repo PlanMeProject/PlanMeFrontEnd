@@ -68,7 +68,7 @@ export default function UserReports() {
     const history = useHistory();
     const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
     const [errorDialogMessage, setErrorDialogMessage] = useState("Your session has expired. Please log in again.");
-
+    const [isDueDateValid, setIsDueDateValid] = useState(true);
 
     const showErrorDialog = (message) => {
         setErrorDialogMessage(message);
@@ -269,10 +269,16 @@ export default function UserReports() {
     };
 
     const handleDueDateChange = (event) => {
-        setDueDate(event.target.value);
+        const newDueDate = event.target.value;
+        setDueDate(newDueDate);
+        setIsDueDateValid(newDueDate !== "");
     };
 
     const handleSaveDueDate = () => {
+        if (!dueDate) {
+            setIsDueDateValid(false);
+            return;
+        }
         // Construct the request body
         const requestBody = {
             data: {
@@ -306,7 +312,6 @@ export default function UserReports() {
                 }
             })
             .catch(error => {
-                showErrorDialog(errorDialogMessage);
                 console.error('Failed to save the due date', error);
             });
     };
@@ -443,6 +448,11 @@ export default function UserReports() {
                         </Text>
                     )}
                 </Flex>
+                {!isDueDateValid && (
+                    <Text color="red.500" fontSize="sm" mb="20px">
+                        Due date is required.
+                    </Text>
+                )}
                 <Flex mb='20px'>
                     {isEditingDueDate ? (
                         <Button onClick={handleSaveDueDate}>Save Due
