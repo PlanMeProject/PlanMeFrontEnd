@@ -178,7 +178,11 @@ export default function UserReports() {
             setAssignments(data.data);
             setIsLoading(false);
         }).catch(error => {
-            if (error.status === 400 || error.status === 401) {
+            const message = error.message || "";
+            const statusCode = parseInt(message.split(":")[0]);
+            console.log("Error msg:", message);
+            console.log("Error status code:", statusCode);
+            if (statusCode === 400 || statusCode === 401) {
                 showErrorDialog(errorDialogMessage);
             }
             setMessage("You have selected a course that you are not a student.");
